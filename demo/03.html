@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-06-27
+	描述：利用CSS3实现幽灵按钮
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/style.css"/>
+		<style rel="stylesheet">
+			.t_gbutton {
+				position: relative;
+				width: 200px; height: 100px; margin: 100px auto;
+			 	text-align: center; line-height: 100px;
+			 }
+			 
+			 .line { position: absolute; display: inline-block; background: #000; }
+			 .line-top { top: 0; left: -100px;}
+			 .line-right { top: 50px; right: 0;}
+			 .line-bottom { bottom: 0; right: -100px;}
+			 .line-left { bottom: -50px; left: 0;}
+		</style>
+	</head>
+	<body>
+		<h1>幽灵按钮</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		
+		<div class="t_gbutton">
+			<a href="javascript:;">鼠标移上来</a>
+			<span class="line line-top"></span>
+			<span class="line line-right"></span>
+			<span class="line line-bottom"></span>
+			<span class="line line-left"></span>
+		</div>		
+		
+		
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				var $btn = $(".t_gbutton");
+				var $w = $btn.width();
+				var $h = $btn.height();
+				$btn.on("mouseover",function(){
+					$(this).find("a").text("鼠标移出去");
+					$(this).find(".line-top").stop().animate({"left":"0","width":$w,"height":"2px"},300);
+					$(this).find(".line-right").stop().animate({"top":"0","height":$h,"width":"2px"},300);
+					$(this).find(".line-bottom").stop().animate({"right":"0","width":$w,"height":"2px"},300);
+					$(this).find(".line-left").stop().animate({"bottom":"0","height":$h,"width":"2px"},300);
+					
+				}).on("mouseout",function(){
+					$(this).find("a").text("鼠标移上来");
+					$(this).find(".line-top").stop().animate({"left":"-100px","width":"0","height":"0"},300);
+					$(this).find(".line-right").stop().animate({"top":"-50px","width":"0","height":"0"},300);
+					$(this).find(".line-bottom").stop().animate({"right":"-100px","width":"0","height":"0"},300);
+					$(this).find(".line-left").stop().animate({"bottom":"-50px","width":"0","height":"0"},300);
+				})
+			})
+		</script>
+	</body>
+</html>

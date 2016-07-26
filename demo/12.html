@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-07-07
+	描述：旋转的风车
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/style.css"/>
+		<style rel="stylesheet">
+			.box { 
+				position: relative;
+				width: 200px; height: 200px; margin: 0 auto;
+				overflow: hidden ; 
+				border:2px solid #000; border-radius: 100px;  }
+			.leaf {
+				position: absolute; top: 95px;
+				width: 100%; height: 10px; 
+				background: #000; 
+				transition: all 0.1s linear;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<h1>旋转风车</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<input type="button" id="start" value="点击开始" class="fl"/>
+			<input type="button" id="end" value="点击结束" class="fr"/>
+			<div class="box">
+				<div class="leaf"></div>
+				<div class="leaf"></div>
+			</div>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				var angel = [-45,45];
+				$(".leaf").each(function(){
+					$(this).css({"transform":"rotate("+ angel[$(this).index()] +"deg)"})
+				})
+				
+				var timer = null;
+				$("#start").on("click",function(){
+					clearInterval(timer);
+					timer = setInterval(function(){
+						for (var i = 0; i < angel.length; ++i){
+							angel[i] += 10;
+						}
+						$(".leaf").each(function(){
+							$(this).css({"transform":"rotate("+ angel[$(this).index()] +"deg)"})
+						});
+						
+					},100)
+				})
+			})
+		</script>
+	</body>
+</html>

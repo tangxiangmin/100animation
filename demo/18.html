@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-07-13
+	描述：正则检验表单
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/style.css"/>
+		<style rel="stylesheet">
+			.wrap li {
+				height: 30px;
+				line-height: 30px;
+				margin: 10px ;
+			}
+			.wrap li input {
+				height: 30px;
+				width: 200px;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>正则检验表单</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<p>第一个采用JS，pattern进行判断</p>
+			<form>
+				<ul>
+					<li>
+						<label for="email">邮箱</label>
+						<input type="text" id="email" name="email"  placeholder="请输入邮箱"/>
+					</li>
+					<li>
+						<label for="tel">电话</label>
+						<input type="text" id="tel" name="tel" pattern="^1[358]\d{9}$" placeholder="请输入手机号"/>
+					</li>
+					<li>
+						<input type="submit"/>
+					</li>
+					
+				</ul>
+			</form>
+		</div>
+		<!--华丽丽的分割线-->
+		<!--此外也可以在标签属性中直接使用pattern=""来添加正则，浏览器会自动显示弹窗-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				$("#email").on("blur",function(){
+					var re = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+					var s = $(this).val();
+					if (s && !re.test(s)){
+						alert($(this).attr("name")+"输入不正确")
+					}
+				})
+			})
+		</script>
+	</body>
+</html>

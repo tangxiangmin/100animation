@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-07-06
+	描述：查看图片详情,暂时无法解决图片闪烁的问题
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/style.css"/>
+		<style rel="stylesheet">
+
+			.pic-list li img { width: 200px; margin: 10px 0;}
+			.img-box { width: 500px; position: absolute; height: 250px;}
+			.img-box img{ width: 500px;}
+		</style>
+	</head>
+	<body>
+		<h1>查看图片详情</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<ul class="pic-list">
+				<li><img src="../img/1.jpg"/></li>
+				<li><img src="../img/2.jpg"/></li>
+				<li><img src="../img/3.jpg"/></li>
+				<li><img src="../img/4.jpg"/></li>
+			</ul>
+		</div>
+		<div class="img-box">
+			<img src="" />
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				$(".pic-list li img").on("mouseover",function(){
+					var $src = $(this).attr("src");
+					$(".img-box").show().find("img").attr("src",$src);
+					$(document).on("mousemove",function(e){
+						var posX = e.pageX;
+						var posY = e.pageY;
+						$(".img-box").css({"left":posX,"top":posY});
+					});
+
+					$(this).on("mouseout",function(){
+						$(document).off();
+						$(".img-box").hide();
+					});
+				});
+			});
+		</script>
+	</body>
+</html>

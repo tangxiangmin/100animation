@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-07-05
+	描述：判断当前时间并且无法选择过去时间
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/style.css"/>
+		<style rel="stylesheet">
+			select { width: 100px; height: 50px; padding-left: 30px; }
+		</style>
+	</head>
+	<body>
+		<h1>判断当前时间</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<form>
+				<select class="re_year"></select>&nbsp;&nbsp;年&nbsp;&nbsp;
+				<select class="re_month"></select>&nbsp;&nbsp;月&nbsp;&nbsp;
+				<select class="re_day"></select>&nbsp;&nbsp;日
+			</form>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				(function(){
+					var date = new Date();
+					var year = date.getFullYear();
+					var month = date.getMonth();
+					var day = date.getDate();
+					var arr_month = [31,28,31,30,31,30,31,31,30,31,30,31];
+	
+					set_year();
+					set_month(month+1);
+					set_day(day);
+	
+					function set_year(){
+						var s_year = "";
+						for ( var i = 0 ; i < 10; ++i){
+							s_year += "<option>"+(year+i)+"</option>";
+						}
+						$(".re_year").html(s_year);
+						
+					}
+					function set_month(start){
+						var $year = parseInt($(".re_year").find("option:checked").text());
+						if ( ($year%4 == 0 && $year%100 != 0) || $year %400 == 0) {
+							arr_month[1] = 29;
+						}else {
+							arr_month[1] = 28;
+						}
+						var s_month = "";	
+						for (var i = start; i <= 12; ++i){
+							s_month += "<option>"+i+"</option>";
+						}
+						$(".re_month").html(s_month);
+					}
+					function set_day(start){
+						var s_day = "";
+						var $month = parseInt($(".re_month").find("option:checked").text())-1;
+						for (var i = start; i <= arr_month[$month]; ++i){
+							s_day += "<option>"+i+"</option>";
+						}
+						$(".re_day").html(s_day);
+					}
+	
+					$(".re_year").on("change",function(){
+						
+						set_month(1);
+						set_day(1);
+					})
+	
+					$(".re_month").on("change",function(){
+						set_day(1);
+					});
+				})();
+			})
+		</script>
+	</body>
+</html>

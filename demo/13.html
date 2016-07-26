@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-07-07
+	描述：滑过出现弹性的文字
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/style.css"/>
+		<style rel="stylesheet">
+			.news-list li { position: relative;height: 24px; line-height: 24px; cursor: pointer;}
+			.news-list span { position: absolute; top: 0; }
+		</style>
+	</head>
+	<body>
+		<h1>弹性文字</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<ul class="news-list">
+				<li>
+					<span>这</span><span>是</span><span>一</span><span>条</span><span>演</span><span>示</span>
+					<span>这</span><span>是</span><span>一</span><span>条</span><span>演</span><span>示</span>
+					<span>这</span><span>是</span><span>一</span><span>条</span><span>演</span><span>示</span>
+				</li>
+				<li>
+					<span>这</span><span>是</span><span>一</span><span>条</span><span>演</span><span>示</span>
+					<span>这</span><span>是</span><span>一</span><span>条</span><span>演</span><span>示</span>
+					<span>这</span><span>是</span><span>一</span><span>条</span><span>演</span><span>示</span>
+				</li>
+				<li>
+					<span>这</span><span>是</span><span>一</span><span>条</span><span>演</span><span>示</span>
+					<span>这</span><span>是</span><span>一</span><span>条</span><span>演</span><span>示</span>
+					<span>这</span><span>是</span><span>一</span><span>条</span><span>演</span><span>示</span>
+				</li>
+
+			</ul>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				function back(){
+					$(this).animate({"top":"0px"},500)
+				}
+				var Yin = 0;
+				var Yout = 0;
+				$(".news-list li span").each(function(){
+					var $posX = $(this).index()*$(this).width()+"px";
+					$(this).css({"left":$posX});
+				}).on("mouseover",function(e){
+					Yin = e.pageY;
+				}).on("mouseout",function(e){
+					function move(o,y1,y2,y3,y4){
+						o.stop().animate({"top":y1},200,back);
+						
+						o.prev().stop().animate({"top":y2},200,back)
+						 .prev().stop().animate({"top":y3},200,back)
+						 .prev().stop().animate({"top":y4},200,back);
+						 
+						o.next().stop().animate({"top":y2},200,back)
+						 .next().stop().animate({"top":y3},200,back)
+						 .next().stop().animate({"top":y4},200,back);
+					}	
+					Yout = e.pageY;
+					var dir = Yout - Yin;
+					if (dir < 0){
+						move($(this),"-15px","-11px","-7px","-3px");
+					}else if (dir > 0){
+						move($(this),"15px","11px","7px","3px");
+						
+					}else {
+						console.log("none");
+					}
+					
+				})
+			})
+		</script>
+	</body>
+</html>

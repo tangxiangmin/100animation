@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-06-29
+	描述：图片移入特效1
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>图片移入特效1</title>
+		<link rel="stylesheet" href="../css/style.css"/>
+		<style rel="stylesheet">
+			.wrap {
+				overflow: hidden; position: relative;
+				width: 500px; height: 500px; margin: 100px auto; 
+			}
+			.wrap p { 
+				background: #fff; position: absolute;
+				line-height: 20px; height: 20px; z-index: 10;
+				transition: all ease 0.8s;
+			}
+			.wrap img { transition: all ease 0.8s; }}
+		</style>
+	</head>
+	<body>
+		<h1>图片移入特效1</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<p>自古逢秋悲寂寥，</p>
+			<p>我言秋日胜春朝。</p>
+			<p>晴空一鹤排云上，</p>
+			<p>便引诗情到碧宵。</p>
+			<img src="../img/6.jpg"/>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				pos();
+				function pos(){
+					$(".wrap p").each(function(){
+						var $top = $(this).index()*$(this).height()*1.3+30+"px";
+						var $left = -$(this).index()*$(this).width()-$(this).width()+"px";
+						$(this).css({"top":$top,"left":$left})
+					})
+				}
+				
+				$(".wrap").hover(function(){
+					$(this).find("img").css({"transform":"scale(1.2)"});
+					$(this).find("p").css({"left":"50px"});
+				},function(){
+					$(this).find("img").css({"transform":"scale(1)"});
+					pos();
+				})
+			})
+		</script>
+	</body>
+</html>

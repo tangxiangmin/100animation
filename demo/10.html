@@ -49,7 +49,7 @@
 						
 					}
 					function set_month(start){
-						var $year = parseInt($(".re_year").find("option:checked").text());
+						var $year = $(".re_year").val();
 						if ( ($year%4 == 0 && $year%100 != 0) || $year %400 == 0) {
 							arr_month[1] = 29;
 						}else {
@@ -63,7 +63,7 @@
 					}
 					function set_day(start){
 						var s_day = "";
-						var $month = parseInt($(".re_month").find("option:checked").text())-1;
+						var $month = $(".re_month").val()-1;
 						for (var i = start; i <= arr_month[$month]; ++i){
 							s_day += "<option>"+i+"</option>";
 						}
@@ -71,13 +71,22 @@
 					}
 	
 					$(".re_year").on("change",function(){
-						
-						set_month(1);
-						set_day(1);
+						if ($(this).val() != year){
+							set_month(1);
+							set_day(1);
+						}else {
+							set_month(month+1);
+							set_day(day);
+						}
 					})
 	
 					$(".re_month").on("change",function(){
-						set_day(1);
+						if ($(this).val() != month+1){
+							set_day(1);
+						}else {
+							set_day(day);
+						}
+
 					});
 				})();
 			})

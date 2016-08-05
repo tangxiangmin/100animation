@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!--说明-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/style.css"/>
+		<style rel="stylesheet">
+			.wrap::selection{
+				background: pink; color: #fff;
+			}
+			textarea { width: 100%; height: 100px; font-size: 14px; padding: 5px; margin-top: 20px;}
+		</style>
+	</head>
+	<body>
+		<h1>文字选中特效</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			当选中这段文字会发生不一样的变化当选中这段文字会发生不一样的变化哦当选中这段文字会发生不一样的变化哦哦。
+			<p></p>
+			<textarea>当选中这段文字会发生不一样的变化当选中这段文字会发生不一样的变化哦当选中这段文字会发生不一样的变化哦哦</textarea>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				var txt = document.querySelector("textarea");
+				txt.onselect = function(){
+					this.style.background = "red";
+					this.style.color = "#fff";
+				}
+			})
+		</script>
+	</body>
+</html>

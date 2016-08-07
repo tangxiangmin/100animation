@@ -11,9 +11,15 @@
 		<title></title>
 		<link rel="stylesheet" href="../css/style.css"/>
 		<style rel="stylesheet">
+			.box { position: relative; }
+			.map {border-collapse: collapse;}
+			.map td { width: 20px; height: 20px; border: 1px solid #dedede; box-sizing: border-box;}
+			.snake { width: 100%;height: 100%; position: absolute;top: 0; left: 0;z-index: 10; }
+			.food , .snakeNode,.snakeHead {width: 20px; height: 20px; position: absolute;}
+			.snakeNode { background: #000; left: 0; top: 0; }
+			.food { background: blue; }
+			.snakeHead { background: red;}
 			
-			table {border-collapse: collapse; margin: 50px auto;}
-			td { width: 20px; height: 20px; border: 1px solid #dedede;}
 		</style>
 	</head>
 	<body>
@@ -21,20 +27,32 @@
 		<p>
 			<a href="../index.html">返回主菜单</a>
 		</p>
+		<div class="wrap">
+			<div class="box">
+				<table class="map">
+					<tbody>
+						<tr></tr>
+					</tbody>
+				</table>
+				<ul class="snake">
+					<li class="snakeHead"></li>
+				</ul>
+				<div class="food"></div>
+				
+			</div>
+		</div>
 		
-		<table>
-			<tbody>
-				<tr></tr>
-			</tbody>
-		</table>
+		
 	
 		<!--华丽丽的分割线-->
 		<script src="../js/jquery-1.12.4.min.js"></script>
 		<script>
 			$(function(){
-				
+				//行列
 				var row = 10; 
 				var col = 10;
+				var w = 20;
+				var h = 20;
 				createTable(row,col);
 				//创建地图
 				function createTable(row,col){
@@ -42,8 +60,8 @@
 					for (var i = 0; i < row; ++i){
 						strTr += "<tr></tr>";
 					}
-					$("table").append(strTr);
-					$("table tr").each(function(){
+					$(".map").append(strTr);
+					$(".map tr").each(function(){
 						var strTd = "";
 						for (var i = 0; i < col; ++i){
 							strTd += "<td></td>";
@@ -51,6 +69,38 @@
 						$(this).append(strTd);
 					})
 				}
+				//初始化位置
+				
+				function randPos(){
+					var startX = Math.floor(Math.random()*row)*w+"px";
+					var startY = Math.floor(Math.random()*col)*h+"px";
+					return [startX,startY];
+				}
+				var foodPos = randPos();
+				$(".food").css({"left":foodPos[0],"top":foodPos[1]});
+				var headPos = randPos();
+				$(".snakeHead").css({"left":headPos[0],"top":headPos[1]});
+				
+				
+				
+				
+				//键盘按钮
+				//left:37
+				//up:38
+				//right:39
+				//down:40
+				$(document).on("keydown",function(e){
+					console.log(e.keyCode == 37);
+					
+					var timer = null;
+					switch (e.keycode){
+						case "37":
+							$(".snakeHead").css("left","20px")
+							
+						
+					}
+					
+				})
 				
 			})
 		</script>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-08-07
+	描述：先用面向过程写一遍吧
+		08-07：今天完成界面布局
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/style.css"/>
+		<style rel="stylesheet">
+			
+			table {border-collapse: collapse; margin: 50px auto;}
+			td { width: 20px; height: 20px; border: 1px solid #dedede;}
+		</style>
+	</head>
+	<body>
+		<h1>简易版贪吃蛇</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		
+		<table>
+			<tbody>
+				<tr></tr>
+			</tbody>
+		</table>
+	
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				
+				var row = 10; 
+				var col = 10;
+				createTable(row,col);
+				//创建地图
+				function createTable(row,col){
+					var strTr = "";
+					for (var i = 0; i < row; ++i){
+						strTr += "<tr></tr>";
+					}
+					$("table").append(strTr);
+					$("table tr").each(function(){
+						var strTd = "";
+						for (var i = 0; i < col; ++i){
+							strTd += "<td></td>";
+						}
+						$(this).append(strTd);
+					})
+				}
+				
+			})
+		</script>
+	</body>
+</html>

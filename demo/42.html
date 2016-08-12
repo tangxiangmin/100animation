@@ -4,6 +4,7 @@
 	时间：2016-08-07
 	描述：先用面向过程写一遍吧
 		08-07：今天完成界面布局
+		08-10: 初始化食物与蛇头，及随机产生食物 
 -->
 <html>
 	<head>
@@ -20,6 +21,9 @@
 			.food { background: blue; }
 			.snakeHead { background: red;}
 			
+			
+			.score { float: right; width: 100px; height: 100px ; }
+			
 		</style>
 	</head>
 	<body>
@@ -28,6 +32,9 @@
 			<a href="../index.html">返回主菜单</a>
 		</p>
 		<div class="wrap">
+			<div class="score">
+				分数：<span>0</span>
+			</div>
 			<div class="box">
 				<table class="map">
 					<tbody>
@@ -53,6 +60,8 @@
 				var col = 10;
 				var w = 20;
 				var h = 20;
+				
+				var score = 0;
 				createTable(row,col);
 				//创建地图
 				function createTable(row,col){
@@ -70,37 +79,60 @@
 					})
 				}
 				//初始化位置
-				
+				createFood();
 				function randPos(){
 					var startX = Math.floor(Math.random()*row)*w+"px";
 					var startY = Math.floor(Math.random()*col)*h+"px";
-					return [startX,startY];
+					return {
+						x:startX,
+						y:startY
+					};
 				}
-				var foodPos = randPos();
-				$(".food").css({"left":foodPos[0],"top":foodPos[1]});
+				
 				var headPos = randPos();
-				$(".snakeHead").css({"left":headPos[0],"top":headPos[1]});
-				
-				
-				
-				
-				//键盘按钮
-				//left:37
-				//up:38
-				//right:39
-				//down:40
+				$(".snakeHead").css({"left":headPos.x,"top":headPos.y});
+		
 				$(document).on("keydown",function(e){
-					console.log(e.keyCode == 37);
-					
 					var timer = null;
-					switch (e.keycode){
-						case "37":
-							$(".snakeHead").css("left","20px")
-							
-						
-					}
-					
+					switch (e.which){
+						case 37:
+							$(".snakeHead").css("left","-=20px");
+							break;
+						case 38:
+							$(".snakeHead").css("top","-=20px");
+							break;
+						case 39:
+							$(".snakeHead").css("left","+=20px");
+							break;
+						case 40:
+							$(".snakeHead").css("top","+=20px");
+							break;
+						default:
+							break;
+					};
+					CheckMeet();
 				})
+				
+				function CheckMeet(){
+					var snakeHead = getPos($(".snakeHead"));
+					var food = getPos($(".food"));
+					if (snakeHead.x == food.x && snakeHead.y == food.y){
+						score += 10;
+						$(".score span").text(score);
+						createFood();
+					}
+				}
+				function getPos(obj){
+					return {
+						x:obj.position().left/w,
+						y:obj.position().top/h
+					}
+				}
+				
+				function createFood(){
+					var foodPos = randPos();
+					$(".food").css({"left":foodPos.x,"top":foodPos.y});
+				}
 				
 			})
 		</script>

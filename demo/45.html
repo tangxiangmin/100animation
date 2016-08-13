@@ -1,27 +1,67 @@
 <!DOCTYPE html>
-<!--说明-->
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-08-13
+	描述：模拟浏览器刷新
+-->
 <html>
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
 		<link rel="stylesheet" href="../css/style.css"/>
 		<style rel="stylesheet">
-			.wrap { width: 600px; height: 600px; background: #000;}
+			.box { width: 100px; height: 100px; background: deepskyblue; margin: 0 auto; cursor: pointer;}
+			.time { font-size: 50px; color: red; line-height: 70px;}
+			li { float: left; margin: 0 10px;}
 		</style>
 	</head>
 	<body>
-		<h1>简易版大富翁</h1>
+		<h1>模拟浏览器刷新</h1>
 		<p>
 			<a href="../index.html">返回主菜单</a>
 		</p>
 		<div class="wrap">
+			<ul>
+				<li>
+					<div class="box"></div>
+					<p>点击返回上一页</p>
+				</li>
+				<li>
+					<div class="box"></div>
+					<p>
+						点击刷新页面<br>
+						-------------<br>
+						时间滴答滴答正在流逝
+					</p>
+					<p class="time">0</p>
+				</li>
+				<li>
+					<div class="box"></div>
+					<p>点击返回下一页</p>
+				</li>
+			</ul>
 			
 		</div>
 		<!--华丽丽的分割线-->
 		<script src="../js/jquery-1.12.4.min.js"></script>
 		<script>
 			$(function(){
+				var count = 1;
 				
+				var timer = setInterval(function(){
+					$(".time").text(count++);
+				},1000)
+				
+				$("li").eq(0).on("click",function(){
+					history.go(-1);
+				})
+				$("li").eq(1).on("click",function(){
+					history.go(0);
+				})
+				$("li").eq(2).on("click",function(){
+//					history.go(+1);
+					alert("然而并没有下一页")
+				})
 			})
 		</script>
 	</body>

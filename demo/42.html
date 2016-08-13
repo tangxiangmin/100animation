@@ -9,6 +9,7 @@
 		08-13: 完成整个游戏逻辑处理及边界检测
 	缺点：
 		由于需要频繁检测事件及重新定位节点位置导致的浏览器重绘，内存消耗估计较严重；
+		本来还想弄一个选择难度的，无非就是更改行列，宽高和速度，直接修改参数就行了，那这个简易版的贪吃蛇就这样吧
 -->
 <html>
 	<head>
@@ -25,8 +26,8 @@
 			
 			.food , .snakeNode,.snakeHead {width: 20px; height: 20px; position: absolute;}
 			.snakeNode { background: #000; left: 0; top: 0; }
-			.food { background: blue; }
-			.snakeHead { background: red;}
+			.food { background: blue; z-index: 200;}
+			.snakeHead { background: red; z-index: 100;}
 			
 			
 			.score { float: right; width: 100px; height: 100px ; }
@@ -109,8 +110,13 @@
 				},speed);
 				$(document).on("keydown",function(e){
 					//检测按键是否为方向键，以及是否为反方向按键
-					if (pressKey.indexOf(e.which) == -1 && ($(".snake li").size() > 1 && checkDir(dir,e.which))){
+					if (pressKey.indexOf(e.which) == -1 ){
+						console.log("other");
 						return ;
+					}
+					if ($(".snake li").size() > 1 && checkDir(dir,e.which)){
+						console.log("revse");
+						return;
 					}
 					
 					clearInterval(timer);
@@ -170,8 +176,7 @@
 					})
 				}
 				
-				
-				//检测蛇头与食物是否相遇，及碰撞检测
+				//检测蛇头与食物是否相遇
 				function CheckMeet(dir){
 					var snakeHead = getPos($(".snakeHead"));
 					var food = getPos($(".food"));
@@ -183,6 +188,39 @@
 							location.href = "../index.html";
 						}
 					}
+					//是否撞到身体
+					(function(){
+						var arrPos = [];
+						$(".snake li:gt(1)").each(function(){
+							arrPos.push(getPos($(this)));
+						})
+						var arrPosX = [];
+						var arrPosY = [];
+						for (var i = 0; i < arrPos.length; ++i){
+							arrPosX.push(arrPos[i].x);
+							arrPosY.push(arrPos[i].y);
+						}
+		
+						var x = arrPosX.indexOf(snakeHead.x);
+						var y = arrPosY.indexOf(snakeHead.y);
+						//这儿合并判断为什么会出现BUG
+						if (x != -1 && arrPosY[x] == snakeHead.y){
+							if ( confirm("啊你咬到自己了！是否继续？")){
+								history.go(0);
+							}else {
+								location.href = "../index.html";
+							}
+						}
+						if (y != -1 && arrPosX[y] == snakeHead.x){
+							if ( confirm("啊你咬到自己了！是否继续？")){
+								history.go(0);
+							}else {
+								location.href = "../index.html";
+							}
+						}
+					})();
+					
+					
 					//吃到食物增加分数及身体节点
 					if (snakeHead.x == food.x && snakeHead.y == food.y){
 						//增加分数并生成新的食物
@@ -191,42 +229,45 @@
 						createFood();
 						
 						//将新增节点的位置放在最后一个节点的后面
-						var snakeNode = $("<li></li>");
-						snakeNode.addClass("snakeNode").css({});
+						(function(){
+							var snakeNode = $("<li></li>");
+							snakeNode.addClass("snakeNode").css({});
+							
+							var lastChild = $(".snake li:last-of-type")
+							var posX = parseInt(lastChild.position().left);
+							var posY = parseInt(lastChild.position().top);
+							switch (dir){
+								case 37:
+									snakeNode.css({
+										"left":posX+w+"px",
+										"top":posY+"px"
+									});
+									break;
+								case 38:
+									snakeNode.css({
+										"left":posX+"px",
+										"top":posY+h+"px"
+									});
+									break;
+								case 39:
+									snakeNode.css({
+										"left":posX-w+"px",
+										"top":posY+"px"
+									});
+									break;
+								case 40:
+									snakeNode.css({
+										"left":posX+"px",
+										"top":posY-h+"px"
+									});
+									break;
+								default:
+									console.log("bug....");
+									break;
+							};
+							$(".snake").append(snakeNode);
+						})();
 						
-						var lastChild = $(".snake li:last-of-type")
-						var posX = parseInt(lastChild.position().left);
-						var posY = parseInt(lastChild.position().top);
-						switch (dir){
-							case 37:
-								snakeNode.css({
-									"left":posX+w+"px",
-									"top":posY+"px"
-								});
-								break;
-							case 38:
-								snakeNode.css({
-									"left":posX+"px",
-									"top":posY+h+"px"
-								});
-								break;
-							case 39:
-								snakeNode.css({
-									"left":posX-w+"px",
-									"top":posY+"px"
-								});
-								break;
-							case 40:
-								snakeNode.css({
-									"left":posX+"px",
-									"top":posY-h+"px"
-								});
-								break;
-							default:
-								console.log("bug....");
-								break;
-						};
-						$(".snake").append(snakeNode);
 					}
 				}
 				

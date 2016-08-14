@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!--说明-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/style.css"/>
+		<style rel="stylesheet">
+			.box { width: 200px; border: 1px solid red; line-height: 20px;font-size: 14px;}
+			input { height: 30px; line-height: 28px; font-size: 14px; box-sizing: border-box; padding: 3px;}
+		</style>
+	</head>
+	<body>
+		<h1>多行文本溢出处理</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<div class="fr">
+				<input type="text" placeholder="请输入你需要的字数"/>
+				<input type="button" value="确认"/>
+			</div>
+			<div class="box">多行文本溢出处理多行文本溢出处理多行文本溢出处理多行文本溢出处理多行文本溢出处理多行文本溢出处理多行文本溢出处理多行文本溢出处理多行文本溢出处理多行文本溢出处理多行文本溢出处理多行文本溢出处理多行文本溢出处理多行文本溢出处理多行文本溢出处理多行文本溢出处理多行文本溢出处理多行文本溢出处理多行文本溢出处理多行文本溢出处理</div>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				//并未实现多少行的判定，这个应当是根据需求差别对待
+				var old = $(".box").text();
+				$("input[type=button]").on("click",function(){
+					var num = parseInt($("input[type=text]").val());
+					if ( num > old.length){
+						alert("输入字数超过现有内容，请重试！");
+						return;
+					}
+					$(".box").text(old);
+					
+					var str = $(".box").text().substr(0,num-3) + "...";
+					$(".box").text(str);
+				})
+			})
+		</script>
+	</body>
+</html>

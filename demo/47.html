@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-08-15
+	描述：写一个简陋版的宝石迷阵---致我曾经最喜欢的游戏
+		8-15： 完成界面搭建
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/style.css"/>
+		<style rel="stylesheet">
+			.wrap { position: relative;}
+			
+			.red { background: #CC0033;}
+			.blue { background: #00CCFF;}
+			.green { background: #66CC00;}
+			.black { background: #000033;}
+			
+			.box { position: absolute; left: 0; top: 0;}
+			.node { width: 26px; height: 26px; position: absolute;}
+		</style>
+	</head>
+	<body>
+		<h1>简易版宝石迷阵</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<div class="box">
+				
+			</div>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+		$(function(){
+			var row = 10;
+			var col = 10;
+			var w = 30;
+			var h = 30;
+			var marginX = 2;
+			var marginY = 2;
+			
+
+			//初始化节点地图
+			(function(){
+				var str = "";
+				for (var i = 0 ; i < row; ++i){
+					for (var j = 0; j < col; ++j){
+						str += "<div class='node'></div>";
+					}
+				}
+				$(".box").append($(str));
+				var color = ["red","blue","black","yellow"];
+				$(".node").each(function(){
+					var index = $(this).index();
+					$(this).css({"left":(index%col)*w+marginX,"top":parseInt(index/row)*h+marginY})
+						   .addClass(color[Math.floor(Math.random()*3)]);
+				})
+			})();
+			
+		})
+			
+		</script>
+	</body>
+</html>

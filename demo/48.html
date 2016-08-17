@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--说明-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/style.css"/>
+		<style rel="stylesheet">
+			.box { 
+				position: relative;
+				width: 100px; height: 50px ; 
+				background: #fff; line-height: 50px; 
+				border:1px solid #dedede;
+				border-radius: 50px;
+			}
+
+			.box span { display: inline-block;width: 50px; height: 50px; text-align: center;}
+			.btn { position: absolute; width: 50px; height: 50px;top: 0; left: 0; background: #dedede; border-radius: 50px;}
+			
+		</style>
+		
+	</head>
+	<body>
+		<h1>随意点击拖动</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<div class="box">
+				<span>开</span><span>关</span>
+				<span class="btn"></span>
+				
+			</div>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			var on = true;
+			$(".box").on("click",function(){
+				if (on){
+					$(".btn").stop().animate({"left":"50px"},200);
+				}else {
+					$(".btn").stop().animate({"left":"0"},200);
+				}
+				on = !on;
+
+			})
+		</script>
+	</body>
+</html>

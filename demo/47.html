@@ -15,7 +15,6 @@
 			
 			.red { background: #CC0033;}
 			.blue { background: #00CCFF;}
-			.green { background: #66CC00;}
 			.black { background: #000033;}
 			
 			.box { position: absolute; left: 0; top: 0; height: 300px; width: 300px;;}
@@ -62,7 +61,7 @@
 					}
 				}
 				$(".box").append($(str));
-				var color = ["red","blue","black","yellow"];
+				var color = ["red","blue","black"];
 				$(".node").each(function(){
 					var index = $(this).index();
 					$(this).css({"left":(index%col)*w,"top":parseInt(index/row)*h})
@@ -71,20 +70,67 @@
 			})();
 			
 			//判断
-			var t = $(".node").eq(5).css("top");
-			var l = $(".node").eq(5).css("left");
-			
-			alert(getPos(t,l).x);
-			alert(getPos(t,l).y);
 			//获取节点坐标，左上角(0,0)
-			function getPos(top,left){
+			function getPos(top,left,color){
 				return {
 					x:parseInt(top)/h,
-					y:parseInt(left)/w
+					y:parseInt(left)/w,
+					color:color
 				}
 			}
-
+			var arrPos = [];
+			$(".node").each(function(){
+				var t = $(this).css("top");
+				var l = $(this).css("left");
+				var color = $(this).find(".inner").attr("class").split(" ")[1];
+				arrPos.push(getPos(t,l,color));
+			})
+			//竖直方向上判断
 			
+			for (var i = 0; i < arrPos.length; ++i){
+			
+//				checkVerticalSame(i);
+				if ((i+2) % col != 0 (i+1) % col != 0) {
+					checkHorizonSame(i);
+				}
+			}
+			function checkVerticalSame(i){
+				var same = [];
+				same.push(i); //将起始判断点放入数组的第一个位置
+				same.push(arrPos[i]);
+				var j = 0;
+				while (j < row-1){
+					if (arrPos[i+(j+1)*col] && arrPos[i+j*col].color == arrPos[i+(j+1)*col].color){
+						same.push(arrPos[i+j*col]);
+						j++;
+					}else {
+						break;
+					}
+				}
+				
+				if (same.length > 3){
+					console.log(same[0]);
+				}
+			}
+			
+			function checkHorizonSame(i){
+				var same = [];
+				same.push(i); //将起始判断点放入数组的第一个位置
+				same.push(arrPos[i]);
+				var j = 0;
+				while (j < col-2){
+					if (arrPos[i+(j+1)] && arrPos[i+j].color == arrPos[i+(j+1)].color){
+						same.push(arrPos[i+j*col]);
+						j++;
+					}else {
+						break;
+					}
+				}
+				
+				if (same.length > 3){
+					console.log(same[0]);
+				}
+			}
 		})
 			
 		</script>

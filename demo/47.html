@@ -18,8 +18,17 @@
 			.green { background: #66CC00;}
 			.black { background: #000033;}
 			
-			.box { position: absolute; left: 0; top: 0; border-bottom: 5px solid #66CC00; height: 300px; width: 300px;;}
-			.node { width: 26px; height: 26px; position: absolute;}
+			.box { position: absolute; left: 0; top: 0; height: 300px; width: 300px;;}
+			.node { 
+				width: 30px; height: 30px; position: absolute;
+				box-sizing: border-box;
+				padding: 2px;
+			}
+			.node .inner {
+				width: 26px;
+				height: 26px;
+				margin: 2px;
+			}
 		</style>
 	</head>
 	<body>
@@ -36,12 +45,12 @@
 		<script src="../js/jquery-1.12.4.min.js"></script>
 		<script>
 		$(function(){
-			var row = 10;
-			var col = 10;
+			var row = 5;
+			var col = 5;
 			var w = 30;
 			var h = 30;
-			var marginX = 2;
-			var marginY = 2;
+			var marginX = 0;
+			var marginY = 0;
 			
 
 			//初始化节点地图
@@ -49,20 +58,32 @@
 				var str = "";
 				for (var i = 0 ; i < row; ++i){
 					for (var j = 0; j < col; ++j){
-						str += "<div class='node'></div>";
+						str += "<div class='node'><div class='inner'></div></div>";
 					}
 				}
 				$(".box").append($(str));
 				var color = ["red","blue","black","yellow"];
 				$(".node").each(function(){
 					var index = $(this).index();
-					$(this).css({"left":(index%col)*w+marginX,"top":parseInt(index/row)*h+marginY})
-						   .addClass(color[Math.floor(Math.random()*3)]);
+					$(this).css({"left":(index%col)*w,"top":parseInt(index/row)*h})
+						   .find(".inner").addClass(color[Math.floor(Math.random()*3)]);
 				})
 			})();
 			
 			//判断
+			var t = $(".node").eq(5).css("top");
+			var l = $(".node").eq(5).css("left");
 			
+			alert(getPos(t,l).x);
+			alert(getPos(t,l).y);
+			//获取节点坐标，左上角(0,0)
+			function getPos(top,left){
+				return {
+					x:parseInt(top)/h,
+					y:parseInt(left)/w
+				}
+			}
+
 			
 		})
 			

@@ -86,49 +86,72 @@
 				arrPos.push(getPos(t,l,color));
 			})
 			//竖直方向上判断
-			
+			var same = [];
 			for (var i = 0; i < arrPos.length; ++i){
-			
-//				checkVerticalSame(i);
-				if ((i+2) % col != 0 (i+1) % col != 0) {
-					checkHorizonSame(i);
+//				
+				if (checkVerticalSame(i)) {
+					same.concat(checkVerticalSame(i));
+					console.log(checkVerticalSame(i).length)
+				}
+				
+				//解决水平判断错误换行的问题
+				if ((i+2) % col == 0 ){
+					continue;
+				}
+				if ((i+1) % col == 0){
+					continue;
+				}
+				if (checkHorizonSame(i)){
+					console.log("水平："+checkHorizonSame(i));
+				}
+				
+//				same.concat(checkHorizonSame(i));
+			}
+			//由于相同元素多余三个会重复添加，因此可以使用去重
+			console.log(newArr);
+			same.sort();
+			var newArr = [same[0]];
+			for (var i = 1; i < same.length; ++i){
+				if (newArr[length-1] != same[i]){
+					newArr.push(same[i]);
 				}
 			}
+			console.log(newArr);
+			
+			//判断竖直方向相同的元素
 			function checkVerticalSame(i){
 				var same = [];
-				same.push(i); //将起始判断点放入数组的第一个位置
-				same.push(arrPos[i]);
+				same.push(i);
 				var j = 0;
 				while (j < row-1){
 					if (arrPos[i+(j+1)*col] && arrPos[i+j*col].color == arrPos[i+(j+1)*col].color){
-						same.push(arrPos[i+j*col]);
+						same.push(i+(j+1)*col);
 						j++;
 					}else {
 						break;
 					}
 				}
-				
-				if (same.length > 3){
-					console.log(same[0]);
+				//返回总长度大于等于三个的节点起始点
+				if (same.length >= 3){
+					return same;
 				}
 			}
 			
+			//判断水平方向相同的元素
 			function checkHorizonSame(i){
 				var same = [];
-				same.push(i); //将起始判断点放入数组的第一个位置
-				same.push(arrPos[i]);
+				same.push(i);
 				var j = 0;
 				while (j < col-2){
 					if (arrPos[i+(j+1)] && arrPos[i+j].color == arrPos[i+(j+1)].color){
-						same.push(arrPos[i+j*col]);
+						same.push(i+(j+1));
 						j++;
 					}else {
 						break;
 					}
 				}
-				
-				if (same.length > 3){
-					console.log(same[0]);
+				if (same.length >= 3){
+					return same;
 				}
 			}
 		})

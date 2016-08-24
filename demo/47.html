@@ -44,8 +44,8 @@
 		<script src="../js/jquery-1.12.4.min.js"></script>
 		<script>
 		$(function(){
-			var row = 5;
-			var col = 5;
+			var row = 10;
+			var col = 10;
 			var w = 30;
 			var h = 30;
 			var marginX = 0;
@@ -85,15 +85,16 @@
 				var color = $(this).find(".inner").attr("class").split(" ")[1];
 				arrPos.push(getPos(t,l,color));
 			})
-			//竖直方向上判断
+
+			
 			var same = [];
 			for (var i = 0; i < arrPos.length; ++i){
-//				
-				if (checkVerticalSame(i)) {
-					same.concat(checkVerticalSame(i));
-					console.log(checkVerticalSame(i).length)
+				var sameY = checkVerticalSame(i);
+				if (sameY) {
+					for (var j = 0; j < sameY.length; ++j){
+						same.push(sameY[j]);
+					}
 				}
-				
 				//解决水平判断错误换行的问题
 				if ((i+2) % col == 0 ){
 					continue;
@@ -101,22 +102,27 @@
 				if ((i+1) % col == 0){
 					continue;
 				}
-				if (checkHorizonSame(i)){
-					console.log("水平："+checkHorizonSame(i));
+				var sameX = checkHorizonSame(i)
+				if (sameX){
+					for (var j = 0; j < sameX.length; ++j){
+						same.push(sameX[j]);
+					}
 				}
-				
-//				same.concat(checkHorizonSame(i));
 			}
 			//由于相同元素多余三个会重复添加，因此可以使用去重
-			console.log(newArr);
-			same.sort();
+			same.sort(function(a,b){return a-b;});
 			var newArr = [same[0]];
 			for (var i = 1; i < same.length; ++i){
-				if (newArr[length-1] != same[i]){
+				if (newArr[newArr.length-1] != same[i]){
 					newArr.push(same[i]);
 				}
 			}
+			
+			//newArr保存的只是arrPos坐标数组中可以被消除的元素，如何映射到对应的节点呢？
 			console.log(newArr);
+//			for (var i = 0 ; i < newArr.length; ++i){
+//				$(".node").eq(newArr[i]).hide(400);
+//			}
 			
 			//判断竖直方向相同的元素
 			function checkVerticalSame(i){

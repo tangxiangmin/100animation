@@ -76,8 +76,10 @@
 					return false;
 				})
 				function checkPos(){
-					var r = parseInt(obj.css("right"));
+					// var r = parseInt(obj.css("right"));
 					var l = parseInt(obj.css("left"));
+					// 由于移动端存在BUG，改用如下计算r进行边界检测
+					var r = -2*w - l;
 					r>=0?flagL=false:flagL=true;
 					l>=0?flagR=false:flagR=true;
 				}

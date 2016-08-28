@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-08-28
+	描述：由于之间的逻辑处理存在问题，因此重新书写整个逻辑
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/style.css"/>
+		<style rel="stylesheet">
+			.wrap { position: relative;}
+			
+			.red { background: #CC0033;}
+			.blue { background: #00CCFF;}
+			.black { background: #000033;}
+			.green { background: #00CC66;}
+			
+			.box { position: absolute; left: 0; top: 0; height: 300px; width: 300px;;}
+			.node { 
+				width: 30px; height: 30px; position: absolute;
+				box-sizing: border-box;
+				padding: 2px;
+			}
+			.node .inner {
+				width: 26px;
+				height: 26px;
+				margin: 2px;
+			}
+			.score {
+				position: absolute;
+				right: 0;
+				top: 0;
+				
+			}
+		</style>
+	</head>
+	<body>
+		<h1>简易版宝石迷阵</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<div class="score">0</div>
+			<div class="box">
+				
+			</div>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+		$(function(){
+			var row = 5;
+			var col = 5;
+			var w = 30;
+			var h = 30;
+
+			//初始化节点地图
+			(function(){
+				var str = "";
+				for (var i = 0 ; i < row; ++i){
+					for (var j = 0; j < col; ++j){
+						str += "<div class='node'><div class='inner'></div></div>";
+					}
+				}
+				
+				$(".box").append($(str));
+				var color = ["red","blue","black","green"];
+				
+				$(".node").each(function(index){
+					$(this).css({"left":(index%col)*w,"top":parseInt(index/row)*h})
+						   .find(".inner").addClass(color[Math.floor(Math.random()*4)]);
+				})
+				
+			})();
+			
+			//将颜色映射到一个二维数组，该二维数组与节点的定位有关，与节点的顺序无关
+			(function(){
+				var colorMap = [];
+				for (var i = 0; i < row; ++i){
+					colorMap.push([]);
+				}
+				$(".node").each(function(){
+					var l = parseInt($(this).css("left"));
+					var t = parseInt($(this).css("top"));
+					var color = $(this).find(".inner").attr("class").split(" ")[1]
+					colorMap[t/h][l/w] = color;
+				})
+				checkVerticalSame(0);
+				//竖直方向上相同的元素
+				function checkVerticalSame(col){
+					var temp = [];
+					for (var i = 0; i < row; ++i){
+						temp.push({
+							color:colorMap[i][col],
+							index:i
+						});
+					}
+					//待优化
+					var j = 0,same = [temp[0]];
+					while(j < row-1){
+						if (temp[j+1].color == temp[j].color){
+							same.push(temp[j+1]);
+							j++;
+						}else {
+							break;
+						}
+					}
+					for (var color in same){
+						console.log(color);
+					}
+//					console.log(same)
+				}
+			})();
+			
+		})
+			
+		</script>
+	</body>
+</html>

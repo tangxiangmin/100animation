@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--说明-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/style.css"/>
+		<style rel="stylesheet">
+			ul {
+				position: relative;
+			}
+			li {
+				width: 100%;
+				height: 300px;
+				position: absolute;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>随意点击拖动</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<ul>
+				<li></li>
+				
+			</ul>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				var w = $("li").width();
+				
+				$("li").each(function(index){
+					$(this).css({"background":"#"+Math.floor(Math.random()*900+100),"left":index*w+"px"});
+				})
+				$("li").on("mousedown",function(e){
+					var that = $(this);
+					
+					var startPos = that.css("left");
+					var startX = e.pageX;
+					$(document).on("mousemove",function(e){
+						that.css({"left":(e.pageX-startX)});
+					}).on("mouseup",function(e){
+						$(document).off();
+						var endX = e.pageX;
+						if (endX - startX > 0 && endX - startX > w/2){
+							that.css({"left":w});
+						}else {
+							that.css({"left":startPos});
+						}
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

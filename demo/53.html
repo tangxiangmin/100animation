@@ -6,14 +6,25 @@
 		<title></title>
 		<link rel="stylesheet" href="../css/style.css"/>
 		<style rel="stylesheet">
+			.wrap {
+				overflow: hidden;
+			}
 			ul {
 				position: relative;
+				
+				width: 100%;
+				height:300px;
 			}
 			li {
 				width: 100%;
 				height: 300px;
 				position: absolute;
 				cursor: pointer;
+				
+			}
+			.on {
+				transition: all .5s ease; 
+				-webkit-transition: all .5s ease; 
 			}
 		</style>
 	</head>
@@ -25,7 +36,8 @@
 		<div class="wrap">
 			<ul>
 				<li></li>
-				
+				<li></li>
+				<li></li>
 			</ul>
 		</div>
 		<!--华丽丽的分割线-->
@@ -37,21 +49,29 @@
 				$("li").each(function(index){
 					$(this).css({"background":"#"+Math.floor(Math.random()*900+100),"left":index*w+"px"});
 				})
-				$("li").on("mousedown",function(e){
-					var that = $(this);
-					
-					var startPos = that.css("left");
+				var per = 0;
+				
+				$("ul").on("mousedown",function(e){
 					var startX = e.pageX;
+					$("ul").removeClass("on");
+					
 					$(document).on("mousemove",function(e){
-						that.css({"left":(e.pageX-startX)});
+						var s = e.pageX-startX;
+						$("ul").css({"left":s+"px"});
 					}).on("mouseup",function(e){
-						$(document).off();
+						$(this).off();
 						var endX = e.pageX;
-						if (endX - startX > 0 && endX - startX > w/2){
-							that.css({"left":w});
-						}else {
-							that.css({"left":startPos});
+						//判断方向，1代表向右，0代表向左
+						var dir = endX-startX;
+						if (dir > 0 && dir > w/2){
+							per += 1;
+							console.log("right");
+						}else if (dir < 0 && dir < -w/2) {
+							per -= 1;
+							console.log("left");
 						}
+						$("ul").addClass("on").css({"left":+per*w+"px)"});
+						
 					})
 				})
 			})

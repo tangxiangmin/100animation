@@ -22,10 +22,7 @@
 				cursor: pointer;
 				
 			}
-			.on {
-				transition: all .5s ease; 
-				-webkit-transition: all .5s ease; 
-			}
+			
 		</style>
 	</head>
 	<body>
@@ -38,6 +35,8 @@
 				<li></li>
 				<li></li>
 				<li></li>
+				<li></li>
+				<li></li>
 			</ul>
 		</div>
 		<!--华丽丽的分割线-->
@@ -47,30 +46,37 @@
 				var w = $("li").width();
 				
 				$("li").each(function(index){
-					$(this).css({"background":"#"+Math.floor(Math.random()*900+100),"left":index*w+"px"});
+					$(this).css({"background":"#"+Math.floor(Math.random()*900+100),"left":index*w+"px"}).text(index);
 				})
-				var per = 0;
-				
+				var size = $("ul li").size();
+				var num = 0;
 				$("ul").on("mousedown",function(e){
 					var startX = e.pageX;
-					$("ul").removeClass("on");
-					
+					var startL = parseInt($(this).css("left"));
 					$(document).on("mousemove",function(e){
 						var s = e.pageX-startX;
-						$("ul").css({"left":s+"px"});
+						var l = startL + s;
+						$("ul").css({"left":l+"px"});
 					}).on("mouseup",function(e){
 						$(this).off();
 						var endX = e.pageX;
-						//判断方向，1代表向右，0代表向左
+						//判断方向
 						var dir = endX-startX;
 						if (dir > 0 && dir > w/2){
-							per += 1;
+							num++;
 							console.log("right");
 						}else if (dir < 0 && dir < -w/2) {
-							per -= 1;
+							num--;
 							console.log("left");
 						}
-						$("ul").addClass("on").css({"left":+per*w+"px)"});
+						//边界检测
+						if (num > 0){
+							num = 0;
+						}else if(num < -(size-1)) {
+							num = -(size-1);
+						}
+						
+						$("ul").animate({"left":num*w+"px"});
 						
 					})
 				})

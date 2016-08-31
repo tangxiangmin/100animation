@@ -16,6 +16,7 @@
 			.red { background: #CC0033;}
 			.blue { background: #00CCFF;}
 			.black { background: #000033;}
+			.green { background: #00CC66;}
 			
 			.box { position: absolute; left: 0; top: 0; height: 300px; width: 300px;;}
 			.node { 
@@ -28,6 +29,12 @@
 				height: 26px;
 				margin: 2px;
 			}
+			.score {
+				position: absolute;
+				right: 0;
+				top: 0;
+				
+			}
 		</style>
 	</head>
 	<body>
@@ -36,6 +43,7 @@
 			<a href="../index.html">返回主菜单</a>
 		</p>
 		<div class="wrap">
+			<div class="score">0</div>
 			<div class="box">
 				
 			</div>
@@ -44,13 +52,13 @@
 		<script src="../js/jquery-1.12.4.min.js"></script>
 		<script>
 		$(function(){
-			var row = 10;
-			var col = 10;
+			var row = 5;
+			var col = 5;
 			var w = 30;
 			var h = 30;
 			var marginX = 0;
 			var marginY = 0;
-			
+			var score = 0;
 
 			//初始化节点地图
 			(function(){
@@ -61,11 +69,11 @@
 					}
 				}
 				$(".box").append($(str));
-				var color = ["red","blue","black"];
+				var color = ["red","blue","black","green"];
 				$(".node").each(function(){
 					var index = $(this).index();
 					$(this).css({"left":(index%col)*w,"top":parseInt(index/row)*h})
-						   .find(".inner").addClass(color[Math.floor(Math.random()*3)]);
+						   .find(".inner").addClass(color[Math.floor(Math.random()*4)]);
 				})
 			})();
 			
@@ -118,11 +126,12 @@
 				}
 			}
 			
-			//newArr保存的只是arrPos坐标数组中可以被消除的元素，如何映射到对应的节点呢？
-			console.log(newArr);
-//			for (var i = 0 ; i < newArr.length; ++i){
-//				$(".node").eq(newArr[i]).hide(400);
-//			}
+			//newArr保存的只是arrPos坐标数组中可以被消除的元素，如何映射到对应的节点呢
+			score += newArr.length;
+			$(".score").text(score);
+			for (var i = 0 ; i < newArr.length; ++i){
+//				$(".node").eq(newArr[i]).fadeOut(400);
+			}
 			
 			//判断竖直方向相同的元素
 			function checkVerticalSame(i){

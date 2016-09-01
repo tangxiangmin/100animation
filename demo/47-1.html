@@ -27,6 +27,10 @@
 				width: 26px;
 				height: 26px;
 				margin: 2px;
+				/*调试样式*/
+				color: yellow;
+				text-align: center;
+				line-height: 26px;
 			}
 			.score {
 				position: absolute;
@@ -51,8 +55,8 @@
 		<script src="../js/jquery-1.12.4.min.js"></script>
 		<script>
 		$(function(){
-			var row = 7;
-			var col = 7;
+			var row = 5;
+			var col = 5;
 			var w = 30;
 			var h = 30;
 
@@ -75,8 +79,9 @@
 				
 			})();
 			
-			//将颜色映射到一个二维数组，该二维数组与节点的定位有关，与节点的顺序无关
+			
 			(function(){
+				//将颜色映射到一个二维数组，该二维数组与节点的定位有关，与节点的顺序无关
 				var colorMap = [];
 				for (var i = 0; i < row; ++i){
 					colorMap.push([]);
@@ -87,11 +92,33 @@
 					var color = $(this).find(".inner").attr("class").split(" ")[1]
 					colorMap[t/h][l/w] = color;
 				})
-				
+				//根据坐标获取节点
+				function getNode(row,col){
+					for (var i = 0; i < $(".node").size(); ++i){
+						if ($(".node").eq(i).css("top") == (row*h +"px")&& $(".node").eq(i).css("left") == (col*w+"px")){
+							return $(".node").eq(i);
+						}
+					}
+				}
 				//竖直方向上相同的元素
 				for (var i = 0; i < col; ++i){
-//					checkVerticalSame(i);
+					var result = checkVerticalSame(i);
+					if (result) {
+						for (var j = 0; j < result.length; ++j){
+							getNode(result[j],i).find(".inner").text("O");
+						}
+					}
 				}
+				//水平方向上相同的元素
+				for (var i = 0; i < row; ++i){
+					var result = checkHorizonSame(i);
+					if (result) {
+						for (var j = 0; j < result.length; ++j){
+							getNode(i,result[j]).find(".inner").text("O");
+						}
+					}
+				}
+				
 				function checkVerticalSame(col){
 					var temp = [];
 					for (var i = 0; i < row; ++i){
@@ -102,13 +129,7 @@
 					}
 					return pickSameColor(temp);
 				}
-				//水平方向上相同的元素
-				for (var i = 0; i < row; ++i){
-					
-						console.log(checkHorizonSame(i));
-					
-					
-				}
+				
 				function checkHorizonSame(row){
 					var temp = [];
 					for (var i = 0; i < col; ++i){
@@ -134,17 +155,19 @@
 					}
 					same.push(box);
 					
+					//将三个或以上相同元素的索引值存入数组并返回，索引值在同一行或列，不会重复，因此只需要一个一维数组
 					var arr = [];
 					for (var i = 0; i < same.length; ++i){
 						if (same[i].length >=3){
-							console.log(same[i])
-							arr.push(same[i].index);
+							for (var j = 0; j < same[i].length; ++j){
+								arr.push(same[i][j].index);
+							}
 						}
-					}	
-					if (arr){
-						console.dir(arr);
 					}
-					return arr;
+					if (arr.length >=3){
+						return arr;
+					}
+					
 				}
 			})();
 			

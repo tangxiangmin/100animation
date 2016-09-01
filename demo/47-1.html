@@ -51,8 +51,8 @@
 		<script src="../js/jquery-1.12.4.min.js"></script>
 		<script>
 		$(function(){
-			var row = 5;
-			var col = 5;
+			var row = 7;
+			var col = 7;
 			var w = 30;
 			var h = 30;
 
@@ -87,8 +87,11 @@
 					var color = $(this).find(".inner").attr("class").split(" ")[1]
 					colorMap[t/h][l/w] = color;
 				})
-				checkVerticalSame(0);
+				
 				//竖直方向上相同的元素
+				for (var i = 0; i < col; ++i){
+//					checkVerticalSame(i);
+				}
 				function checkVerticalSame(col){
 					var temp = [];
 					for (var i = 0; i < row; ++i){
@@ -97,20 +100,51 @@
 							index:i
 						});
 					}
-					//待优化
-					var j = 0,same = [temp[0]];
-					while(j < row-1){
-						if (temp[j+1].color == temp[j].color){
-							same.push(temp[j+1]);
-							j++;
+					return pickSameColor(temp);
+				}
+				//水平方向上相同的元素
+				for (var i = 0; i < row; ++i){
+					
+						console.log(checkHorizonSame(i));
+					
+					
+				}
+				function checkHorizonSame(row){
+					var temp = [];
+					for (var i = 0; i < col; ++i){
+						temp.push({
+							color:colorMap[row][i],
+							index:i
+						});
+					}
+					return pickSameColor(temp);
+					
+				}
+				//待优化
+				function pickSameColor(temp){
+					var same = [];
+					var box = [temp[0]];
+					for (var i = 0; i < temp.length-1; ++i){
+						if (temp[i].color == temp[i+1].color){
+							box.push(temp[i+1]);
 						}else {
-							break;
+							same.push(box);
+							box = [temp[i+1]];
 						}
 					}
-					for (var color in same){
-						console.log(color);
+					same.push(box);
+					
+					var arr = [];
+					for (var i = 0; i < same.length; ++i){
+						if (same[i].length >=3){
+							console.log(same[i])
+							arr.push(same[i].index);
+						}
+					}	
+					if (arr){
+						console.dir(arr);
 					}
-//					console.log(same)
+					return arr;
 				}
 			})();
 			

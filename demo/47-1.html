@@ -59,6 +59,7 @@
 			var col = 5;
 			var w = 30;
 			var h = 30;
+			var score = 0;
 
 			//初始化节点地图
 			(function(){
@@ -86,55 +87,60 @@
 				for (var i = 0; i < row; ++i){
 					colorMap.push([]);
 				}
-				$(".node").each(function(){
+				$(".node").each(function(index){
 					var l = parseInt($(this).css("left"));
 					var t = parseInt($(this).css("top"));
 					var color = $(this).find(".inner").attr("class").split(" ")[1]
-					colorMap[t/h][l/w] = color;
+					colorMap[t/h][l/w] = {"color":color,"index":index};
 				})
-				//根据坐标获取节点
-				function getNode(row,col){
-					for (var i = 0; i < $(".node").size(); ++i){
-						if ($(".node").eq(i).css("top") == (row*h +"px")&& $(".node").eq(i).css("left") == (col*w+"px")){
-							return $(".node").eq(i);
-						}
-					}
-				}
-				//竖直方向上相同的元素
+				
+				//BUG01:在竖直方向与水平方向上同时被标记的节点
+				//标记并清除竖直方向相同的节点
 				for (var i = 0; i < col; ++i){
 					var result = checkVerticalSame(i);
 					if (result) {
 						for (var j = 0; j < result.length; ++j){
-							getNode(result[j],i).find(".inner").text("O");
+							score++;
+							$(".node").eq(colorMap[result[j]][i].index).remove();
+//							colorMap[i][result[j]] = null;
 						}
 					}
 				}
-				//水平方向上相同的元素
+				//标记并清除水平方向相同的节点
 				for (var i = 0; i < row; ++i){
 					var result = checkHorizonSame(i);
 					if (result) {
 						for (var j = 0; j < result.length; ++j){
-							getNode(i,result[j]).find(".inner").text("O");
+							score++;
+							$(".node").eq(colorMap[i][result[j]].index).remove();
 						}
 					}
 				}
+				$(".score").text(score);
+				//处理节点下方为空时的下落
+				for (var i = 0; i < row-1; ++i){
+					if (colorMap[i+1][0] == null){
+						$(".node").eq(colorMap[i][0]).animate({"top":"-="+h});
+					}
+				}
 				
+				//竖直方向上相同的元素
 				function checkVerticalSame(col){
 					var temp = [];
 					for (var i = 0; i < row; ++i){
 						temp.push({
-							color:colorMap[i][col],
+							color:colorMap[i][col].color,
 							index:i
 						});
 					}
 					return pickSameColor(temp);
 				}
-				
+				//水平方向上相同的元素
 				function checkHorizonSame(row){
 					var temp = [];
 					for (var i = 0; i < col; ++i){
 						temp.push({
-							color:colorMap[row][i],
+							color:colorMap[row][i].color,
 							index:i
 						});
 					}
@@ -167,7 +173,6 @@
 					if (arr.length >=3){
 						return arr;
 					}
-					
 				}
 			})();
 			

@@ -131,7 +131,7 @@
 						// 由于存在BUG，并未使用gt,lt选择器与each函数
 						// 生成上个月的剩余天数
 						for (var i = first_weekday-1; i >= 0; --i){
-							$("tbody td:eq("+i+")").text(last_month_day--).css({"color":"#888"});
+							$("tbody td:eq("+i+")").text(last_month_day--).css({"color":"#888","background":"transparent"});
 						}
 						// 生成当月日历
 						for (var i = first_weekday,j=1; i < first_weekday+ month_day[month]; ++i,++j){
@@ -139,7 +139,7 @@
 						}
 						// 生成下个月的天数
 						for (var i = first_weekday+month_day[month],j=1; i<size; ++i,++j){
-							$("tbody td:eq("+i+")").text(j).css({"color":"#888"});
+							$("tbody td:eq("+i+")").text(j).css({"color":"#888","background":"transparent"});
 						}
 
 					}

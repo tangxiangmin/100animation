@@ -69,19 +69,15 @@
 						str += "<div class='node'><div class='inner'></div></div>";
 					}
 				}
-				
 				$(".box").append($(str));
-				
-				
 				$(".node").each(function(index){
 					$(this).css({"left":(index%col)*w,"top":parseInt(index/row)*h})
 						   .find(".inner").addClass(color[Math.floor(Math.random()*4)]);
 				})
-				
 			})();
 			
-			
 			(function(){
+
 				//将颜色映射到一个二维数组，该二维数组与节点的定位有关，与节点的顺序无关
 				var colorMap = [];
 				for (var i = 0; i < row; ++i){
@@ -94,38 +90,69 @@
 					colorMap[t/h][l/w] = {"color":color,"index":index,"flag":1};
 				})
 				
-				//BUG01:在竖直方向与水平方向上同时被标记的节点
-				//标记并清除竖直方向相同的节点
-				for (var i = 0; i < col; ++i){
-					var result = checkVerticalSame(i);
-					if (result) {
-						for (var j = 0; j < result.length; ++j){
-							score++;
-							$(".node").eq(colorMap[result[j]][i].index).hide();
-							colorMap[result[j]][i].flag = 0;
-						}
-					}
-				}
-				//标记并清除水平方向相同的节点
-				for (var i = 0; i < row; ++i){
-					var result = checkHorizonSame(i);
-					if (result) {
-						for (var j = 0; j < result.length; ++j){
-							score++;
-							$(".node").eq(colorMap[i][result[j]].index).hide();
-							colorMap[i][result[j]].flag = 0;
-						}
-					}
-				}
-				$(".score").text(score);
-				//处理节点下方为空时的下落
-				for (var i = 0; i < col; ++i){
-					sigleDrop(i);
-				}
+				//------------------判断消除----------------//
 				
+				$(document).on("click",function(){
+					update();
+				})
+				function update(){
+					for (var i = 0; i < row; ++i){
+						for (var j = 0; j < col; ++j){
+							console.log(colorMap[i][j]);
+						}
+					}
+					//本次消除所得分数
+					var scoreOnce = 0;
+					//标记并清除竖直方向相同的节点
+					for (var i = 0; i < col; ++i){
+						var result = checkVerticalSame(i);
+						if (result) {
+							for (var j = 0; j < result.length; ++j){
+								scoreOnce++;
+								$(".node").eq(colorMap[result[j]][i].index).hide();
+								colorMap[result[j]][i].flag = 0;
+							}
+						}
+					}
+					//标记并清除水平方向相同的节点
+					for (var i = 0; i < row; ++i){
+						var result = checkHorizonSame(i);
+						if (result) {
+							for (var j = 0; j < result.length; ++j){
+								scoreOnce++;
+								$(".node").eq(colorMap[i][result[j]].index).hide();
+								colorMap[i][result[j]].flag = 0;
+							}
+						}
+					}
+					
+					if (!scoreOnce) {
+						return false;
+					}
+					//BUG01:在竖直方向与水平方向上同时被标记的节点，导致分数比实际消除的方块要多，算是额外的奖励，因此这个BUG不打算修复了
+					score += scoreOnce;
+					$(".score").text(score);
+					//处理节点下方为空时的下落
+					for (var i = 0; i < col; ++i){
+						sigleDrop(i);
+					}
+					//移除多余的元素
+					$(".node").each(function(){
+						if ($(this).is(":hidden")){
+							$(this).remove();
+						}
+					})
+					//生成新的元素
+					for (var i = 0; i < col; ++i){
+						sigleNew(i);
+					}
+					console.log($(".node").size());
+					return true;
+				}
+
 				//将每列空元素移动至顶端
 				function sigleDrop(col){
-					for (var j = 1; j < row-1; ++j){
+					for (var j = 1; j < row; ++j){
 						for (var i = row-1; i >0; --i){
 							if (!colorMap[i][col].flag && colorMap[i-1][col].flag){
 								$(".node").eq(colorMap[i-1][col].index).animate({"top":"+="+h},100);
@@ -136,18 +163,7 @@
 						}
 					}
 				}
-				//移除多余的元素
-				$(".node").each(function(){
-					if ($(this).is(":hidden")){
-						$(this).remove();
-					}
-				})
-				
-				
-				for (var i = 0; i < col; ++i){
-					sigleNew(i);
-				}
-				console.log($(".node").size());
+			
 				//在每列生成新的元素并下落
 				function sigleNew(c){
 					var num = 0;
@@ -162,12 +178,13 @@
 					for (var i = 0; i < num; ++i){
 						var bgColor = color[Math.floor(Math.random()*4)];
 						str = "<div class='node' style='left:"+c*w+"px;top:"+(i*h-num*h)+"px;'><div class='inner "+bgColor+"'></div></div>";
-						colorMap[i][c] = {"color":bgColor,"index":(i+1)*col-(col-c),"flag":1};
+						//此处有BUG,使用递归判断时会出现错误
+						colorMap[num-i][c] = {"color":bgColor,"index":(i+1)*col-(col-c),"flag":1};
 						$(".box").append($(str));
 						$(".node:last-of-type").animate({"top":"+="+num*h});
 					}
 				}
-				console.log($(".node").size());
+
 				//竖直方向上相同的元素
 				function checkVerticalSame(col){
 					var temp = [];
@@ -218,6 +235,8 @@
 						return arr;
 					}
 				}
+
+				
 			})();
 			
 		})

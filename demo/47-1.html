@@ -60,7 +60,7 @@
 			var w = 30;
 			var h = 30;
 			var score = 0;
-
+			var color = ["red","blue","black","green"];
 			//初始化节点地图
 			(function(){
 				var str = "";
@@ -71,7 +71,7 @@
 				}
 				
 				$(".box").append($(str));
-				var color = ["red","blue","black","green"];
+				
 				
 				$(".node").each(function(index){
 					$(this).css({"left":(index%col)*w,"top":parseInt(index/row)*h})
@@ -91,7 +91,7 @@
 					var l = parseInt($(this).css("left"));
 					var t = parseInt($(this).css("top"));
 					var color = $(this).find(".inner").attr("class").split(" ")[1]
-					colorMap[t/h][l/w] = {"color":color,"index":index};
+					colorMap[t/h][l/w] = {"color":color,"index":index,"flag":1};
 				})
 				
 				//BUG01:在竖直方向与水平方向上同时被标记的节点
@@ -101,8 +101,8 @@
 					if (result) {
 						for (var j = 0; j < result.length; ++j){
 							score++;
-							$(".node").eq(colorMap[result[j]][i].index).remove();
-//							colorMap[i][result[j]] = null;
+							$(".node").eq(colorMap[result[j]][i].index).hide();
+							colorMap[result[j]][i].flag = 0;
 						}
 					}
 				}
@@ -112,18 +112,62 @@
 					if (result) {
 						for (var j = 0; j < result.length; ++j){
 							score++;
-							$(".node").eq(colorMap[i][result[j]].index).remove();
+							$(".node").eq(colorMap[i][result[j]].index).hide();
+							colorMap[i][result[j]].flag = 0;
 						}
 					}
 				}
 				$(".score").text(score);
 				//处理节点下方为空时的下落
-				for (var i = 0; i < row-1; ++i){
-					if (colorMap[i+1][0] == null){
-						$(".node").eq(colorMap[i][0]).animate({"top":"-="+h});
-					}
+				for (var i = 0; i < col; ++i){
+					sigleDrop(i);
 				}
 				
+				//将每列空元素移动至顶端
+				function sigleDrop(col){
+					for (var j = 1; j < row-1; ++j){
+						for (var i = row-1; i >0; --i){
+							if (!colorMap[i][col].flag && colorMap[i-1][col].flag){
+								$(".node").eq(colorMap[i-1][col].index).animate({"top":"+="+h},100);
+								var temp = colorMap[i];
+								colorMap[i][col] = colorMap[i-1][col];
+								colorMap[i-1][col] = temp;
+							}
+						}
+					}
+				}
+				//移除多余的元素
+				$(".node").each(function(){
+					if ($(this).is(":hidden")){
+						$(this).remove();
+					}
+				})
+				
+				
+				for (var i = 0; i < col; ++i){
+					sigleNew(i);
+				}
+				console.log($(".node").size());
+				//在每列生成新的元素并下落
+				function sigleNew(c){
+					var num = 0;
+					for (var i = 0; i < row; ++i){
+						if (!colorMap[i][c].flag){
+							num++;
+						}else {
+							break;
+						}
+					}
+					var str = "";
+					for (var i = 0; i < num; ++i){
+						var bgColor = color[Math.floor(Math.random()*4)];
+						str = "<div class='node' style='left:"+c*w+"px;top:"+(i*h-num*h)+"px;'><div class='inner "+bgColor+"'></div></div>";
+						colorMap[i][c] = {"color":bgColor,"index":(i+1)*col-(col-c),"flag":1};
+						$(".box").append($(str));
+						$(".node:last-of-type").animate({"top":"+="+num*h});
+					}
+				}
+				console.log($(".node").size());
 				//竖直方向上相同的元素
 				function checkVerticalSame(col){
 					var temp = [];

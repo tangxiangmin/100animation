@@ -1,24 +1,63 @@
 <!DOCTYPE html>
-<!--说明-->
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-09-03
+	描述：文档加载动画，使用canvas画圆形比原生JS画圆要方便多了
+-->
 <html>
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
 		<link rel="stylesheet" href="../css/style.css"/>
 		<style rel="stylesheet">
-			
+			#myCanvas {
+				border: 1px solid #dedede;
+			}
 		</style>
 	</head>
 	<body>
-		<h1>随意点击拖动</h1>
+		<h1>加载动画</h1>
 		<p>
 			<a href="../index.html">返回主菜单</a>
 		</p>
-		
+		<div class="wrap">
+			<canvas id="myCanvas" height="300" width="300">
+				你的浏览器不支持canvas哦！赶紧升级吧！
+			</canvas>
+		</div>
 		<!--华丽丽的分割线-->
 		<script src="../js/jquery-1.12.4.min.js"></script>
 		<script>
-			
+			window.onload = function(){
+				var canvas = document.querySelector("#myCanvas");
+				
+				if (canvas.getContext("2d")){
+					var ctx = canvas.getContext("2d");
+					
+					ctx.beginPath();
+					ctx.fillStyle = "#000";
+					ctx.strokeStyle = "#000";
+					ctx.arc(150,150,50,0,Math.PI*2,false);
+					ctx.stroke();
+					console.log(getY(100,100,100,0));
+					
+					var arrX = []
+					var rad = 0;
+					for (var rad = 0; rad <= Math.PI*2; rad += Math.PI/4){
+						console.log(rad);
+//						arrX.push()
+					}
+					
+					
+					
+					function getY(x0,y0,r,x){
+						return Math.sqrt(r*r - (x-x0)*(x-x0)) + y0;
+					}
+				}else {
+					alert("你的浏览器不支持canvas哦")
+				}
+			}
 		</script>
 	</body>
 </html>
+

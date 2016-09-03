@@ -98,9 +98,11 @@
 				function update(){
 					for (var i = 0; i < row; ++i){
 						for (var j = 0; j < col; ++j){
-							console.log(colorMap[i][j]);
+							console.log(colorMap[i][j].index);
 						}
+						console.log("***********");
 					}
+					console.log("-----------------");
 					//本次消除所得分数
 					var scoreOnce = 0;
 					//标记并清除竖直方向相同的节点
@@ -179,9 +181,16 @@
 						var bgColor = color[Math.floor(Math.random()*4)];
 						str = "<div class='node' style='left:"+c*w+"px;top:"+(i*h-num*h)+"px;'><div class='inner "+bgColor+"'></div></div>";
 						//此处有BUG,使用递归判断时会出现错误
-						colorMap[num-i][c] = {"color":bgColor,"index":(i+1)*col-(col-c),"flag":1};
+						colorMap[num-i][c] = {"color":bgColor,"index":(num-i-1)*col+c,"flag":1};
 						$(".box").append($(str));
-						$(".node:last-of-type").animate({"top":"+="+num*h});
+						$(".node:last-of-type").stop(false, true).animate({"top":"+="+num*h});
+					}
+					for (var i = 0; i < row; ++i){
+						for (var j = 0; j < col; ++j){
+							console.log(colorMap[i][j].index);
+						}
+						console.log("***********");
+						
 					}
 				}
 

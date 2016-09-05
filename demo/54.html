@@ -10,9 +10,17 @@
 		<title></title>
 		<link rel="stylesheet" href="../css/style.css"/>
 		<style rel="stylesheet">
-			#myCanvas {
-				border: 1px solid #dedede;
-			}
+			/*#myCanvas {
+				animation: r 3s linear infinite;
+			}*/
+			/*@keyframes r{
+				from{
+					transform: rotate(0deg);
+				}
+				to{
+					transform: rotate(360deg);
+				}
+			}*/
 		</style>
 	</head>
 	<body>
@@ -44,7 +52,9 @@
 					var r = 50;
 					var rad = 0;
 					for (var rad = 0; rad < Math.PI*2; rad += Math.PI/4){
+						//这里的x无法被整除，存在误差,导致动画不协调
 						arrX.push(r*(Math.cos(rad)));
+						
 					}
 					
 					var arrY = [];
@@ -55,8 +65,6 @@
 							arrY.push(getY(0,0,r,arrX[i]));
 						}
 					}
-					console.log(arrX);
-					console.log(arrY);
 					
 					arrX.forEach(function(val,index){
 						arrX[index] = val+150;
@@ -65,27 +73,34 @@
 						arrY[index] = val+150;
 					})
 					
-					console.log(arrX);
-					console.log(arrY);
-					
 					for (var i = 0; i < arrX.length; ++i){
 						ctx.beginPath();
 						ctx.fillStyle = "#000";
 						ctx.strokeStyle = "#000";
+						if (i == arrX.length-1){
+							ctx.arc(arrX[i],arrY[i],10,0,Math.PI*2,false);
+							ctx.fill();
+							break;
+						}
+						
 						ctx.arc(arrX[i],arrY[i],7,0,Math.PI*2,false);
 						ctx.fill();
 					}
 					
-					
-					
-					
-					
+					ctx.translate(150,150);
+					ctx.rotate(1);
 					function getY(x0,y0,r,x){
 						return Math.sqrt(r*r - (x-x0)*(x-x0)) + y0;
 					}
 				}else {
 					alert("你的浏览器不支持canvas哦")
 				}
+				var angel = 0;
+				var timer = setInterval(function(){
+					angel += 45;
+					$("#myCanvas").css({"transform":"rotate("+angel+"deg)","-webkit-transform":"rotate("+angel+"deg)"});
+					
+				},500)
 			}
 		</script>
 	</body>

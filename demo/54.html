@@ -35,18 +35,48 @@
 					var ctx = canvas.getContext("2d");
 					
 					ctx.beginPath();
-					ctx.fillStyle = "#000";
-					ctx.strokeStyle = "#000";
+					ctx.fillStyle = "#dedede";
+					ctx.strokeStyle = "#dedede";
 					ctx.arc(150,150,50,0,Math.PI*2,false);
 					ctx.stroke();
-					console.log(getY(100,100,100,0));
 					
-					var arrX = []
+					var arrX = [];
+					var r = 50;
 					var rad = 0;
-					for (var rad = 0; rad <= Math.PI*2; rad += Math.PI/4){
-						console.log(rad);
-//						arrX.push()
+					for (var rad = 0; rad < Math.PI*2; rad += Math.PI/4){
+						arrX.push(r*(Math.cos(rad)));
 					}
+					
+					var arrY = [];
+					for (var i = 0; i < arrX.length; ++i){
+						if (i<= arrX.length/2) {
+							arrY.push(-getY(0,0,r,arrX[i]));
+						}else {
+							arrY.push(getY(0,0,r,arrX[i]));
+						}
+					}
+					console.log(arrX);
+					console.log(arrY);
+					
+					arrX.forEach(function(val,index){
+						arrX[index] = val+150;
+					})
+					arrY.forEach(function(val,index){
+						arrY[index] = val+150;
+					})
+					
+					console.log(arrX);
+					console.log(arrY);
+					
+					for (var i = 0; i < arrX.length; ++i){
+						ctx.beginPath();
+						ctx.fillStyle = "#000";
+						ctx.strokeStyle = "#000";
+						ctx.arc(arrX[i],arrY[i],7,0,Math.PI*2,false);
+						ctx.fill();
+					}
+					
+					
 					
 					
 					

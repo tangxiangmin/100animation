@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-09-09
+	描述：经常遇见各种各样的弹窗需求，又不能直接使用alert()，因此决定自己封装一个插件
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/style.css"/>
+		<style rel="stylesheet">
+			.alert-layer {
+				position: fixed;top: 0; left: 0;
+				/*display: none;*/
+				width: 100vw;height: 100vh;
+				background: rgba(0,0,0,0.5);
+			}
+			/*居中*/
+			.center {
+				position: absolute;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				margin: auto;
+			}
+			/*btn*/
+			.alert-btn {
+				padding: 5px 10px;
+				display: inline-block;
+				border-radius: 3px;
+				color: #fff;
+				margin-right: 5px;
+				cursor: pointer;
+			}
+			
+			.alert-btn-no {
+				background-color: #eee;
+				color: #000;
+			}
+			.alert-btn-yes {
+				background-color: #337ab7;
+				color: #fff;
+			}
+			
+			/*alert*/
+			.alert {
+				border-radius: 5px;
+				background: #fff;
+			}
+			.alert-header {
+				border-bottom: 1px solid #ddd;
+			    padding: 10px;
+			    font-size: 1.2em;
+			    color: #333;
+			}
+			.alert-body {
+				padding: 25px 15px;
+    			text-align: center;
+			}
+			.alert-footer {
+			    padding: 5px;
+			    border-top: 1px solid #ddd;
+			    text-align: right;
+			}
+			/*warn*/
+			.alert-warn {
+				width: 240px;
+				height: 160px;
+			}
+			/*confirm*/
+		</style>
+	</head>
+	<body>
+		<h1>一组弹窗</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<div class="btn" data-role="warn">警告</div>
+			<div class="btn" data-role="tip">提示</div>
+		</div>
+		<!--shadow-->
+		
+		
+		<!--/shadow-->
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$.fn.extend({
+				confirm:function(str){
+					if (!document.querySelector(".alert-layer")) {
+						$("body").append($('<div class="alert-layer"><div class="alert alert-warn center"><div class="alert-header">提示</div><div class="alert-body"></div><div class="alert-footer"><span class="alert-btn alert-btn-yes">确认</span><span class="alert-btn alert-btn-no">取消</span></div></div></div>'));
+					};
+					
+					$(".alert-body").text(str || "您确定吗？");
+					$(".alert-layer").show();
+					
+					//隐藏
+					//问题是如何返回选择的值？
+					$(".alert-btn-yes, .alert-btn-no").on("click",function(){
+						$(".alert-layer").hide();
+					})
+				},
+				alert:function(str){
+					if (!document.querySelector(".alert-layer")) {
+						$("body").append($('<div class="alert-layer"><div class="alert alert-warn center"><div class="alert-body"></div></div></div>'));
+					};
+					$(".alert-body").text(str || "警告？");
+					$(".alert-layer").show();
+					
+					var timer = setTimeout(function(){
+						$(".alert-layer").hide();
+					},1000)
+					
+				}
+				
+				
+			});
+			$(function(){
+				$(".btn[data-role=warn]").on("click",function(){
+					$(this).confirm("这是一句测试");
+				})
+				
+				$(".btn[data-role=tip]").on("click",function(){
+					$(this).alert();
+				})
+			
+			})
+		</script>
+	</body>
+</html>

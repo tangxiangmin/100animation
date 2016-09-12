@@ -6,8 +6,12 @@ img { border: 0; }
 input { padding: 0; }
 
 h1 { text-align: center; margin: 20px 0;}
-p {text-align: center;}
+
+
 a { color: #000; text-decoration: none;}
+p {text-align: center; margin-bottom: 20px;}
+
+
 a:hover { color: red; }
 
 /*public style*/
@@ -23,4 +27,5 @@ a:hover { color: red; }
 	line-height: 50px;
 	background: #00CCFF;
 	color: #fff;
+	margin: 10px;
 }

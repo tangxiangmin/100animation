@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--说明-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/style.css"/>
+		<style rel="stylesheet">
+			.word {
+				display: inline-block;
+				/*animation: jump 1s  ;
+				-webkit-animation: jump 1s  ;*/
+			}
+			
+			/*@-webkit-keyframes jump{
+				0% {
+					-webkit-transform: translate(-50px,0px);
+				}
+				25% {
+					-webkit-transform: translate(-20px,-70px);
+				}
+				50% {
+					-webkit-transform: translate(0px,-100px);
+				}
+				75% {
+					-webkit-transform: translate(25px,-70px);
+				}
+				100% {
+					-webkit-transform: translate(50px,0px);
+				}
+				
+			}
+			@keyframes jump{
+				0% {
+					-webkit-transform: translate(-50px,0px);
+				}
+				25% {
+					-webkit-transform: translate(-40px,-70px);
+				}
+				50% {
+					-webkit-transform: translate(-30px,-100px);
+				}
+				75% {
+					-webkit-transform: translate(20px,-70px);
+				}
+				100% {
+					-webkit-transform: translate(0px,0px);
+				}
+			}*/
+		</style>
+	</head>
+	<body>
+		<h1>跳动的文字</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">今天是个好日子
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				
+				var str = $(".wrap").text();
+				var newHTML = "";
+//				console.log(str.trim().split(""));
+				for (var i = 0; i < str.trim().split("").length; ++i){
+					newHTML += '<span class="word">'+str.split("")[i]+'</span>';
+				}
+				
+				$(".wrap").empty().html(newHTML);
+				
+				var x = -30;
+				var y = 60;
+				var timer = setInterval(function(){
+					x++;
+					y = getY(x);
+					
+					$(".wrap").css({"transform":"translate("+x+"px,-"+y+"px)","-webkit-transform":"translate("+x+"px,-"+y+"px)"});
+					
+					if ( y <= 0){
+						clearInterval(timer);
+					}
+					
+				},10)
+				function getY(x){
+					return (-1/15)*x*x - 4*x;
+				}
+			})
+		</script>
+	</body>
+</html>

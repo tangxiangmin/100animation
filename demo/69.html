@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-09-29
+	描述：判断顶部高度实现瀑布流
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/style.css"/>
+		<style rel="stylesheet">
+			.item {
+				position: absolute;
+				width: 200px;
+				
+				
+				-webkit-box-sizing: border-box;
+				box-sizing: border-box;
+				border: 1px solid #dedede;
+				
+			}
+			.wrap {
+				position: relative;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>利用JS实现的瀑布流</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<div class="item">init1</div>
+			<div class="item">init2</div>
+			<div class="item">init3</div>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				$(".item").each(function(index){
+					$(this).css({"height":Math.random()*50+100+"px","left":210*index+"px"});
+				});
+				
+				
+				
+				$("<div class='item'>hhh</div>").css({"height":Math.random()*50+100+"px","left":210*col+"px","top":min}).appendTo(".wrap");
+
+			})
+		</script>
+	</body>
+</html>

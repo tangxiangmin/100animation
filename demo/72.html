@@ -5,76 +5,63 @@
 	描述：实在想不出写什么了。还差28个
 -->
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
-		<link rel="stylesheet" href="../css/style.css"/>
+		<link rel="stylesheet" href="../css/style.css" />
 		<style rel="stylesheet">
-		body {
-			background: #fff;
-		}
-		.box-wrap {
-			width: 100px;
-			height: 100px;
-			background: #fff;
-		}
-			.box {
+			.circle {
 				position: relative;
-				overflow: hidden;
-				z-index: 10;
+				border: 10px solid rgba(255, 0, 0, 0.1);
+				border-bottom: 10px solid rgba(255, 0, 0, 1);
+				-webkit-animation: r 1.1s infinite linear;
+				animation: rotate 1.1s infinite linear;
+			}
+			
+			.circle,
+			.circle:after {
+				border-radius: 50%;
 				width: 100px;
 				height: 100px;
-				border-radius: 50px;;
-				border: 1px solid #dedede;
-
-
 			}
-			.box-inner {
-				width: 60px;
-				height: 60px;
-				margin: 20px;
-				border-radius: 30px;
-				border: 1px solid #dedede;
-				background: #fff;
-			}
-			.rotate {
-				width: 100px;
-				height: 140px;
-				background: red;
-				position: absolute;
-				z-index: -1;
-				left: 0;
-				top: 0;
-				animation: r 3s infinite;
-			}
-			@keyframes r{
-				from{
+			
+			@-webkit-keyframes rotate {
+				0% {
+					-webkit-transform: rotate(0deg);
 					transform: rotate(0deg);
 				}
-				to{
+				100% {
+					-webkit-transform: rotate(360deg);
+					transform: rotate(360deg);
+				}
+			}
+			
+			@keyframes rotate {
+				0% {
+					-webkit-transform: rotate(0deg);
+					transform: rotate(0deg);
+				}
+				100% {
+					-webkit-transform: rotate(360deg);
 					transform: rotate(360deg);
 				}
 			}
 		</style>
 	</head>
-	<body >
+
+	<body>
 		<h1>旋转的圆环</h1>
 		<p>
 			<a href="../index.html">返回主菜单</a>
 		</p>
-		<div class="wrap">
-			<div class="box-wrap">
-				<div class="box">
-					<div class="box-inner"></div>
-					<div class="rotate"></div>
-				</div>	
-			</div>
-					
+		<div class="wrap">	
+			<div class="circle"></div>
 		</div>
 		<!--华丽丽的分割线-->
 		<script src="../js/jquery-1.12.4.min.js"></script>
 		<script>
-			
 		</script>
 	</body>
+
 </html>

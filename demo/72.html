@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-10-09
+	描述：实在想不出写什么了。还差28个
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/style.css"/>
+		<style rel="stylesheet">
+		body {
+			background: #fff;
+		}
+		.box-wrap {
+			width: 100px;
+			height: 100px;
+			background: #fff;
+		}
+			.box {
+				position: relative;
+				overflow: hidden;
+				z-index: 10;
+				width: 100px;
+				height: 100px;
+				border-radius: 50px;;
+				border: 1px solid #dedede;
+
+
+			}
+			.box-inner {
+				width: 60px;
+				height: 60px;
+				margin: 20px;
+				border-radius: 30px;
+				border: 1px solid #dedede;
+				background: #fff;
+			}
+			.rotate {
+				width: 100px;
+				height: 140px;
+				background: red;
+				position: absolute;
+				z-index: -1;
+				left: 0;
+				top: 0;
+				animation: r 3s infinite;
+			}
+			@keyframes r{
+				from{
+					transform: rotate(0deg);
+				}
+				to{
+					transform: rotate(360deg);
+				}
+			}
+		</style>
+	</head>
+	<body >
+		<h1>旋转的圆环</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<div class="box-wrap">
+				<div class="box">
+					<div class="box-inner"></div>
+					<div class="rotate"></div>
+				</div>	
+			</div>
+					
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			
+		</script>
+	</body>
+</html>

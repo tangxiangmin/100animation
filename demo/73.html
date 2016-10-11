@@ -18,6 +18,9 @@
 				text-align: center;
 				cursor: pointer;
 			}
+			.box.active {
+				background: red;
+			}
 		</style>
 	</head>
 	<body>
@@ -32,7 +35,10 @@
 				<div class="box " data-role="剪刀">剪刀</div>
 				<div class="box " data-role="布">布</div>
 			</div>
+			<div>总计得分：<span class="score"></span></div>
+			
 			<div class="result"></div>
+
 			
 		</div>
 		<!--华丽丽的分割线-->
@@ -40,10 +46,23 @@
 		<script>
 			$(function(){
 				var hand = ["石头","剪刀","布"];
-				var num = Math.floor(Math.random()*3);
+				var score = 0;
 				$(".box").on("click",function(){
+					$(this).addClass("active").siblings().removeClass("active");
 					var choice = $(this).attr("data-role");
-					$(".result").text("您选择了"+choice+",电脑选择了"+hand[num])
+					var computer = hand[Math.floor(Math.random()*3)];
+					var res = "";
+					if ( (choice == "石头" && computer == "布") || (choice == "剪刀" && computer == "石头") || (choice == "布" && computer == "剪刀")){
+						res = "你输了";
+						score--;
+					}else if((choice == "布" && computer == "石头") || (choice == "石头" && computer == "剪刀") || (choice == "剪刀" && computer == "布")) {
+						res = "你赢了";
+						score++;
+					}else {
+						res = "平局"
+					}
+					$(".score").text(score);
+					$(".result").text("您选择了"+choice+"，电脑选择了"+computer+"，"+res)
 				})
 			})
 		</script>

@@ -10,22 +10,36 @@
 		<title></title>
 		<link rel="stylesheet" href="../css/style.css"/>
 		<style rel="stylesheet">
+			.wrap p {
+				text-align: left;
+			}
+			input {
+				display: block;
+				width: 100%;
+				line-height: 30px;
+			}
 			
 		</style>
 	</head>
 	<body>
-		<h1>打字游戏</h1>
+		<h1>模拟打字游戏</h1>
 		<p>
 			<a href="../index.html">返回主菜单</a>
 		</p>
 		<div class="wrap">
-		
-			
+			<p class="word">asdasdsadsa</p>
+			<input type="text"/>	
 		</div>
 		<!--华丽丽的分割线-->
 		<script src="../js/jquery-1.12.4.min.js"></script>
 		<script>
-			
+			$(function(){
+				var word = $(".word").text();
+				$("input").on("input",function(){
+					var v = $(this).val();
+					
+				})
+			})
 		</script>
 	</body>
 </html>

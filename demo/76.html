@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-10-16
+	描述：假装是一个图片懒加载的插件，其实只是最原始最低级版本
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/style.css"/>
+		<style rel="stylesheet">
+			li {
+				height: 400px;
+				
+			}
+			li img {
+				height: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>图片懒加载</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+		<ul>
+			<li><img data-src="../img/1.jpg"/></li>
+			<li><img data-src="../img/2.jpg"/></li>
+			<li><img data-src="../img/3.jpg"/></li>
+			<li><img data-src="../img/4.jpg"/></li>
+			<li><img data-src="../img/5.jpg"/></li>
+			<li><img data-src="../img/1.jpg"/></li>
+			<li><img data-src="../img/2.jpg"/></li>
+			<li><img data-src="../img/3.jpg"/></li>
+			<li><img data-src="../img/4.jpg"/></li>
+			<li><img data-src="../img/5.jpg"/></li>
+		</ul>
+			
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+//				$("img").eq(0).attr("src",$("img").eq(0).attr("data-src"));
+				
+				$(document).on("scroll",function(){
+					var num = Math.ceil($(this).scrollTop()/400)+1;
+					$("img:lt("+num+")").each(function(){
+						if (!$(this).attr("src")){
+						$(this).attr("src",$(this).attr("data-src"));
+					}
+					})
+				})
+
+			})
+		</script>
+	</body>
+</html>

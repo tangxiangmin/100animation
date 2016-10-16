@@ -115,16 +115,9 @@
 						$(".btn").hide();
 					}
 				})
-				//暂时只设置了线性的速度，可以通过动态的减少量来实现非线性的返回动画
+				//使用了jquery更简单的返回顶部方法
 				$(".btn").on("click",function(){
-					var t = $(document).scrollTop(); 
-					var timer = setInterval(function(){
-						t -= 20;
-						$(document).scrollTop(t);
-						if (t <= 0){
-							clearInterval(timer);
-						}
-					},1)
+					$(document.body).animate({scrollTop:0},300);
 				})
 			})
 		</script>

@@ -139,11 +139,16 @@
 					$("#search").on("keydown",function(e){
 						if (e.keyCode == 13){
 							var word = $(this).val();
-							console.log(word);
-							$(daya).each(function(){
+							
+							for (var i = 0; i < data.length; ++i){
 								var re = new RegExp(word);
-								
-							})
+								if (re.test(word)){
+									console.log(i);
+									break;
+								}
+
+							}
+							
 							
 						}
 					})

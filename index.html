@@ -21,10 +21,19 @@
 			.special a {
 				color: red
 			}
+			#search {
+				display: block;
+				width: 300px;
+				margin: 0 auto;
+				height: 30px;
+			}
 		</style>
 	</head>
 	<body>
 		<h1>100个JS动画</h1>
+		<div class="t-search-wrap">
+			<input type="text" id="search">
+		</div>
 		<ol>
 			<li class="special"><a href="demo/01.html">使用定位实现无缝轮播图</a></li>
 			<li><a href="demo/02.html">拖拽盒子</a></li>
@@ -107,18 +116,39 @@
 		<script src="js/jquery-1.12.4.min.js"></script>
 		<script>
 			$(function(){
-				var h = window.screen.height;
-				$(document).on("scroll",function(){
-					if ($(this).scrollTop()>= h/3){
-						$(".btn").show();
-					}else {
-						$(".btn").hide();
-					}
-				})
-				//使用了jquery更简单的返回顶部方法
-				$(".btn").on("click",function(){
-					$(document.body).animate({scrollTop:0},300);
-				})
+				(function(){
+					var h = window.screen.height;
+					$(document).on("scroll",function(){
+						if ($(this).scrollTop()>= h/3){
+							$(".btn").show();
+						}else {
+							$(".btn").hide();
+						}
+					})
+					//使用了jquery更简单的返回顶部方法
+					$(".btn").on("click",function(){
+						$(document.body).animate({scrollTop:0},300);
+					})
+				})();
+				
+				!(function(){
+					var data = [];
+					$("li").each(function(){
+						data.push($(this).text());
+					})
+					$("#search").on("keydown",function(e){
+						if (e.keyCode == 13){
+							var word = $(this).val();
+							console.log(word);
+							$(daya).each(function(){
+								var re = new RegExp(word);
+								
+							})
+							
+						}
+					})
+				})();
+				
 			})
 		</script>
 	</body>

@@ -19,12 +19,16 @@
 				color: red; 
 			}
 			.special a {
-				color: red
+				color: red;
+				
+			}
+			.t-search-wrap {
+				text-align: center;
 			}
 			#search {
-				display: block;
+				
 				width: 300px;
-				margin: 0 auto;
+				
 				height: 30px;
 			}
 		</style>
@@ -32,7 +36,8 @@
 	<body>
 		<h1>100个JS动画</h1>
 		<div class="t-search-wrap">
-			<input type="text" id="search">
+			<input type="text" id="search"><br />
+			<span id="result"></span>
 		</div>
 		<ol>
 			<li class="special"><a href="demo/01.html">使用定位实现无缝轮播图</a></li>
@@ -137,19 +142,20 @@
 						data.push($(this).text());
 					})
 					$("#search").on("keydown",function(e){
+						
 						if (e.keyCode == 13){
+							$("li").css({"background":"transparent"});
+							var str = "搜索结果：";
 							var word = $(this).val();
-							
 							for (var i = 0; i < data.length; ++i){
-								var re = new RegExp(word);
-								if (re.test(word)){
+								if (data[i].indexOf(word) != -1){
 									console.log(i);
-									break;
+									$("li").eq(i).css({"background":"green"});
+									$("#result").text()
+									str += (i+1)+" ,";
 								}
-
 							}
-							
-							
+							$("#result").text(str.substr(0,str.length-1));
 						}
 					})
 				})();

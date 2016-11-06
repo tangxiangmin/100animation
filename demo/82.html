@@ -1,36 +1,110 @@
 <!DOCTYPE html>
 <!--
 	作者：tangxiangmin@126.com
-	时间：2016-11-04
-	描述：一个简易的文本编辑器，大概只有对齐，加粗，下划线这些功能...
+	时间：2016-11-06
+	描述：最近在学习Vue,于是接下来的几个下demo就来练练手吧
 -->
 <html>
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
 		<link rel="stylesheet" href="../css/style.css"/>
+		<script src="../js/vue.js"></script>
+		
 		<style rel="stylesheet">
-			
+			#msg-wrap p {
+				text-align: left;
+			}
+			#msg-wrap a {
+				color: #0099FF;
+				text-decoration: underline;
+			}
+			ol {
+				margin: 0;
+				padding: 0;
+				
+			}
+			textarea {
+				display: block;
+				width: 100%;
+				height: 200px;
+				resize: none;
+				margin-top: 30px;
+			}
 		</style>
+		
 	</head>
 	<body>
-		<h1>一个简易的文本编辑器</h1>
+		<h1>Vue实现留言板demo</h1>
 		<p>
 			<a href="../index.html">返回主菜单</a>
 		</p>
-		<div class="wrap">
-		<div class="editor">
-			<div class="editor-head">
-				<span></span>
+		<div class="wrap" id="msg-wrap">
+			<div class="msg-board">
+				<ol>
+					<li v-for="(msg,index) in msgList" >
+						<p>{{msg | prefix}}</p>
+						<p><a href="#" v-on:click="msgDelete(index)">删除</a></p>
+					</li>
+				</ol>	
+				<hr />
+				<a href="#" @click="reply">添加回复</a>
+				<hr />
 			</div>
-			<div class="editor-body"></div>
-		</div>
-			
+			<div class="msg-edit"  v-if="isReply">
+				
+				
+				<textarea v-model="msgItem"  placeholder="输入留言"></textarea>
+				<p>还可以输入{{ wordNum }} / {{maxWord}}</p>
+				<button @click="msgAdd">提交留言</button>
+			</div>
 		</div>
 		<!--华丽丽的分割线-->
-		<script src="../js/jquery-1.12.4.min.js"></script>
+
 		<script>
-			
+			var msgArr = ['a1111','b222','c333'];
+			var msg = new Vue({
+				el:"#msg-wrap",
+				data:{
+					msgList:msgArr,
+					isReply:false,
+					msgItem:"",
+					maxWord:100
+				},
+				methods:{
+					msgDelete:function(index){
+						//删除留言
+						this.msgList.splice(index,1);
+					},
+					reply:function(){
+						this.isReply = true;
+					},
+					msgAdd:function(){
+						var msg = this.msgItem
+						this.msgList.push(msg);
+						this.msgItem = "";
+						this.isReply = false;
+					}
+				},
+				computed:{
+					wordNum:function(){
+						var num =  this.msgItem.length;
+						var leftNum = this.maxWord - num;
+						if (leftNum <= 0){
+							alert("已经达到最大字数限制");
+							this.msgItem = this.msgItem.substr(0,num-1);
+						}
+						
+						return leftNum;
+					}
+				},
+				filters:{
+					prefix :function(val){
+						return "前缀@%+&@："+val;
+						
+					}
+				}
+			})
 		</script>
 	</body>
 </html>

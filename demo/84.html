@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-11-12
+	描述：使用的是jquery的animate，动画不太流畅，还有很多可以优化的细节
+-->
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -22,9 +27,14 @@
 			}
 			.bar {
 				height: 100%;
-				width: 5px;
+				width: 20px;
 				background: gray;;
 				float: right;
+			}
+			.bar .slide {
+				height: 20px;
+				background: yellow;
+				position: relative;
 			}
 		</style>
 	</head>
@@ -36,7 +46,7 @@
 		<div class="wrap">
 			<div class="t-content-box">
 				<div class="bar">
-					<div class="sliding"></div>
+					<div class="slide"></div>
 				</div>
 				<div class="t-content">
 					<p>内容 1</p>
@@ -60,22 +70,22 @@
 		<script>
 			$(function(){
 				
-				
+				var h0 = parseInt($(".t-content-box").height()); //bar height
+				var h1 = parseInt($(".t-content").height()); //content height
+				var h2 = parseInt($(".slide").height()); //slide height
+				var radio = h0/(h1-h0+h2*2);
 				$(".t-content").on("mousewheel DOMMouseScroll",function(e){
 					var delta = (e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1 : -1)) ||  (e.originalEvent.detail && (e.originalEvent.detail > 0 ? -1 : 1));
 					console.log(delta);
-					
-					var h0 = parseInt($(this).parent().height());//bar height
-					var h1 = parseInt($(this).height());//content height
 					if (delta > 0){
 						//向上
 						console.log($(this).css("top"))
 						if (parseInt($(this).css("top") ) >= 0){
-
 							return false;
 						}
 						if (!$(this).is(":animated")){
-							$(this).stop().animate({"top":"+=100px"});
+							$(this).animate({"top":"+=100px"});
+							$(".slide").animate({"top":"-="+(radio*100)+"px"});
 						}
 					}else {
 						if (parseInt($(this).css("top")) <= -(h1-h0)){
@@ -84,6 +94,8 @@
 						}
 						if (!$(this).is(":animated")){
 							$(this).animate({"top":"-=100px"});
+							$(".slide").animate({"top":"+="+(radio*100)+"px"});
+							
 							
 						}
 

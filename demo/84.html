@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/style.css"/>
+		<style rel="stylesheet">
+			.t-content-box {
+				width: 400px;
+				height: 400px;
+				border: 1px solid #dedede;
+				overflow: hidden;
+			}
+			.t-content {
+
+				background: red;
+				position: relative;
+				overflow: hidden;
+			}
+			.t-content {
+				line-height: 100px;
+			}
+			.bar {
+				height: 100%;
+				width: 5px;
+				background: gray;;
+				float: right;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>模拟滚动条</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<div class="t-content-box">
+				<div class="bar">
+					<div class="sliding"></div>
+				</div>
+				<div class="t-content">
+					<p>内容 1</p>
+					<p>内容2 </p>
+					<p>内容3 </p>
+					<p>内容4 </p>
+					<p>内容 5</p>
+					<p>内容 6</p>
+					<p>内容 7</p>
+					<p>内容 8</p>
+					<p>内容 9</p>
+					<p>内容 10</p>
+					
+				</div>
+			</div>
+
+			
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				
+				
+				$(".t-content").on("mousewheel DOMMouseScroll",function(e){
+					var delta = (e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1 : -1)) ||  (e.originalEvent.detail && (e.originalEvent.detail > 0 ? -1 : 1));
+					console.log(delta);
+					
+					var h0 = parseInt($(this).parent().height());//bar height
+					var h1 = parseInt($(this).height());//content height
+					if (delta > 0){
+						//向上
+						console.log($(this).css("top"))
+						if (parseInt($(this).css("top") ) >= 0){
+
+							return false;
+						}
+						if (!$(this).is(":animated")){
+							$(this).stop().animate({"top":"+=100px"});
+						}
+					}else {
+						if (parseInt($(this).css("top")) <= -(h1-h0)){
+
+							return ;
+						}
+						if (!$(this).is(":animated")){
+							$(this).animate({"top":"-=100px"});
+							
+						}
+
+						
+					}
+					
+					function boundCheck(){
+						
+					}
+
+				})
+			})
+		</script>
+	</body>
+</html>

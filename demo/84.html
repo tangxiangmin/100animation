@@ -74,30 +74,30 @@
 				var h1 = parseInt($(".t-content").height()); //content height
 				var h2 = parseInt($(".slide").height()); //slide height
 				var radio = h0/(h1-h0+h2*2);
+				
 				$(".t-content").on("mousewheel DOMMouseScroll",function(e){
 					var delta = (e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1 : -1)) ||  (e.originalEvent.detail && (e.originalEvent.detail > 0 ? -1 : 1));
-					console.log(delta);
+
 					if (delta > 0){
 						//向上
-
-						
 						if (!$(this).is(":animated")){
-							if (parseInt($(this).css("top") ) + 100 > 0){
-								
-								return false;
+							var minus = 0 - parseInt($(this).css("top"));
+							if (minus >= 100){
+								minus = 100;
 							}
-							$(this).animate({"top":"+=100px"});
-							$(".slide").animate({"top":"-="+(radio*100)+"px"});
+							$(this).animate({"top":"+="+minus+"px"});
+							$(".slide").animate({"top":"-="+(radio*minus)+"px"});
 						}
 					}else {
-						
+						// 向下
 						if (!$(this).is(":animated")){
-							if (parseInt($(this).css("top")) -100 < -(h1-h0)){
-								
-								return ;
+
+							var minus = (h1-h0) +  parseInt($(this).css("top")) ;
+							if (minus > 100){
+								minus = 100;
 							}
-							$(this).animate({"top":"-=100px"});
-							$(".slide").animate({"top":"+="+(radio*100)+"px"});
+							$(this).animate({"top":"-="+minus+"px"});
+							$(".slide").animate({"top":"+="+(radio*minus)+"px"});
 						}
 					}
 				})

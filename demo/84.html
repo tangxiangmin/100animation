@@ -95,17 +95,21 @@
 						if (!$(this).is(":animated")){
 							$(this).animate({"top":"-=100px"});
 							$(".slide").animate({"top":"+="+(radio*100)+"px"});
-							
-							
 						}
-
-						
 					}
+				})
+				$(".slide").on("mousedown",function(e){
+					var posY = parseInt($(this).css("top"));
+					var startY = e.pageY;
+					var _that = $(this);
 					
-					function boundCheck(){
-						
-					}
-
+					$(this).on("mousemove",function(e){
+						 $(this).css({"top":e.pageY - startY + posY + "px" })
+					})
+					$(this).on("mouseup",function(){
+						$(this).off("mousemove");
+					})
+					
 				})
 			})
 		</script>

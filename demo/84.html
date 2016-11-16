@@ -13,7 +13,7 @@
 			.t-content-box {
 				width: 400px;
 				height: 400px;
-				border: 1px solid #dedede;
+
 				overflow: hidden;
 			}
 			.t-content {
@@ -79,20 +79,23 @@
 					console.log(delta);
 					if (delta > 0){
 						//向上
-						console.log($(this).css("top"))
-						if (parseInt($(this).css("top") ) >= 0){
-							return false;
-						}
+
+						
 						if (!$(this).is(":animated")){
+							if (parseInt($(this).css("top") ) + 100 > 0){
+								
+								return false;
+							}
 							$(this).animate({"top":"+=100px"});
 							$(".slide").animate({"top":"-="+(radio*100)+"px"});
 						}
 					}else {
-						if (parseInt($(this).css("top")) <= -(h1-h0)){
-
-							return ;
-						}
+						
 						if (!$(this).is(":animated")){
+							if (parseInt($(this).css("top")) -100 < -(h1-h0)){
+								
+								return ;
+							}
 							$(this).animate({"top":"-=100px"});
 							$(".slide").animate({"top":"+="+(radio*100)+"px"});
 						}
@@ -100,13 +103,25 @@
 				})
 				$(".slide").on("mousedown",function(e){
 					var posY = parseInt($(this).css("top"));
+					var offsetY = $(this).offset().top;
 					var startY = e.pageY;
-					var _that = $(this);
 					
-					$(this).on("mousemove",function(e){
-						 $(this).css({"top":e.pageY - startY + posY + "px" })
+					var _that = $(this);
+					$(document).on("mousemove",function(e){
+						var distance = e.pageY - startY + posY;
+						if (distance < 0){
+							distance = 0;
+							return;
+						}
+						if (distance>h0-h2){
+							distance = h0;
+							return ;
+						}
+						$(".t-content").css({"top":-(1/radio)*distance + "px"});
+
+						_that.css({"top":distance+ "px" })
 					})
-					$(this).on("mouseup",function(){
+					$(document).on("mouseup",function(){
 						$(this).off("mousemove");
 					})
 					

@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 <!--
-	作者：tangxiangmin@126.com
-	时间：2016-11-17
-	描述：项目中遇见的一个需求，在自己之前写的日历上进行的一些改动，虽然不难，但是需要考虑很多小细节，因此引入了layer插件（PS：很好用的插件，感谢作者大大）
-	
+    作者：tangxiangmin@126.com
+    时间：2016-11-17
+    描述：项目中遇见的一个需求，在自己之前写的日历上进行的一些改动，虽然不难，但是需要考虑很多小细节，因此引入了layer插件（PS：很好用的插件，感谢作者大大）
+    
 -->
+
 <head>
     <meta charset="UTF-8">
     <title></title>
@@ -88,45 +89,56 @@
     #t-calender .active:hover {
         background: #0099CC;
     }
-
     /*  checkbox */
+    
     .t-checkbox {
-  position: relative;
-  z-index: 10;
-  display: inline-block;
-  vertical-align: middle;
-  width: 20px;
-  height: 20px; }
-  .t-checkbox input[type='checkbox'] {
-    width: 20px;
-    height: 20px;
-    margin: 0;
-    opacity: 0; }
-  .t-checkbox span {
-    position: absolute;
-    z-index: -1;
-    left: 0;
-    top: 0;
-    width: 20px;
-    height: 20px;
-    border: 1px solid #008ddd;
-    text-align: center;
-    line-height: 20px;
-    font-size: 0; }
-  .t-checkbox input[type='checkbox']:checked + span {
-    font-size: 14px;
-    color: #008ddd; }
+        position: relative;
+        z-index: 10;
+        display: inline-block;
+        vertical-align: middle;
+        width: 20px;
+        height: 20px;
+    }
+    
+    .t-checkbox input[type='checkbox'] {
+        width: 20px;
+        height: 20px;
+        margin: 0;
+        opacity: 0;
+    }
+    
+    .t-checkbox span {
+        position: absolute;
+        z-index: -1;
+        left: 0;
+        top: 0;
+        width: 20px;
+        height: 20px;
+        border: 1px solid #008ddd;
+        text-align: center;
+        line-height: 20px;
+        font-size: 0;
+    }
+    
+    .t-checkbox input[type='checkbox']:checked + span {
+        font-size: 14px;
+        color: #008ddd;
+    }
     /* .btn*/
-   #continuousConfirm {
-   	border-radius: 3px;
-   	padding: 3px 5px ;
-   	background: #00BFFF;
-   	color: #fff;;
-   }
-   .wrap {
-   	height: 900px;
-   	width: 700px;
-   }
+    
+    #continuousConfirm {
+        border-radius: 3px;
+        padding: 3px 5px;
+        background: #00BFFF;
+        color: #fff;
+        ;
+    }
+    
+    .wrap {
+        height: 900px;
+        width: 700px;
+        position: relative;
+    }
     </style>
 </head>
 
@@ -136,9 +148,8 @@
         <a href="../index.html">返回主菜单</a>
     </p>
     <div class="wrap">
-    	<p>点击可编辑对应日期，所有编辑过的信息保存在一个隐藏文本框中</p>
-    	<input type="hidden"  id="bigVal" />
-    	
+        <p>点击可编辑对应日期，所有编辑过的信息保存在一个隐藏文本框中</p>
+        <input type="hidden" id="bigVal" />
         <div id="t-calender"></div>
         <hr />
         <div class="t-checkbox">
@@ -146,7 +157,7 @@
             <span> <i class="fa fa-check"></i> </span>
         </div>
         批量修改
-        <span  id="continuousConfirm">添加安排</span>
+        <span id="continuousConfirm">添加安排</span>
     </div>
     <!--华丽丽的分割线-->
     <script src="../js/jquery-1.12.4.min.js"></script>
@@ -155,10 +166,11 @@
     $(function() {
         // 雇佣安排
         var startDate = '2016-11-20';
-		var keepMonth = 4;
-		doTaskArrange(startDate, keepMonth)
-        function doTaskArrange(startDate, keepMonth) {
+        var keepMonth = 4;
+        doTaskArrange(startDate, keepMonth)
+            // 雇佣安排
 
+        function doTaskArrange(startDate, keepMonth) {
             var bigVal = {};
 
             // 起始日期
@@ -167,7 +179,7 @@
             var startDay = startDate.split("-")[2];
 
             // 截止日期
-            var lastMonth = parseInt(startMonth) + 4;
+            var lastMonth = parseInt(startMonth) + parseInt(keepMonth);
             var lastYear = startYear;
             if (lastMonth > 11) {
                 lastYear++;
@@ -281,9 +293,11 @@
                             // 重复编辑则会更新之前的内容
                             bigVal[pickDate] = content;
                             _that.attr("title", content);
+                            $("#bigVal").val(JSON.stringify(bigVal));
                         });
                     } else {
                         pickMoreDay.push(pickDate);
+                        $(this).attr("data-more", 'more');
                         $("#continuousConfirm").one("click", function() {
                             layer.prompt({
                                 title: '请输入当天任务安排',
@@ -294,12 +308,20 @@
                                 for (var i = 0; i < pickMoreDay.length; ++i) {
                                     bigVal[pickMoreDay[i]] = content
                                 }
+                                $("#bigVal").val(JSON.stringify(bigVal));
+                                pickMoreDay = [];
+                                $('#t-calender tbody td').each(function() {
+                                    if ($(this).attr("data-more") == 'more') {
+                                        $(this).attr("title", content);
+                                        $(this).attr("data-more", '');
+                                    }
+                                })
                             });
                         })
                     }
                     console.log(bigVal);
 
-                    $("#bigVal").val(JSON.stringify(bigVal));
+
                 });
                 // 更新日历
                 function changeMonth(year, month) {

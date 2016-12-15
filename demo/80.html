@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <h1>XXX</h1>
+    <h1>禁止复制文字</h1>
     <p>
         <a href="../index.html">返回主菜单</a>
     </p>
@@ -28,11 +28,11 @@
     <script src="../js/jquery-1.12.4.min.js"></script>
     <script>
 
-    document.addEventListener("contextmenu",function(e){
-    	e = e || event;
-    	alert("禁止查看源码");
-      	e.preventDefault();
-    })
+    // document.addEventListener("contextmenu",function(e){
+    // 	e = e || event;
+    // 	alert("禁止查看源码");
+    //   	e.preventDefault();
+    // })
     document.addEventListener("keydown",function(e){
     	e = e || event;
     	if (e.keyCode == 123){
@@ -40,11 +40,11 @@
     		e.preventDefault();
     	}
     })
-    document.addEventListener("selectstart",function(e){
-    	e = e || event;
-        alert("禁止复制！")
-        e.preventDefault();
-    })
+    // document.addEventListener("selectstart",function(e){
+    // 	e = e || event;
+    //     alert("禁止复制！")
+    //     e.preventDefault();
+    // })
     document.addEventListener("copy",function(e){
     	e = e || event;
         alert("禁止复制！")

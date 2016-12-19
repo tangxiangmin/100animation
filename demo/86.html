@@ -5,7 +5,6 @@
 	描述：todo list是Vue的官方实例，自己重新写一个练练手
 -->
 <html>
-<<<<<<< HEAD
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
@@ -44,7 +43,7 @@
 		</style>
 	</head>
 	<body>
-		<h1>XXX</h1>
+		<h1>todo list</h1>
 		<p>
 			<a href="../index.html">返回主菜单</a>
 		</p>
@@ -88,89 +87,4 @@
 			})
 		</script>
 	</body>
-=======
-<head>
-	<meta charset="UTF-8">
-	<title></title>
-	<link rel="stylesheet" href="../css/style.css"/>
-	<style rel="stylesheet">
-		#todoList input {
-			width: 100%;
-			padding: 5px 0;
-			margin-bottom: 20px;
-			line-height: 30px;
-			outline: none;
-		}
-		#todoList ol {
-			margin: 0;
-			padding: 0;
-			list-style-position: inside;
-
-		}
-		#todoList li {
-			line-height: 30px;
-			position: relative;
-			border-radius: 5px ;
-			background: #f8f8f8;
-			margin-bottom: 10px;
-		}
-		#todoList .delete {
-			position: absolute;
-			right: 0;
-			height: 30px;
-			width: 30px;
-
-			text-align: center;
-			border: 1px solid #dedede;
-			cursor: pointer;
-		}
-	</style>
-</head>
-<body>
-<h1>XXX</h1>
-<p>
-	<a href="../index.html">返回主菜单</a>
-</p>
-<div class="wrap" id="todoList">
-	<div class="hd">
-		<input type="text" v-model="newItem" v-on:keydown.enter="add" placeholder="请输入todo项"/>
-	</div>
-	<div class="bd">
-		<ol>
-			<li v-for="(item,index) in items">
-				{{item}}
-				<span class="delete" v-on:click="remove(index)">X</span>
-			</li>
-		</ol>
-	</div>
-
-
-</div>
-<!--华丽丽的分割线-->
-<!--<script src="../js/jquery-1.12.4.min.js"></script>-->
-<script src="../js/vue.js"></script>
-<script>
-    var vm = new Vue({
-        el:"#todoList",
-        data:{
-            newItem: '',
-            items:[]
-        },
-        methods:{
-            add:function(){
-                if (this.newItem == ''){
-                    return ;
-                }
-                this.items.push(this.newItem);
-                this.newItem = '';
-            },
-            remove:function(index){
-                this.items.splice(index,1);
-            }
-        }
-    })
-</script>
-</body>
->>>>>>> 6d7afd2b79f65f6f881e37c0f3be473d903483bd
 </html>
-

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-12-14
+	描述：过去的两三周写爬虫走火入魔了...这个项目要凑够100个了
+-->
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<link rel="stylesheet" href="../css/style.css"/>
+	<style rel="stylesheet">
+		#tooltipWrap {
+			width: 100px;
+			height: 100px;
+			position: fixed;
+			background: red;
+			display: none;
+		}
+	</style>
+</head>
+<body>
+<h1>模拟提示框</h1>
+<p>
+	<a href="../index.html">返回主菜单</a>
+</p>
+<div class="wrap">
+
+	<a href="#" title="提示内容" class="tooltip">123</a>
+
+</div>
+<!--华丽丽的分割线-->
+<script src="../js/jquery-1.12.4.min.js"></script>
+<script>
+	var dom = "<div id='tooltipWrap'></div>"
+	$("body").append($(dom));
+	$(".tooltip").on("mouseover",function (e) {
+		var content = $(this).attr("title");
+		var x = e.pageX;
+		var y = e.pageY;
+		$("#tooltipWrap").css({
+		    "left":x + 10,
+			'top':y + 10
+		}).text(content).show();
+    })
+</script>
+</body>
+</html>

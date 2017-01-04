@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<!--
+	假装这个也是下雪，今年的冬天太暖和了！
+-->
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<link rel="stylesheet" href="../css/style.css"/>
+	<style rel="stylesheet">
+
+	</style>
+</head>
+<body>
+<h1>canvas实现下雪效果（简陋版本）</h1>
+<p>
+	<a href="../index.html">返回主菜单</a>
+</p>
+<div class="wrap">
+	<canvas id="canvas" width="600" height="600"></canvas>
+
+</div>
+<!--华丽丽的分割线-->
+<script src="../js/jquery-1.12.4.min.js"></script>
+<script>
+	var ctx = canvas.getContext('2d');
+	
+	var snowArr = [];
+	function drawSnow(r) {
+		ctx.beginPath();
+        var x = Math.random()*500 + 50;
+        var y = 20;
+		ctx.arc(x,y,r,0,Math.PI*2);
+		ctx.fillStyle = '#fff';
+		ctx.fill();
+		
+		var snow = {
+		    x:x,
+			y:y,
+			r:r,
+			speed:Math.random()*20+10
+		};
+        snowArr.push(snow);
+    }
+    for (var i = 0; i < 10; ++i){
+	    drawSnow(Math.random()*10+5);
+	}
+	
+	
+	
+	function start() {
+        update();
+        render();
+        requestAnimationFrame(start);
+    }
+    start();
+    function update() {
+        for (var i = 0; i < 10; ++i){
+            snowArr[i].y += snowArr[i].speed/10;
+        }
+    }
+	function render() {
+        ctx.clearRect(0,0,600,600);
+        for (var i = 0; i < 10; ++i){
+            ctx.beginPath();
+            ctx.arc(snowArr[i].x,snowArr[i].y,snowArr[i].r,0,Math.PI*2);
+            ctx.fillStyle = '#fff';
+            ctx.fill();
+        }
+    }
+    
+</script>
+</body>
+</html>

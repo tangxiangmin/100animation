@@ -8,7 +8,9 @@
 	<title></title>
 	<link rel="stylesheet" href="../css/style.css"/>
 	<style rel="stylesheet">
-
+		#canvas {
+			/*background: #000;*/
+		}
 	</style>
 </head>
 <body>
@@ -24,51 +26,82 @@
 <script src="../js/jquery-1.12.4.min.js"></script>
 <script>
 	var ctx = canvas.getContext('2d');
-	
+    var w =canvas.width;
+    var h =canvas.height;
 	var snowArr = [];
 	function drawSnow(r) {
 		ctx.beginPath();
         var x = Math.random()*500 + 50;
         var y = 20;
-		ctx.arc(x,y,r,0,Math.PI*2);
-		ctx.fillStyle = '#fff';
+        
+        var rGrd =ctx.createRadialGradient(x, y, r/2, x, y, r);
+        rGrd.addColorStop(0, '#fff');
+        rGrd.addColorStop(1, '#f8f8f8');
+        ctx.fillStyle = rGrd;
+        
+        ctx.arc(x,y,r,0,Math.PI*2);
 		ctx.fill();
 		
 		var snow = {
 		    x:x,
 			y:y,
 			r:r,
-			speed:Math.random()*20+10
+			speed:Math.random()*30+10
 		};
+		
         snowArr.push(snow);
     }
-    for (var i = 0; i < 10; ++i){
-	    drawSnow(Math.random()*10+5);
-	}
-	
-	
-	
-	function start() {
-        update();
-        render();
-        requestAnimationFrame(start);
+    
+    
+	function init() {
+	    if (snowArr.length < 1000){
+            for (var i = 0; i < 3; ++i){
+                drawSnow(Math.random()*5+5);
+            }
+		}
     }
-    start();
+	
     function update() {
-        for (var i = 0; i < 10; ++i){
+	    var len = snowArr.length;
+	    var deleteArr = [];
+        for (var i = 0; i < len; ++i){
             snowArr[i].y += snowArr[i].speed/10;
+            if (snowArr[i].y >= h){
+                deleteArr.push(i);
+			}
         }
+        
+        for (var i = 0; i < deleteArr.length; ++i){
+            snowArr.splice(deleteArr[i],1);
+		}
     }
+    
 	function render() {
-        ctx.clearRect(0,0,600,600);
-        for (var i = 0; i < 10; ++i){
+        ctx.clearRect(0,0,w,h);
+        var len = snowArr.length;
+        for (var i = 0; i < len; ++i){
             ctx.beginPath();
-            ctx.arc(snowArr[i].x,snowArr[i].y,snowArr[i].r,0,Math.PI*2);
-            ctx.fillStyle = '#fff';
+            var x = snowArr[i].x;
+            var y = snowArr[i].y;
+            var r = snowArr[i].r;
+            ctx.arc(x, y, r, 0, Math.PI*2);
+            var rGrd =ctx.createRadialGradient(x, y, r/2, x, y, r);
+            rGrd.addColorStop(0, '#fff');
+            rGrd.addColorStop(1, '#f8f8f8');
+            ctx.fillStyle = rGrd;
             ctx.fill();
         }
     }
     
+    function start() {
+        init();
+        update();
+        render();
+        requestAnimationFrame(start);
+    }
+    init();
+    start();
+	
 </script>
 </body>
 </html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<link rel="stylesheet" href="../css/style.css"/>
+	<style rel="stylesheet">
+		.pwd-wrap {
+			font-size: 0;
+		}
+		.pwd-item {
+			width: 30px;
+			height: 30px;
+			font-size: 16px;
+			border: 1px solid #dedede;
+			outline: none;
+			margin-right: -1px;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+<h1>模拟密码输入</h1>
+<p>
+	<a href="../index.html">返回主菜单</a>
+</p>
+<div class="wrap">
+	<form action="">
+		<div class="pwd-wrap">
+			<input type="text" autofocus="autofocus" pattern="\d" class="pwd-item">
+			<input type="text" class="pwd-item">
+			<input type="text" class="pwd-item">
+			<input type="text" class="pwd-item">
+			<input type="text" class="pwd-item">
+			<input type="text" class="pwd-item">
+		</div>
+	</form>
+
+</div>
+<!--华丽丽的分割线-->
+<script src="../js/jquery-1.12.4.min.js"></script>
+<script>
+	"use strict";
+	$(function () {
+	    !(function () {
+            var re = /^\d$/;
+            $(".pwd-item").on("input",function () {
+                var oldVal = $(this).val();
+                var v = oldVal[oldVal.length-1];
+
+                if (!re.test(v)){
+                    $(this).val(oldVal[oldVal.length-2]);
+                }else {
+                    $(this).val(v);
+                    $(this).next().focus();
+                }
+            })
+        })();
+	    
+    })
+</script>
+</body>
+</html>

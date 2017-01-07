@@ -15,7 +15,7 @@
 				line-height: 30px;
 				margin: 10px ;
 			}
-			.wrap li input {
+			.wrap li input[type='text'] {
 				height: 30px;
 				width: 200px;
 			}
@@ -28,15 +28,26 @@
 		</p>
 		<div class="wrap">
 			<p>第一个采用JS，pattern进行判断</p>
-			<form>
+			<form id="form">
 				<ul>
 					<li>
-						<label for="email">邮箱</label>
-						<input type="text" id="email" name="email"  placeholder="请输入邮箱"/>
+						<label for="email">登陆邮箱</label>
+						<input type="text" id="email" data-type="email" name="email"  placeholder="请输入邮箱"/>
 					</li>
 					<li>
-						<label for="tel">电话</label>
+						<label>设置密码</label>
+						<input type="text" placeholder=""/>
+					</li>
+					<li>
+						<label>确认密码</label>
+						<input type="text" placeholder=""/>
+					</li>
+					<li>
+						<label for="tel">电话号码</label>
 						<input type="text" id="tel" name="tel" pattern="^1[358]\d{9}$" placeholder="请输入手机号"/>
+					</li>
+					<li>
+						<label for="tel"><input type="checkbox">同意协议</label>
 					</li>
 					<li>
 						<input type="submit"/>
@@ -49,15 +60,58 @@
 		<!--此外也可以在标签属性中直接使用pattern=""来添加正则，浏览器会自动显示弹窗-->
 		<script src="../js/jquery-1.12.4.min.js"></script>
 		<script>
-			$(function(){
-				$("#email").on("blur",function(){
-					var re = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
-					var s = $(this).val();
-					if (s && !re.test(s)){
-						alert($(this).attr("name")+"输入不正确")
+			!(function ($) {
+			    var dft = {
+                    emailRe:/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/,
+					emailMsg:'邮箱格式不正确',
+					reTel:/^1[2357]\d{9}$/,
+				};
+			    
+			    function doCheck(val,re,msg) {
+					if (re.test(val)){
+					    return true;
 					}
-				})
-			})
+					// 错误消息
+					return msg;
+                }
+                
+                function showWarn(dom) {
+					$(dom).css({"border":"1px solid red"});
+                }
+                function showWarn(dom) {
+                    $(dom).css({"border":"1px solid green"});
+                }
+                
+				$.fn.extend({
+                    t_verify:function (opts) {
+                        opts = $.extend(opts,dft);
+                        
+                        
+                        return this.each(function () {
+                            var _this = $(this);
+							var $email = $(this).find("[data-type='email']");
+                            $email.each(function () {
+                                var bl = doCheck($(this).val(),opts.emailRe,opts.emailMsg);
+                                if (bl){
+                                    showWarn($(this));
+                                    _this.preventDefault();
+								}else {
+                                    showSuccess($(this))
+								}
+                            });
+							
+							
+                        });
+						
+                    }
+				});
+            })($);
+            $("#form").on("submit",function () {
+                $("#form").t_verify();
+                return false;
+            });
+			
+			
 		</script>
 	</body>
 </html>

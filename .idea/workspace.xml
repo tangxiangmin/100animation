@@ -4,7 +4,6 @@
     <list default="true" id="79af7297-4f3b-449a-a546-9310dd28f0d9" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/18.html" afterPath="$PROJECT_DIR$/demo/18.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -28,7 +27,7 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
+            <state relative-caret-position="4488">
               <caret line="136" column="41" lean-forward="false" selection-start-line="136" selection-start-column="41" selection-end-line="136" selection-end-column="41" />
               <folding />
             </state>
@@ -38,8 +37,8 @@
       <file leaf-file-name="18.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/demo/18.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="394">
-              <caret line="96" column="59" lean-forward="false" selection-start-line="96" selection-start-column="59" selection-end-line="96" selection-end-column="59" />
+            <state relative-caret-position="196">
+              <caret line="77" column="57" lean-forward="true" selection-start-line="77" selection-start-column="57" selection-end-line="77" selection-end-column="57" />
               <folding />
             </state>
           </provider>
@@ -48,7 +47,7 @@
       <file leaf-file-name="94.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/demo/94.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
+            <state relative-caret-position="2343">
               <caret line="71" column="20" lean-forward="false" selection-start-line="71" selection-start-column="20" selection-end-line="71" selection-end-column="20" />
               <folding />
             </state>
@@ -89,7 +88,7 @@
         <entry file="file://$PROJECT_DIR$/demo/88.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1617">
-              <caret line="49" column="63" lean-forward="true" selection-start-line="49" selection-start-column="16" selection-end-line="49" selection-end-column="63" />
+              <caret line="49" column="63" lean-forward="false" selection-start-line="49" selection-start-column="16" selection-end-line="49" selection-end-column="63" />
               <folding />
             </state>
           </provider>
@@ -289,12 +288,13 @@
       <workItem from="1483544296109" duration="2418000" />
       <workItem from="1483627416723" duration="1305000" />
       <workItem from="1483714537657" duration="2680000" />
-      <workItem from="1483803321826" duration="1533000" />
+      <workItem from="1483803321826" duration="1802000" />
+      <workItem from="1483838097152" duration="4352000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22421000" />
+    <option name="totallyTimeSpent" value="27042000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -678,14 +678,14 @@
     <entry file="file://$PROJECT_DIR$/demo/88.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1617">
-          <caret line="49" column="63" lean-forward="true" selection-start-line="49" selection-start-column="16" selection-end-line="49" selection-end-column="63" />
+          <caret line="49" column="63" lean-forward="false" selection-start-line="49" selection-start-column="16" selection-end-line="49" selection-end-column="63" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/demo/94.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
+        <state relative-caret-position="2343">
           <caret line="71" column="20" lean-forward="false" selection-start-line="71" selection-start-column="20" selection-end-line="71" selection-end-column="20" />
           <folding />
         </state>
@@ -701,7 +701,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
+        <state relative-caret-position="4488">
           <caret line="136" column="41" lean-forward="false" selection-start-line="136" selection-start-column="41" selection-end-line="136" selection-end-column="41" />
           <folding />
         </state>
@@ -709,8 +709,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/demo/18.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="394">
-          <caret line="96" column="59" lean-forward="false" selection-start-line="96" selection-start-column="59" selection-end-line="96" selection-end-column="59" />
+        <state relative-caret-position="196">
+          <caret line="77" column="57" lean-forward="true" selection-start-line="77" selection-start-column="57" selection-end-line="77" selection-end-column="57" />
           <folding />
         </state>
       </provider>

@@ -3,6 +3,7 @@
 	作者：tangxiangmin@126.com
 	时间：2016-07-13
 	描述：正则检验表单
+	更改：2017-1-7
 -->
 <html>
 	<head>
@@ -31,23 +32,23 @@
 			<form id="form">
 				<ul>
 					<li>
-						<label for="email">登陆邮箱</label>
-						<input type="text" id="email" data-type="email" name="email"  placeholder="请输入邮箱"/>
+						<label>登陆邮箱</label>
+						<input type="text" data-type="email" name="email"  placeholder="请输入邮箱"/>
 					</li>
 					<li>
 						<label>设置密码</label>
-						<input type="text" placeholder=""/>
+						<input type="text" data-type="password" placeholder=""/>
 					</li>
 					<li>
 						<label>确认密码</label>
 						<input type="text" placeholder=""/>
 					</li>
 					<li>
-						<label for="tel">电话号码</label>
-						<input type="text" id="tel" name="tel" pattern="^1[358]\d{9}$" placeholder="请输入手机号"/>
+						<label >电话号码</label>
+						<input type="text" data-type="tel" name="tel" placeholder="请输入手机号"/>
 					</li>
 					<li>
-						<label for="tel"><input type="checkbox">同意协议</label>
+						<label ><input type="checkbox">同意协议</label>
 					</li>
 					<li>
 						<input type="submit"/>
@@ -58,57 +59,96 @@
 		</div>
 		<!--华丽丽的分割线-->
 		<!--此外也可以在标签属性中直接使用pattern=""来添加正则，浏览器会自动显示弹窗-->
+		<!--<input type="text" data-type="tel" name="tel" pattern="^1[358]\d{9}$" placeholder="请输入手机号"/>-->
 		<script src="../js/jquery-1.12.4.min.js"></script>
 		<script>
 			!(function ($) {
+                /**
+				 * 快速验证表单
+				 * 在需要验证的表单元素添加自定义类型[data-type='???']格式
+				 * 传入参数为配置对象，参数包括
+				 * verifyArr:包含需要验证的表单元素的自定义类型
+				 * typeRe:自定义正则表达式
+                 * typeMsg:对应类型的错误提示信息
+				 * showWarn:统一的错误回调函数，默认第一个为验证失败的表单元素节点，第二个参数为对应节点的错误提示信息
+				 * showSuccess：统一的成功回调函数,同上
+                 */
+                
 			    var dft = {
+			        verifyArr:['email','tel','password'],
+					
                     emailRe:/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/,
+					telRe:/^1[2357]\d{9}$/,
+                    passwordRe:/^[a-zA-Z\d_]{8,20}$/,
+                    
 					emailMsg:'邮箱格式不正确',
-					reTel:/^1[2357]\d{9}$/,
+                    telMsg:'电话号码不正确',
+                    passwordMsg:'密码长度为8-20位',
+
+                    showWarn: function (dom,msg) {
+                        $(dom).css({"border":"1px solid red"});
+                        console.log(msg);
+                    },
+					
+                    showSuccess: function(dom) {
+                        $(dom).css({"border":"1px solid green"});
+                    }
 				};
 			    
-			    function doCheck(val,re,msg) {
+			    // 工具函数
+			    function doCheck(val,re) {
 					if (re.test(val)){
 					    return true;
 					}
-					// 错误消息
-					return msg;
+					
+					return false;
                 }
                 
-                function showWarn(dom) {
-					$(dom).css({"border":"1px solid red"});
+                function getReKey(key) {
+					return key + 'Re';
                 }
-                function showWarn(dom) {
-                    $(dom).css({"border":"1px solid green"});
+                function getMsgKey(key) {
+                    return key + 'Msg';
                 }
-                
+				
 				$.fn.extend({
-                    t_verify:function (opts) {
-                        opts = $.extend(opts,dft);
-                        
-                        
+                    t_verify:function (opt) {
+
+                        var opts = $.extend({},dft,opt);
                         return this.each(function () {
                             var _this = $(this);
-							var $email = $(this).find("[data-type='email']");
-                            $email.each(function () {
-                                var bl = doCheck($(this).val(),opts.emailRe,opts.emailMsg);
-                                if (bl){
-                                    showWarn($(this));
-                                    _this.preventDefault();
-								}else {
-                                    showSuccess($(this))
-								}
+                            var flag = true;
+							
+                            opts.verifyArr.forEach(function (val) {
+								var re = opts[getReKey(val)];
+								var msg = opts[getMsgKey(val)];
+                                _this.find("[data-type='"+val+"']").each(function () {
+                                    var bl = doCheck($(this).val(), re);
+                                    if (bl) {
+                                        opts.showSuccess($(this));
+                                    } else {
+                                        opts.showWarn($(this),msg);
+                                        flag = false;
+                                    }
+                                });
                             });
-							
-							
+                            
+//                            flag = false;
+
+                            _this.off("submit").submit(function () {
+                                return flag;
+                            });
                         });
 						
                     }
 				});
             })($);
-            $("#form").on("submit",function () {
-                $("#form").t_verify();
-                return false;
+            $("input[type='submit']").on("click",function () {
+                $("#form").t_verify({
+                    emailRe:/\d/,
+                    passwordRe:/\d/,
+                    telRe:/\d/,
+				});
             });
 			
 			

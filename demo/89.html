@@ -1,82 +1,4 @@
 <!DOCTYPE html>
-<<<<<<< HEAD
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title></title>
-		<link rel="stylesheet" href="../css/style.css"/>
-		<style rel="stylesheet">
-			#t-toolTip {
-				position: fixed;
-				z-index: 9999;
-				padding: 10px;
-				
-				background: rgba(0,0,0,0.5);
-				border-radius: 5px;
-			}
-		</style>
-	</head>
-	<body>
-		<h1>自定义提示框</h1>
-		<p>
-			<a href="../index.html">返回主菜单</a>
-		</p>
-		<div class="wrap">
-			
-			<a href="#" class="tooltips" title="测试测试测试">测试测试测试a链接</a>
-			
-		</div>
-		<!--华丽丽的分割线-->
-		<script src="../js/jquery-1.12.4.min.js"></script>
-		<script>
-			$.fn.extend({
-				toolTips:function(options){
-					// 默认参数
-					var defaults = {
-					  	background: 'rgba(0,0,0,0.5)',
-						color: '#fff',
-
-					};
-					
-					options = $.extend(defaults, options);
-					
-					return $(this).each(function(){
-
-						var title =  $(this).attr("title");
-						if (title != ''){
-							var dom = $('<div id="t-toolTip"/>');
-							
-							// 去掉浏览器本身的title
-							$(this).attr("title",'');
-							
-							// 切换
-							$(this).hover(function(){
-								dom.appendTo($("body")).css({
-									'background' : options.background,
-									'color' : options.color,
-								}).html(title);
-								
-							},function(){
-								dom.remove();
-							});
-							
-							// 移动
-							$(this).mousemove(function(e) {
-								dom.css({
-									top: e.pageY + 10,
-									left: e.pageX + 20
-							     });
-								 
-							});
-						}
-					})
-				}
-			});
-			
-			$(".tooltips").toolTips();
-		</script>
-	</body>
-=======
 <!--
 	今天项目需求，因为特殊数据的关系，找了两三个模板解析引擎，都不好用，最后还是通过向节点塞数据实现
 	现在打算折腾一下模板引擎的原理
@@ -148,5 +70,4 @@
     })();
 </script>
 </body>
->>>>>>> e544c3a967a6a86bfcacd203bcf5f638b289bd6f
 </html>

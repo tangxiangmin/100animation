@@ -44,14 +44,15 @@
         }
         
         for (var i = 0; i < squareNum; ++i){
-            drawSquare(i*100,i*100,50);
+            drawSquare(i*100, i*100, 50);
 		}
         
 		canvas.onmousemove = function (e) {
+
 		    var x = e.pageX -  canvas.offsetLeft;
 		    var y = e.pageY - canvas.offsetTop;
 		    
-		    for (var i = 0;i < squareNum; ++i){
+		    for (var i = 0; i < squareNum; ++i){
 		        if (x >= squareArr[i].x &&
 					x <= squareArr[i].x + squareArr[i].r &&
 					y >= squareArr[i].y &&

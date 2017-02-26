@@ -1,32 +1,14 @@
-<<<<<<< HEAD
-=======
 <!DOCTYPE html>
 <!--
 	学习如何写一个标准的jquery插件
 -->
->>>>>>> e544c3a967a6a86bfcacd203bcf5f638b289bd6f
 <html>
 <head>
 	<meta charset="UTF-8">
 	<title></title>
 	<link rel="stylesheet" href="../css/style.css"/>
 	<style rel="stylesheet">
-<<<<<<< HEAD
-		.line {
-			height: 4px;
-			width: 200px;
-			background: #ccc;
 
-		}
-		.ball {
-			width: 20px;
-			height: 20px;
-			border-radius: 10px;
-			background: red;
-			margin-top: -12px;
-			cursor: pointer;
-			position: relative;
-=======
 		#tooltipWrap {
 			position: fixed;
 			display: none;
@@ -38,56 +20,25 @@
 			background-color: #f8f8f8;
 			color: #222;
 			box-shadow: 0 0 2px 2px rgba(0,0,0,0.1);
->>>>>>> e544c3a967a6a86bfcacd203bcf5f638b289bd6f
 		}
 	</style>
 </head>
 <body>
-<<<<<<< HEAD
-<h1>模拟滑动调节</h1>
-=======
+
 <h1>模拟提示框</h1>
->>>>>>> e544c3a967a6a86bfcacd203bcf5f638b289bd6f
 <p>
 	<a href="../index.html">返回主菜单</a>
 </p>
 <div class="wrap">
-<<<<<<< HEAD
-	<div class="bar">
-		<div class="line"></div>
-		<div class="ball"></div>
-	</div>
 
-=======
 
 	<a href="#" title="提示内容">123</a>
->>>>>>> e544c3a967a6a86bfcacd203bcf5f638b289bd6f
 
 </div>
 <!--华丽丽的分割线-->
 <script src="../js/jquery-1.12.4.min.js"></script>
 <script>
-<<<<<<< HEAD
-	$(function () {
-		$(".ball").on("mousedown",function (e) {
-            var offsetX = $(this).offset().left;
-			var x0 = e.pageX;
-			$(document).on("mousemove",function (e) {
 
-				var x1 = e.pageX;
-				var distance = x1-offsetX;
-				if (distance <= 0 || distance >=200){
-				    return;
-				}
-				console.log(distance);
-				$(".ball").css({"left":distance});
-            })
-			$(document).on("mouseup",function () {
-				$(document).off();
-            })
-        })
-    })
-=======
 	!(function ($) {
 	    // 配置参数
 		var defalut = {
@@ -129,7 +80,6 @@
 		});
     })(jQuery);
 	$("a").tooltip();
->>>>>>> e544c3a967a6a86bfcacd203bcf5f638b289bd6f
 </script>
 </body>
 </html>

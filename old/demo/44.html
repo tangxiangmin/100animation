@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<!--说明-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<style rel="stylesheet">
+			table { width: 500px; margin: 100px auto; border-collapse: collapse; }
+			td,th { border:1px solid #000; text-align: center;}
+			th { cursor: pointer; }
+		</style>
+	</head>
+	<body>
+		<h1>数据排序</h1>
+		<p>
+			<a href="../_old.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<table>
+				<thead>
+					<tr>
+						<th>id</th>
+						<th>姓名</th>
+						<th>学号</th>
+						<th>成绩</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>1</td>
+						<td>b</td>
+						<td>652</td>
+						<td>40</td>
+					</tr>
+					<tr>
+						<td>2</td>
+						<td>y</td>
+						<td>223</td>
+						<td>99</td>
+					</tr>
+					<tr>
+						<td>3</td>
+						<td>z</td>
+						<td>227</td>
+						<td>100</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				$("th").each(function(){
+					// flag 为真升序排列
+					var flag = false;
+					$(this).on("click",function(){
+					// 获取该表头对应列的数据并作为排序依照
+	
+					var index = $(this).index();
+					var arr = [];
+					$("tbody tr").each(function(){
+						// 数字比较需要将字符串转换成数字
+						var val = $(this).find("td").eq(index).text();
+						if(!isNaN(val)){
+							val = parseInt(val);
+						}
+						arr.push(val);
+					})
+	
+					// 从小到大排序
+					var sortArr = [];
+					for (var i = 0; i < arr.length; ++i){
+						sortArr[i] = arr[i];
+					}
+					if (isNaN(sortArr[0])){
+						flag?sortArr.sort():sortArr.sort().reverse();
+					}else {
+						flag?sortArr.sort(function(a,b){return a-b;}):sortArr.sort(function(a,b){return b-a;});
+					}
+					
+					flag = !flag;
+					var aTr = $("tbody tr").clone();
+					
+					$("tbody").empty();
+					// 考虑数值相同时的比较
+					for (var i = 0; i < arr.length; ++i){
+	
+						var pos = arr.indexOf(sortArr[i]);
+						var lasrPos = arr.lastIndexOf(sortArr[i]);
+						aTr.eq(pos).appendTo($("tbody"));
+						// 去重考虑不充分
+						if ( sortArr[i] == sortArr[i+1]){
+							aTr.eq(pos+1).appendTo($("tbody"));
+						}
+					}
+				})
+			})
+			
+
+		})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-08-07
+	描述：
+		先用面向过程写一遍吧
+		08-07： 今天完成界面布局
+		08-10: 初始化食物与蛇头，及随机产生 
+		08-13: 完成整个游戏逻辑处理及边界检测
+	缺点：
+		由于需要频繁检测事件及重新定位节点位置导致的浏览器重绘，内存消耗估计较严重；
+		本来还想弄一个选择难度的，无非就是更改行列，宽高和速度，直接修改参数就行了，那这个简易版的贪吃蛇就这样吧
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<style rel="stylesheet">
+			.box { position: relative; }
+			.map {border-collapse: collapse;}
+			.map td { width: 20px; height: 20px; border: 1px solid #dedede; box-sizing: border-box;}
+			
+			.snake { width: 100%;height: 100%; position: absolute;top: 0; left: 0;z-index: 10; }
+			
+			
+			.food , .snakeNode,.snakeHead {width: 20px; height: 20px; position: absolute;}
+			.snakeNode { background: #000; left: 0; top: 0; }
+			.food { background: blue; z-index: 200;}
+			.snakeHead { background: red; z-index: 100;}
+			
+			
+			.score { float: right; width: 100px; height: 100px ; }
+			
+		</style>
+	</head>
+	<body>
+		<h1>简易版贪吃蛇</h1>
+		<p>
+			<a href="../_old.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<div class="score">
+				分数：<span>0</span>
+			</div>
+			<div class="box">
+				<table class="map">
+					<tbody>
+						<tr></tr>
+					</tbody>
+				</table>
+				<ul class="snake">
+					<li class="snakeHead"></li>
+				</ul>
+				<div class="food"></div>
+			</div>
+		</div>
+		
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				//初始参数
+				//行列
+				var row = 20; 
+				var col = 20;
+				//格子宽高
+				var w = 20;
+				var h = 20;
+				// 分数，按钮及速度
+				var score = 0;
+				var pressKey = [37,38,39,40];
+				var speed = 500;
+				
+				//创建地图
+				createTable(row,col);
+				function createTable(row,col){
+					var strTr = "";
+					for (var i = 0; i < row; ++i){
+						strTr += "<tr></tr>";
+					}
+					$(".map").append(strTr);
+					$(".map tr").each(function(){
+						var strTd = "";
+						for (var i = 0; i < col; ++i){
+							strTd += "<td></td>";
+						}
+						$(this).append(strTd);
+					})
+				}
+				//初始化位置
+				createFood();
+				var headPos = randPos();
+				$(".snakeHead").css({"left":headPos.x,"top":headPos.y});
+				function randPos(){
+					var startX = Math.floor(Math.random()*row)*w+"px";
+					var startY = Math.floor(Math.random()*col)*h+"px";
+					return {
+						x:startX,
+						y:startY
+					};
+				}
+
+				//移动贪吃蛇
+				var timer = null;
+				var dir = 0;
+				timer = setInterval(function(){
+					move(39);
+					CheckMeet();
+				},speed);
+				$(document).on("keydown",function(e){
+					//检测按键是否为方向键，以及是否为反方向按键
+					if (pressKey.indexOf(e.which) == -1 ){
+						console.log("other");
+						return ;
+					}
+					if ($(".snake li").size() > 1 && checkDir(dir,e.which)){
+						console.log("revse");
+						return;
+					}
+					
+					clearInterval(timer);
+					dir = e.which;
+					move(dir);
+					timer = setInterval(function(){
+						move(dir);
+					},speed);
+				})
+				
+				//检测是否反方向按键
+				function checkDir(old,now){
+					//这段代码看着好恶心，我要修改
+					if ( old == 37 && now == 39 ){
+						return true;
+					}
+					if ( old == 38 && now == 40){
+						return true;
+					}
+					if ( old == 39 && now == 37){
+						return true;
+					}
+					if ( old == 40 && now == 38){
+						return true;
+					}
+				}
+				//蛇头及身体节点移动
+				function move(dir){
+					//保留移动之前的位置
+					var arrPos = [];
+					$(".snake li").each(function(){
+						arrPos.push($(this).position());
+					})
+					
+					switch (dir){
+						case 37:
+							$(".snakeHead").css({"left":"-=20px"});
+							break;
+						case 38:
+							$(".snakeHead").css({"top":"-=20px"});
+							break;
+						case 39:
+							$(".snakeHead").css({"left":"+=20px"});
+							break;
+						case 40:
+							$(".snakeHead").css({"top":"+=20px"});
+							break;
+						default:
+							break;
+					};
+					CheckMeet(dir);
+					//后一个节点占据移动前前一个节点的位置
+					$(".snake li:gt(0)").each(function(){
+						var index = $(this).index()-1;
+						$(this).css({"left":arrPos[index].left,"top":arrPos[index].top});
+						
+					})
+				}
+				
+				//检测蛇头与食物是否相遇
+				function CheckMeet(dir){
+					var snakeHead = getPos($(".snakeHead"));
+					var food = getPos($(".food"));
+					//越界则退出游戏，简单暴力版的刷新页面
+					if (snakeHead.x < 0 || snakeHead.y < 0 || snakeHead.x > col-1 || snakeHead.y > row){
+						if ( confirm("啊你把我的墙撞坏了！是否赔钱？")){
+							history.go(0);
+						}else {
+							location.href = "../_old.html";
+						}
+					}
+					//是否撞到身体
+					(function(){
+						var arrPos = [];
+						$(".snake li:gt(1)").each(function(){
+							arrPos.push(getPos($(this)));
+						})
+						var arrPosX = [];
+						var arrPosY = [];
+						for (var i = 0; i < arrPos.length; ++i){
+							arrPosX.push(arrPos[i].x);
+							arrPosY.push(arrPos[i].y);
+						}
+		
+						var x = arrPosX.indexOf(snakeHead.x);
+						var y = arrPosY.indexOf(snakeHead.y);
+						//这儿合并判断为什么会出现BUG
+						if (x != -1 && arrPosY[x] == snakeHead.y){
+							if ( confirm("啊你咬到自己了！是否继续？")){
+								history.go(0);
+							}else {
+								location.href = "../_old.html";
+							}
+						}
+						if (y != -1 && arrPosX[y] == snakeHead.x){
+							if ( confirm("啊你咬到自己了！是否继续？")){
+								history.go(0);
+							}else {
+								location.href = "../_old.html";
+							}
+						}
+					})();
+					
+					
+					//吃到食物增加分数及身体节点
+					if (snakeHead.x == food.x && snakeHead.y == food.y){
+						//增加分数并生成新的食物
+						score += 10;
+						$(".score span").text(score);
+						createFood();
+						
+						//将新增节点的位置放在最后一个节点的后面
+						(function(){
+							var snakeNode = $("<li></li>");
+							snakeNode.addClass("snakeNode").css({});
+							
+							var lastChild = $(".snake li:last-of-type")
+							var posX = parseInt(lastChild.position().left);
+							var posY = parseInt(lastChild.position().top);
+							switch (dir){
+								case 37:
+									snakeNode.css({
+										"left":posX+w+"px",
+										"top":posY+"px"
+									});
+									break;
+								case 38:
+									snakeNode.css({
+										"left":posX+"px",
+										"top":posY+h+"px"
+									});
+									break;
+								case 39:
+									snakeNode.css({
+										"left":posX-w+"px",
+										"top":posY+"px"
+									});
+									break;
+								case 40:
+									snakeNode.css({
+										"left":posX+"px",
+										"top":posY-h+"px"
+									});
+									break;
+								default:
+									console.log("bug....");
+									break;
+							};
+							$(".snake").append(snakeNode);
+						})();
+						
+					}
+				}
+				
+				//获取横纵坐标
+				function getPos(obj){
+					return {
+						x:obj.position().left/w,
+						y:obj.position().top/h
+					}
+				}
+				//生成食物
+				function createFood(){
+					var foodPos = randPos();
+					$(".food").css({"left":foodPos.x,"top":foodPos.y});
+				}
+				
+			})
+		</script>
+	</body>
+</html>

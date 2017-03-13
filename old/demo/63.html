@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!--说明-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<style rel="stylesheet">
+			canvas {
+				border: 1px solid #dedede;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>canvas五角星</h1>
+		<p>
+			<a href="../_old.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<canvas width="600" height="600"></canvas>
+		</div>
+
+		
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				var canvas = document.querySelector("canvas");
+				var ctx = canvas.getContext("2d");
+	
+				drawStar(ctx,50,100,300,300,20)
+				function drawStar(ctx,r,R,x,y,rote) { 
+			        ctx.beginPath();
+			        for(var i = 0 ;i<5 ;i++) {  
+			            ctx.lineTo(Math.cos((18 + i * 72 - rote) / 180 * Math.PI) * R + x,  
+			                    -Math.sin((18 + i * 72 - rote) / 180 * Math.PI) * R + y);  
+			  
+			            ctx.lineTo(Math.cos((54 + i * 72 -rote) / 180 * Math.PI) * r + x,  
+			                    -Math.sin((54 + i * 72 - rote) / 180 * Math.PI) * r + y);  
+			        }  
+	
+			        ctx.closePath();
+			        ctx.fillStyle = "red";  
+			        ctx.fill();  
+			    }  
+			})
+		</script>
+	</body>
+</html>

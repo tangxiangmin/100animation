@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-06-26
+	描述：实现拖拽
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"></style>
+		<style>
+			.box { 
+				width: 100px; height: 100px; background: red; 
+				position: absolute; left: 200px; top: 200px;
+			}
+			.box .eye {width: 10px; height: 10px; background: #000; position: absolute; top: 30px;}
+			.el { left: 20px; }
+			.er { right: 20px; }
+			.box .mouth { 
+				width: 40px; height: 20px; background: #000;
+				margin: 60px auto 0;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>随意点击拖动</h1>
+		<p>
+			<a href="../_old.html">返回主菜单</a>
+		</p>
+		<div class="box">
+			<div class="eye el"></div>
+			<div class="eye er"></div>
+			<div class="mouth"></div>
+		</div>
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				var $box = $(".box");
+				$box.on("mouseover",function(){
+					$(this).stop().animate({"border-radius":"50px"},500);
+					$(".eye").stop().animate({"border-radius":"5px"},500);
+					$(".mouth").stop().animate({"width":"20px","border-radius":"10px"},500)
+				}).on("mousedown",function(ev){
+						var posX = 0;
+						var posY = 0;
+						posX = ev.pageX - $box.offset().left;
+						posY = ev.pageY - $box.offset().top;
+						$(document).on("mousemove",function(ev){
+							$box.css({"left":ev.pageX - posX});
+							$box.css({"top":ev.pageY - posY});
+							
+							var bX = parseInt($box.css("left"));
+							var bY = parseInt($box.css("top"));
+							if (bX < 0){
+								$box.css({"left":"0px"})
+							}
+							if (bY < 0){
+								$box.css({"top":"0px"})
+							}		
+						})
+						$(document).on("mouseup",function(){
+							$(document).off()
+						})
+						return false;
+				}).on("mouseout",function(){
+						$(this).stop().animate({"border-radius":"0px"},500);
+						$(".eye").stop().animate({"border-radius":"0px"},500);
+						$(".mouth").stop().animate({"width":"40px","border-radius":"0px"},500)
+						})
+			})
+		</script>
+	</body>
+</html>

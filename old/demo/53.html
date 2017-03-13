@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--说明-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<style rel="stylesheet">
+			.wrap {
+				overflow: hidden;
+			}
+			ul {
+				position: relative;
+				
+				width: 100%;
+				height:300px;
+			}
+			li {
+				width: 100%;
+				height: 300px;
+				position: absolute;
+				cursor: pointer;
+				
+			}
+			
+		</style>
+	</head>
+	<body>
+		<h1>随意点击拖动</h1>
+		<p>
+			<a href="../_old.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<ul>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				var w = $("li").width();
+				
+				$("li").each(function(index){
+					$(this).css({"background":"#"+Math.floor(Math.random()*900+100),"left":index*w+"px"}).text(index);
+				})
+				var size = $("ul li").size();
+				var num = 0;
+				$("ul").on("mousedown",function(e){
+					var startX = e.pageX;
+					var startL = parseInt($(this).css("left"));
+					$(document).on("mousemove",function(e){
+						var s = e.pageX-startX;
+						var l = startL + s;
+						$("ul").css({"left":l+"px"});
+					}).on("mouseup",function(e){
+						$(this).off();
+						var endX = e.pageX;
+						//判断方向
+						var dir = endX-startX;
+						if (dir > 0 && dir > w/2){
+							num++;
+							console.log("right");
+						}else if (dir < 0 && dir < -w/2) {
+							num--;
+							console.log("left");
+						}
+						//边界检测
+						if (num > 0){
+							num = 0;
+						}else if(num < -(size-1)) {
+							num = -(size-1);
+						}
+						
+						$("ul").animate({"left":num*w+"px"});
+						
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

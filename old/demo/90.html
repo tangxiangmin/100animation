@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<!--
+	折腾了一下canvas小游戏
+	参考的是http://www.cnblogs.com/Wayou/p/how-to-make-a-simple-html5-canvas-game.html
+	其中使用一个修正系数来处理程序运行时间所造成的误差，感觉很有意思。
+	在原有基础上加了边界检测，其他也没啥了。
+-->
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<link rel="stylesheet" href="../assets/css/style.css"/>
+	<style rel="stylesheet">
+		canvas {
+			border: 1px solid #dedede;
+		}
+	</style>
+</head>
+<body>
+<h1>canvas实现吃豆子</h1>
+<p>
+	<a href="../_old.html">返回主菜单</a>
+</p>
+<div class="wrap">
+
+	<canvas id="canvas" width="600" height="600"></canvas>
+</div>
+<!--华丽丽的分割线-->
+<script src="../js/jquery-1.12.4.min.js"></script>
+<script>
+	window.onload = function () {
+		if (!canvas.getContext){
+		    alert('换个浏览器吧！');
+		    return ;
+		}
+		
+	    var ctx = canvas.getContext('2d');
+		var w = canvas.width;
+		var h = canvas.height;
+		
+		var food = {
+		    w:20,
+			h:20,
+            x:Math.random()*(w-20),
+            y:Math.random()*(h-20),
+		};
+		var hero = {
+		    w:20,
+			h:20,
+            x:(w-20)/2,
+            y:(h-20)/2,
+			speed:200,
+			score:0
+		};
+		
+		// 监听事件
+		var keysDown = {};
+		addEventListener('keydown',function (e) {
+		    keysDown[e.keyCode] = true;
+			
+        });
+		addEventListener('keyup',function (e) {
+			delete keysDown[e.keyCode];
+        });
+		
+		//
+		
+		// 事件触发则更新
+		// 这儿的代码真是丑的不能直视啊
+		var update = function (modify) {
+			// 移动英雄
+			if (38 in keysDown){
+			    hero.y -= hero.speed*modify;
+			}
+			if (40 in keysDown){
+			    hero.y += hero.speed*modify;
+			}
+			if (37 in keysDown){
+			    hero.x -= hero.speed*modify;
+			}
+			if (39 in keysDown) {
+			    hero.x += hero.speed*modify;
+			}
+			
+			// 边界检测
+			if (hero.x <= 0) {
+			    hero.x = 0;
+			}
+			if (hero.x > w - hero.w){
+			    hero.x = w - hero.w;
+			}
+			if (hero.y < 0){
+			    hero.y = 0;
+			}
+			if (hero.y > h - hero.h){
+			    hero.y = h - hero.h;
+			}
+			
+			// 碰撞检测
+			if (food.x <= hero.x + hero.w&&
+				hero.x <= food.x + food.w &&
+				food.y <= hero.y + hero.h &&
+				hero.y <= food.y + food.h) {
+			    
+//			    console.log("get");
+			    hero.score += 1;
+                food.x = Math.random()*(w-20);
+				food.y = Math.random()*(h-20);
+			}
+        };
+		
+		// 绘制场景
+        var render = function () {
+			ctx.clearRect(0,0,w,h);
+			
+            ctx.fillStyle = "#000";
+			ctx.fillRect(food.x, food.y, food.w, food.h);
+			
+			ctx.beginPath();
+			ctx.fillStyle = "red";
+			ctx.fillRect(hero.x, hero.y, hero.w, hero.h);
+			
+			ctx.beginPath();
+            ctx.fillText('方向键控制移动',20,20);
+            ctx.fillText('SCORE : ' + hero.score,20,40);
+        };
+		
+        // 主函数
+        var start = function () {
+            var now = new Date();
+			render();
+			
+			// 参数是一个程序运行时间的修正系数
+			update((now - then)/1000);
+			
+			then = now;
+			requestAnimationFrame(start);
+        };
+        
+        var then = new Date();
+        start();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-09-29
+	描述：判断顶部高度实现瀑布流
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<style rel="stylesheet">
+			.item {
+				position: absolute;
+				width: 200px;
+				
+				
+				-webkit-box-sizing: border-box;
+				box-sizing: border-box;
+				border: 1px solid #dedede;
+				
+				display: table-cell;
+				
+			}
+			.wrap {
+				position: relative;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>利用JS实现的瀑布流</h1>
+		<p>
+			<a href="../_old.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<div class="item">init1</div>
+			<div class="item">init2</div>
+			<div class="item">init3</div>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				//初始化，指定列数为3列
+				var col = 3;
+				var margin = 10;
+
+				var totalHeight = [];
+				
+				$(".item:lt("+col+")").each(function(index){
+					var h = Math.random()*50+100;
+					
+					$(this).css({"height":h+"px","top":"0","left":210*index+"px"});
+					
+					totalHeight[index] = (h+parseFloat($(this).css("top")))
+				});
+				for (var i = 0; i < 10; ++i){
+					createItem();
+				}
+				
+				function createItem(){
+					
+					//找到高度最矮的那一列
+					var minHeight = Math.min(...totalHeight)
+					var minIndex = totalHeight.indexOf(minHeight);
+					
+					var randomHeight = Math.random()*50+100;
+					$("<div class='item'>"+randomHeight+"</div>").css({"height":randomHeight+"px","left":210*minIndex+"px","top":minHeight+margin+"px"}).appendTo(".wrap");
+					
+					totalHeight[minIndex] += (randomHeight+margin);
+				}
+				
+
+			})
+		</script>
+	</body>
+</html>

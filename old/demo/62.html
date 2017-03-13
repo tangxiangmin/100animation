@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-09-18
+	描述：展示图片缩略分栏效果及查看图片详情
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<style rel="stylesheet">
+			.list-items {
+				position: relative;
+			}
+			.list-items li {
+				width: 200px;
+				position: absolute;
+				height: 200px;
+				opacity: 0;
+			}
+			.list-items li img {
+				width: 100%;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<h1>分页面效果</h1>
+		<p>
+			<a href="../_old.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<div class="btn">
+				list
+			</div>
+			<ul class="list-items">
+				<li>
+					<img src="../assets/img/6.jpg"/>
+				</li>
+				<li>
+					<img src="../assets/img/6.jpg"/>
+				</li>
+				<li>
+					<img src="../assets/img/6.jpg"/>
+				</li>
+				<li>
+					<img src="../assets/img/6.jpg"/>
+				</li>
+				<li>
+					<img src="../assets/img/6.jpg"/>
+				</li>
+				<li>
+					<img src="../assets/img/6.jpg"/>
+				</li>
+			</ul>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				$(".btn").on("click",function(){
+					$(".list-items li").each(function(index){
+						var l = Math.floor(Math.random()*400 - 200);
+						var t = Math.floor(Math.random()*400 - 200);
+						$(this).css({"left":l,"top":t}).animate({"left":(index%3)*210+"px","top":parseInt(index/3)*210,"opacity":1},1000)
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

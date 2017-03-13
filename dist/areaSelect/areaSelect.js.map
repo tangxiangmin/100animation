@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../areaSelect/areaSelect.js"],"names":["distPicker","console","log"],"mappings":";;;;IAAMA,U,GACF,sBAAa;AAAA;;AACTC,YAAQC,GAAR,CAAY,CAAZ;AACH,C","file":"areaSelect.js","sourcesContent":["class distPicker{\r\n    constructor(){\r\n        console.log(1);\r\n    }\r\n\r\n}"]}

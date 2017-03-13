@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-09-30
+	描述：曾经使用cocos-2dx实现过一个简易版的Flappy Bird,现在在网页上实现应该非常简单
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<style rel="stylesheet">
+			.wrap {
+				border: 1px solid red;
+				width: 280px;
+				height: 500px;
+				overflow: hidden;
+				position: relative;
+				cursor: pointer;
+			}
+			#welcome,#gameScene,#gameOver {
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+			}
+			#welcome {
+				
+				padding-top: 120px;
+				z-index: 999;
+				
+			}
+			/*背景*/
+			.bg {
+				position: relative;
+				z-index: -999;
+			}
+			.bg-item {
+				position: absolute;
+				top: 0;
+				z-index: -10;
+			}
+			/*小鸟*/
+			#bird {
+				position: absolute;
+				top: 250px;
+				left: 0 ;
+				right: 0;
+				width: 39px;
+				height: 32px;
+				margin: auto;
+				
+				animation: fly 1s infinite;
+			}
+			@keyframes fly{
+				from{
+					background-image: url(../assets/img/70flappybird/bird1.jpg);
+				}
+				33.3% {
+					background-image: url(../assets/img/70flappybird/bird2.jpg);
+				}
+				66.6% {
+					background-image: url(../assets/img/70flappybird/bird3.jpg);
+				}
+				to{
+					background-image: url(../assets/img/70flappybird/bird1.jpg);
+				}
+			}
+			#gameScene {
+				z-index: 99;
+			}
+			/*本来水管也有背景图的，懒得去切了*/
+			.pillar {
+				width: 30px;
+				position: absolute;
+			}
+			/*得分*/
+			.score {
+				height: 50px;
+				line-height: 50px;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>实现Flappy Bird</h1>
+		<p>
+			<a href="../_old.html">返回主菜单</a>
+		</p>
+		<div class="score"></div>
+		<div class="wrap">
+			<div class="bg">
+				<div class="bg-item"><img src="../assets/img/70flappybird/bg1.png" alt="" width="280"/></div>
+				<div class="bg-item"><img src="../assets/img/70flappybird/bg1.png" alt="" width="280"/></div>
+				<div class="bg-item"><img src="../assets/img/70flappybird/bg2.png" alt="" width="280"/></div>
+				<div class="bg-item"><img src="../assets/img/70flappybird/bg2.png" alt="" width="280"/></div>
+			</div>
+			<section id="welcome">
+				<h1>像素小鸟</h1>
+				<p>点击开始</p>
+			</section>
+			<section id="gameScene">
+				<div id="bird"></div>
+				<div class="pillar"></div>
+			</section>
+			<section id="gameOver"></section>
+			
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				//定时器
+				;(function(){
+					//初始化移动背景
+					const bgWidth = 280;
+
+					$(".bg-item").each(function(index){
+						$(this).css({"left":index*bgWidth+"px"});
+					})
+					var timer = setInterval(function(){
+						$(".bg-item").css({"left":"-="+1+"px"}).each(function(){
+							if (parseInt($(this).css("left"))<=-280){
+								$(this).css("left",bgWidth*3+"px");
+							}
+						});
+						
+						$(".pillar").stop().animate({"left":"-=1px"},1);
+						
+						//检测碰撞,由于小鸟实际上并没有水平方向上的位移，因此只需检测靠近中间位置上的柱子即可
+						
+					},1);
+				})();
+				
+				//小鸟的飞翔动画
+				//需要好好的切一下图才行，不然这个动画太别扭了
+				;(function(){
+					
+					var timer = setInterval(function(){
+						$("#bird").stop(true,true).animate({"top":"+=2px"},2);
+						if (parseFloat($("#bird").css("top"))>=500){
+//							alert("GameOver")
+							
+						}
+					},20);
+					
+					var knockTimer = null;
+					var score = 0;
+					function endGame(){
+						var flag = confirm("游戏结束，你获得了"+$(".score").text()+"分,是否继续");
+						if (flag){
+							history.go(0);
+						}else {
+							window.location.href = "../_old.html";
+						}
+					}
+					$("#gameScene").on("click",function(){
+						$("#bird").stop(true,true).animate({"top":"-=40px"},10);
+						clearInterval(knockTimer);
+						knockTimer = setInterval(function(){
+							$(".pillar").each(function(){
+								if(parseInt($(this).css("left"))<-30){
+									$(this).remove();
+								}
+								if (parseInt($(this).css("left")) == 125){
+									var h0 = parseInt($(this).css("height"));
+									var h = parseInt($("#bird").css("top"));
+									if($(this).attr("data-pos") == "top"){
+										if (h < h0){
+											endGame();
+										}else {
+											score++;
+											$(".score").text(score);
+										}
+									}else if($(this).attr("data-pos") == "bottom") {
+										if (h > (500-h0)){
+											endGame();
+											
+										}else {
+											score++;
+											$(".score").text(score);
+										}
+									}
+								}
+							})
+						},1)
+						
+					})
+				})();
+				
+				//开始游戏
+				;(function(){
+					$("#welcome").on("click",function(){
+						$(this).hide();
+					})
+				})();
+				
+				//柱子
+				;(function(){
+					var timer = setInterval(function(){
+						var color1 = "#"+Math.floor(Math.random()*899+100);
+						var color2 = "#"+Math.floor(Math.random()*899+100);
+						var h1 = Math.random()*150+50;
+						var h2 = Math.random()*100+100;
+						var obj1 = $("<div class='pillar'></div");
+						var obj2 = $("<div class='pillar'></div");
+						obj1.css({"background":color1,"right":"-30px","top":0,"height":h1}).attr("data-pos","top").appendTo($("#gameScene"));
+						obj2.css({"background":color2,"right":"-30px","bottom":0,"height":h2}).attr("data-pos","bottom").appendTo($("#gameScene"));
+						
+					},3000);
+					
+				})();
+				
+			})
+		</script>
+	</body>
+</html>

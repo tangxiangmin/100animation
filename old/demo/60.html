@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-09-09
+	描述：经常遇见各种各样的弹窗需求，又不能直接使用alert()，因此决定自己封装一个插件
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<style rel="stylesheet">
+
+			.popup-layer {
+				position: fixed;
+				left: 0;
+				top: 0;
+				z-index: 999;
+				display: none;
+			
+				width: 100vw;
+				height: 100vh;
+			}
+			.popup-shadow {
+				background: rgba(0, 0, 0, 0.5)
+			}
+			
+			
+			.popup {
+				position: absolute;
+				left: 50%;
+			
+				top: 50%;
+			
+				-webkit-transform: translate(-50%,-50%);
+				transform: translate(-50%,-50%);
+				
+				font-size: 14px;
+			
+				border: 1px solid #dedede;
+				border-radius: 5px;
+				background: #fff;
+			}
+			
+			.popup .cancle {
+				position: absolute;
+				right: -11px;
+				top: -11px;
+			
+				width: 22px;
+				height: 22px;
+			
+				background: #fff url('../assets/img/close.png') no-repeat center;
+				border-radius: 10px;
+			
+				cursor: pointer;
+			}
+			
+			.popup-head {
+				line-height: 30px;
+				padding: 6px 12px;
+				font-size: 1.2em;
+				border-bottom: 1px solid #dedede;
+			
+			}
+			.popup-body {
+				overflow: hidden;
+				padding: 10px 12px;
+			
+				line-height: 1.4em;
+			}
+			.popup-foot {
+				padding: 6px 12px;
+				
+				border-top: 1px solid #dedede;
+				text-align: right; 
+			}
+			
+			.popup .popup-btn {
+				display: inline-block;
+				padding: 3px 6px;
+				cursor: pointer;
+			}
+			.popup .popup-btn-primary {
+				color: #fff;
+				background: #0099FF;
+				border-radius: 3px;
+			}
+			
+			
+			.popup-layer.confirm .popup-body {
+				text-indent: 2em;
+			}
+			
+			.popup-layer.info .popup-body{
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>一组弹窗</h1>
+		<p>
+			<a href="../_old.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+		<button id="confirm">confirm</button>
+		<button id="info">info</button>
+	</div>
+		<!--shadow-->
+		
+		<div class="popup-layer confirm">
+			<div class="popup">
+				<div class="cancle"></div>
+				<h3 class="popup-head">警告</h3>
+				<p class="popup-body">你已经触发警告！你已经触发警告你已经触发警告</p>
+				<div class="popup-foot">
+					<span class="popup-btn popup-btn-primary">确定</span>
+					<span class="popup-btn popup-btn-primary">取消</span>
+				</div>
+			</div>
+		</div>
+		<div class="popup-layer info">
+			<div class="popup">
+				<div class="cancle"></div>
+				<h3 class="popup-head">信息</h3>
+				<p class="popup-body">
+					<span class="popup-btn popup-btn-primary">确定</span>
+					<span class="popup-btn popup-btn-primary">取消</span>
+				</p>
+				
+			</div>
+		</div>
+		<!--/shadow-->
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$.fn.extend({
+				info:function(obj){
+					$(this).on("click",function(){
+						var shadow = obj.shadow || true;
+						var w = obj.width || "240px";
+
+						if (obj.shadow){
+							$(".info").addClass("popup-shadow")
+						}
+						$(".info .popup").css({"width":w});
+						$(".info").show();
+
+						$(".info .cancle").on("click",function(){
+							$(".info").hide();
+						})
+
+						return false;
+					})
+				},
+				confirm:function(obj){
+					$(this).on("click",function(){
+						var shadow = obj.shadow || true;
+						var w = obj.width || "240px";
+
+						if (obj.shadow){
+							$(".confirm").addClass("popup-shadow")
+						}
+						
+						$(".confirm .popup").css({"width":w});
+						$(".confirm").show();
+
+						$(".confirm .cancle").on("click",function(){
+							$(".confirm").hide();
+						})
+
+						return false;
+					})
+				}
+			})
+
+			$("#info").info({
+				shadow:false,
+			});
+			
+			$("#confirm").confirm({
+				shadow:true
+			});
+		</script>
+	</body>
+</html>

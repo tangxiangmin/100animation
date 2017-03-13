@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-11-12
+	描述：使用的是jquery的animate，动画不太流畅，还有很多可以优化的细节
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<style rel="stylesheet">
+			.t-content-box {
+				width: 400px;
+				height: 400px;
+
+				overflow: hidden;
+			}
+			.t-content {
+
+				background: red;
+				position: relative;
+				overflow: hidden;
+			}
+			.t-content {
+				line-height: 100px;
+			}
+			.bar {
+				height: 100%;
+				width: 20px;
+				background: gray;;
+				float: right;
+			}
+			.bar .slide {
+				height: 20px;
+				background: yellow;
+				position: relative;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>模拟滚动条</h1>
+		<p>
+			<a href="../_old.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<div class="t-content-box">
+				<div class="bar">
+					<div class="slide"></div>
+				</div>
+				<div class="t-content">
+					<p>内容 1</p>
+					<p>内容2 </p>
+					<p>内容3 </p>
+					<p>内容4 </p>
+					<p>内容 5</p>
+					<p>内容 6</p>
+					<p>内容 7</p>
+					<p>内容 8</p>
+					<p>内容 9</p>
+					<p>内容 10</p>
+					
+				</div>
+			</div>
+
+			
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				
+				var h0 = parseInt($(".t-content-box").height()); //bar height
+				var h1 = parseInt($(".t-content").height()); //content height
+				var h2 = parseInt($(".slide").height()); //slide height
+				var radio = h0/(h1-h0+h2*2);
+				
+				$(".t-content").on("mousewheel DOMMouseScroll",function(e){
+					var delta = (e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1 : -1)) ||  (e.originalEvent.detail && (e.originalEvent.detail > 0 ? -1 : 1));
+
+					if (delta > 0){
+						//向上
+						if (!$(this).is(":animated")){
+							var minus = 0 - parseInt($(this).css("top"));
+							if (minus >= 100){
+								minus = 100;
+							}
+							$(this).animate({"top":"+="+minus+"px"});
+							$(".slide").animate({"top":"-="+(radio*minus)+"px"});
+						}
+					}else {
+						// 向下
+						if (!$(this).is(":animated")){
+
+							var minus = (h1-h0) +  parseInt($(this).css("top")) ;
+							if (minus > 100){
+								minus = 100;
+							}
+							$(this).animate({"top":"-="+minus+"px"});
+							$(".slide").animate({"top":"+="+(radio*minus)+"px"});
+						}
+					}
+				})
+				$(".slide").on("mousedown",function(e){
+					var posY = parseInt($(this).css("top"));
+					var offsetY = $(this).offset().top;
+					var startY = e.pageY;
+					
+					var _that = $(this);
+					$(document).on("mousemove",function(e){
+						var distance = e.pageY - startY + posY;
+						if (distance < 0){
+							distance = 0;
+							return;
+						}
+						if (distance>h0-h2){
+							distance = h0;
+							return ;
+						}
+						$(".t-content").css({"top":-(1/radio)*distance + "px"});
+
+						_that.css({"top":distance+ "px" })
+					})
+					$(document).on("mouseup",function(){
+						$(this).off("mousemove");
+					})
+					
+				})
+			})
+		</script>
+	</body>
+</html>

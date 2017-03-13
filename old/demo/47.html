@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-08-15
+	描述：写一个简陋版的宝石迷阵---致我曾经最喜欢的游戏
+		8-15： 完成界面搭建
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<style rel="stylesheet">
+			.wrap { position: relative;}
+			
+			.red { background: #CC0033;}
+			.blue { background: #00CCFF;}
+			.black { background: #000033;}
+			.green { background: #00CC66;}
+			
+			.box { position: absolute; left: 0; top: 0; height: 300px; width: 300px;;}
+			.node { 
+				width: 30px; height: 30px; position: absolute;
+				box-sizing: border-box;
+				padding: 2px;
+			}
+			.node .inner {
+				width: 26px;
+				height: 26px;
+				margin: 2px;
+			}
+			.score {
+				position: absolute;
+				right: 0;
+				top: 0;
+				
+			}
+		</style>
+	</head>
+	<body>
+		<h1>简易版宝石迷阵</h1>
+		<p>
+			<a href="../_old.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<div class="score">0</div>
+			<div class="box">
+				
+			</div>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+		$(function(){
+			var row = 5;
+			var col = 5;
+			var w = 30;
+			var h = 30;
+			var marginX = 0;
+			var marginY = 0;
+			var score = 0;
+
+			//初始化节点地图
+			(function(){
+				var str = "";
+				for (var i = 0 ; i < row; ++i){
+					for (var j = 0; j < col; ++j){
+						str += "<div class='node'><div class='inner'></div></div>";
+					}
+				}
+				$(".box").append($(str));
+				var color = ["red","blue","black","green"];
+				$(".node").each(function(){
+					var index = $(this).index();
+					$(this).css({"left":(index%col)*w,"top":parseInt(index/row)*h})
+						   .find(".inner").addClass(color[Math.floor(Math.random()*4)]);
+				})
+			})();
+			
+			//判断
+			//获取节点坐标，左上角(0,0)
+			function getPos(top,left,color){
+				return {
+					x:parseInt(top)/h,
+					y:parseInt(left)/w,
+					color:color
+				}
+			}
+			var arrPos = [];
+			$(".node").each(function(){
+				var t = $(this).css("top");
+				var l = $(this).css("left");
+				var color = $(this).find(".inner").attr("class").split(" ")[1];
+				arrPos.push(getPos(t,l,color));
+			})
+
+			
+			var same = [];
+			for (var i = 0; i < arrPos.length; ++i){
+				var sameY = checkVerticalSame(i);
+				if (sameY) {
+					for (var j = 0; j < sameY.length; ++j){
+						same.push(sameY[j]);
+					}
+				}
+				//解决水平判断错误换行的问题
+				if ((i+2) % col == 0 ){
+					continue;
+				}
+				if ((i+1) % col == 0){
+					continue;
+				}
+				var sameX = checkHorizonSame(i)
+				if (sameX){
+					for (var j = 0; j < sameX.length; ++j){
+						same.push(sameX[j]);
+					}
+				}
+			}
+			//由于相同元素多余三个会重复添加，因此可以使用去重
+			same.sort(function(a,b){return a-b;});
+			var newArr = [same[0]];
+			for (var i = 1; i < same.length; ++i){
+				if (newArr[newArr.length-1] != same[i]){
+					newArr.push(same[i]);
+				}
+			}
+			
+			//newArr保存的只是arrPos坐标数组中可以被消除的元素，如何映射到对应的节点呢
+			score += newArr.length;
+			$(".score").text(score);
+			for (var i = 0 ; i < newArr.length; ++i){
+//				$(".node").eq(newArr[i]).fadeOut(400);
+			}
+			
+			//判断竖直方向相同的元素
+			function checkVerticalSame(i){
+				var same = [];
+				same.push(i);
+				var j = 0;
+				while (j < row-1){
+					if (arrPos[i+(j+1)*col] && arrPos[i+j*col].color == arrPos[i+(j+1)*col].color){
+						same.push(i+(j+1)*col);
+						j++;
+					}else {
+						break;
+					}
+				}
+				//返回总长度大于等于三个的节点起始点
+				if (same.length >= 3){
+					return same;
+				}
+			}
+			
+			//判断水平方向相同的元素
+			function checkHorizonSame(i){
+				var same = [];
+				same.push(i);
+				var j = 0;
+				while (j < col-2){
+					if (arrPos[i+(j+1)] && arrPos[i+j].color == arrPos[i+(j+1)].color){
+						same.push(i+(j+1));
+						j++;
+					}else {
+						break;
+					}
+				}
+				if (same.length >= 3){
+					return same;
+				}
+			}
+		})
+			
+		</script>
+	</body>
+</html>

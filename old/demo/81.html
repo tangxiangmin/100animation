@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <style rel="stylesheet">
+
+    </style>
+</head>
+
+<body>
+    <h1>生日时间</h1>
+    <p>
+        <a href="../_old.html">返回主菜单</a>
+    </p>
+    <div class="wrap">
+
+    <input type="text" name="birth" placeholder="输入生日：11-12">
+		<span class="word"></span>
+    </div>
+    <!--华丽丽的分割线-->
+    <script src="../js/jquery-1.12.4.min.js"></script>
+    <script>
+    $(function() {
+    	$("input[name='birth']").on("blur",function(){
+    		console.log(1);
+    		var birth = $(this).val();
+    		// test 
+	        var dayInterval = getBirthInterval(birth);
+	        $(".word").text("距离你的生日还有："+dayInterval+"天");
+    	})
+       
+
+        function getBirthInterval(birth) {
+            var birthDay = {
+                month: parseInt(birth.split("-")[0] - 0),
+                day: parseInt(birth.split("-")[1] - 0),
+            };
+
+            // now 
+            var now = new Date();
+            var nowDate = {
+                year: now.getFullYear(),
+                month: now.getMonth() + 1,
+                day: now.getDate()
+            }
+
+            var birthTimeInterval = 0;
+            if (birthDay.month > nowDate.month || (birthDay.month == nowDate.month && birthDay.day > nowDate.day)) {
+                // 今年
+                birthTimeInterval = Date.UTC(nowDate.year, birthDay.month - 1, birthDay.day);
+            } else {
+                // 当前日期为生日则也算作再等一年
+                // 明年
+                birthTimeInterval = Date.UTC(nowDate.year - 0 + 1, birthDay.month - 1, birthDay.day);
+            }
+
+            return Math.ceil((birthTimeInterval - now.getTime()) / 1000 / 60 / 60 / 24);
+        }
+
+       
+    })
+    </script>
+</body>
+
+</html>

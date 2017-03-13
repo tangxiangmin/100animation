@@ -1,0 +1,31 @@
+/*css reset*/
+body { font-family: "Microsoft Yahei"; background-color: #f1f1f1}
+body,ul,h1,h2,h3,h4,h5,h6,ul,ol,dl,dd,form,p,input { margin: 0; }
+ul,dl {padding-left: 0; list-style-type: none;}
+img { border: 0; }
+input { padding: 0; }
+
+h1 { text-align: center; margin: 20px 0;}
+
+
+a { color: #000; text-decoration: none;}
+p {text-align: center; margin-bottom: 20px;}
+
+
+a:hover { color: red; }
+
+/*public style*/
+.fl { float: left; }
+.fr { float: right; }
+
+.wrap { width: 500px; height: 500px; margin: 100px auto;}
+
+.btn {
+	width: 50px;
+	height: 50px;
+	text-align: center;
+	line-height: 50px;
+	background: #00CCFF;
+	color: #fff;
+	margin: 10px;
+}

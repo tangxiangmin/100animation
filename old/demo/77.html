@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <style rel="stylesheet">
+    #radar {
+        border: 1px solid #dedede;
+    }
+    </style>
+</head>
+
+<body>
+    <h1>雷达图能力展示</h1>
+    <p>
+        <a href="../_old.html">返回主菜单</a>
+    </p>
+    <div class="wrap">
+        <canvas id="radar" width="600" height="600"></canvas>
+    </div>
+    <!--华丽丽的分割线-->
+    <script src="../js/jquery-1.12.4.min.js"></script>
+    <script>
+    window.onload = function() {
+            var cvs = document.getElementById("radar");
+            var context = cvs.getContext("2d");
+
+            if (context) {
+                function drawSixRect(x, y, r, diagonal, word, score) {
+                    diagonal = diagonal || false;
+
+                    var l = Math.pow(3, 1 / 2) / 2 * r;
+                    context.save();
+
+                    context.strokeStyle = '#ccc'; //填充绿色
+
+                    context.translate(x, y); //原点移到x,y处，即要画的多边形中心
+
+                    context.beginPath();
+
+                    var point = [
+                        [-r / 2, -l],
+                        [r / 2, -l],
+                        [r, 0],
+                        [r / 2, l],
+                        [-r / 2, l],
+                        [-r, 0],
+                    ];
+
+                    for (var i = 0; i < point.length; ++i) {
+                        context.lineTo(point[i][0], point[i][1]);
+                    }
+                    context.closePath();
+                    context.stroke();
+
+                    //对角线
+                    if (diagonal) {
+                        for (var i = 0; i < 3; i++) {
+                            context.beginPath();
+
+                            context.moveTo(point[i][0], point[i][1]);
+                            context.lineTo(point[i + 3][0], point[i + 3][1]);
+
+                            context.closePath();
+                            context.stroke();
+                        }
+                    }
+
+                    //重置
+                    context.restore();
+
+                    //
+                    if (word) {
+                        context.save();
+                        context.translate(x, y);
+                        context.font = " 14px '华文行楷','微软雅黑'";
+                        context.textAlign = 'center';
+                        for (var i = 0; i < point.length; ++i) {
+                            context.fillText(word[i], point[i][0] * 1.3, point[i][1] * 1.3);
+                        }
+                        context.restore();
+                    }
+                    if (score) {
+                        context.save();
+                        context.translate(x, y);
+                        context.fillStyle = 'rgba(153,207,230,0.5)'; //填充红色，半透明
+                        context.beginPath();
+
+                        for (var i = 0; i < score.length; ++i) {
+                            context.lineTo(point[i][0] * score[i], point[i][1] * score[i]);
+                        }
+                        context.closePath();
+                        context.fill();
+                        context.restore();
+                    }
+                }
+
+                drawSixRect(280, 280, 40);
+                drawSixRect(280, 280, 80);
+
+                var word = [
+                    "写手信用",
+                    "稿件质量",
+                    "写稿速度",
+                    "撰稿总量",
+                    "基础资料",
+                    "服务态度",
+                ]
+                score = [0.5, 0.4, 0.5, 0.4, 0.7, 0.4];
+                drawSixRect(280, 280, 120, true, word, score);
+
+            }
+        }
+    </script>
+</body>
+
+</html>

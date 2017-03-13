@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<!--说明-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<style rel="stylesheet">
+			.box { 
+				position: relative;
+				width: 100px; height: 50px ; 
+				background: #fff; line-height: 50px; 
+				border:1px solid #dedede;
+				border-radius: 50px;
+			}
+
+			.box span { display: inline-block;width: 50px; height: 50px; text-align: center;}
+			.btn { position: absolute; width: 50px; height: 50px;top: 0; left: 0; background: #dedede; border-radius: 50px; margin: 0;}
+			/* 使用CSS模拟 */
+			.t-switch {
+            width: 60px;
+            height: 30px;
+            border-radius: 15px;
+            position: relative;
+            line-height: 30px;
+            border: 1px solid #dedede;
+        }
+        .t-switch:before,.t-switch:after {
+            position: absolute;
+            z-index: -10;
+            top: 0;
+            font-size: 12px;
+        }
+        .t-switch:before {
+            content: "开";
+            
+            left: 10px;
+           
+        }
+         .t-switch:after {
+            content: "关";
+            
+            right: 10px;
+            
+        }
+        .t-switch input[type="checkbox"] {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
+
+        .t-switch input[type="checkbox"]:checked + span{
+            transform: translateX(30px);
+             background: #1AAD19;
+        }
+        .t-switch-btn {
+            position: absolute;
+            z-index: -1;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
+           	background: #dedede;
+            transition: all ease .5s;
+         }
+		</style>
+		
+	</head>
+	<body>
+		<h1>模拟按钮开关</h1>
+		<p>
+			<a href="../_old.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<p>使用JS模拟</p>
+			<div class="box">
+				<span>开</span><span>关</span>
+				<span class="btn"></span>
+			</div>
+			<p>使用CSS模拟</p>
+			<div class="t-switch">
+		        <input type="checkbox">
+		        <span class="t-switch-btn"></span>
+		      
+		    </div>
+
+
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			var on = true;
+			$(".box").on("click",function(){
+				if (on){
+					$(".btn").stop().animate({"left":"50px"},200);
+				}else {
+					$(".btn").stop().animate({"left":"0"},200);
+				}
+				on = !on;
+
+			})
+		</script>
+	</body>
+</html>

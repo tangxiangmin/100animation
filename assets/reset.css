@@ -1,0 +1,43 @@
+body {
+    margin: 0;
+}
+
+article,
+aside,
+footer,
+header,
+nav,
+section,
+main {
+    display: block;
+}
+
+img {
+    border: 0;
+}
+
+a {
+    color: inherit;
+    background: transparent;
+    text-decoration: none;
+
+}
+
+input, button, textarea, select, optgroup {
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    background: inherit;
+}
+
+textarea {
+    resize: none;
+}
+
+:focus {
+    outline: 0;
+}
+
+* {
+    box-sizing: border-box;
+}

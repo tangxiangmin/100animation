@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../../areaSelect/src/areaSelect.js"],"names":["Test","console","log"],"mappings":";;;;IAAMA,I,GACF,gBAAa;AAAA;;AACTC,YAAQC,GAAR,CAAY,CAAZ;AACH,C","file":"areaSelect.js","sourcesContent":["class Test{\r\n    constructor(){\r\n        console.log(1);\r\n    }\r\n\r\n}"]}

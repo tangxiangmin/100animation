@@ -5,22 +5,18 @@
     <title>城市联动</title>
 </head>
 <body>
-    <div class="">
-        <select name="" id="province"></select>
-        <select name="" id="city"></select>
-        <select name="" id="county"></select>
-    </div>
+    <form id="dist">
+        <select name="" data-role="province"></select>
+        <select name="" data-role="city"></select>
+        <select name="" data-role="county"></select>
+    </form>
     <script src="../assets/jquery-1.12.4.min.js"></script>
     <script src="distPicker.js"></script>
     <script>
-        new distPicker({
-            province: '四川',
-            city: '南充',
-            county: '蓬安县'
-        },{
-            province: '#province',
-            city: '#city',
-            county: '#county'
+        $("#dist").distPicker({
+            province: "四川",
+            city: "南充",
+            county: "蓬安县"
         });
     </script>
 </body>

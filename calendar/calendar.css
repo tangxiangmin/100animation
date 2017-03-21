@@ -1,0 +1,57 @@
+.xm-calendar {
+  width: 700px;
+  background: #fff;
+  color: #000;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box; }
+  .xm-calendar_hd {
+    display: block;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    overflow: hidden;
+    border: 1px solid #dedede;
+    border-bottom: none; }
+  .xm-calendar .xm-calendar_prev {
+    height: 100px;
+    width: 100px;
+    cursor: pointer; }
+  .xm-calendar_prev {
+    float: left; }
+  .xm-calendar_prev {
+    float: right; }
+
+.xm-calendar table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.7); }
+
+.xm-calendar table td,
+.xm-calendar table th {
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0;
+  border: 1px solid #dedede;
+  height: 100px;
+  width: 100px;
+  line-height: 100px;
+  font-size: 16px; }
+
+.xm-calendar .active {
+  background: #0099CC;
+  color: #fff; }
+
+.xm-calendar td:hover {
+  background: #f8f8f8;
+  cursor: pointer; }
+
+.xm-calendar .active:hover {
+  background: #0099CC; }
+
+/*# sourceMappingURL=calendar.css.map */

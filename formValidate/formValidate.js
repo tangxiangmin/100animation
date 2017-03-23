@@ -1,35 +1,27 @@
 /**
- * Created by admin on 2017/3/17.
+ * 一个表单验证插件
  */
-(function (window) {
-    const stragies = {
-        isEmpty(val, error){
-            if (val === ''){
-                return error;
+
+!(function (factory) {
+    if (typeof define === "function" && (define.amd || define.cmd) && !jQuery) {
+        define([ "jquery" ],factory);
+    } else if (typeof module === 'object' && module.exports) {
+        module.exports = function( root, jQuery ) {
+            if ( jQuery === undefined ) {
+                if ( typeof window !== 'undefined' ) {
+                    jQuery = require('jquery');
+                } else {
+                    jQuery = require('jquery')(root);
+                }
             }
-        },
-        minLength(val, length, error){
-            if (val.length < length){
-                return error;
-            }
-        },
-        isMobile(val, error){
-            if (!/^1[358]\d{9}$/.test(val)){
-                return error;
-            }
-        }
+            factory(jQuery);
+            return jQuery;
+        };
+    } else {
+        factory(jQuery);
     }
+})(function ($) {
+    $.fn.formValidate = function (param) {
 
-    class Validator{
-        constructor(){
-
-        }
-        add(domNode, stragyType, error ){
-            let val = domNode.value;
-            let rule = stragyType.split(":");
-
-            stragies[stragyType](val, error)
-        }
     }
-
-})(window);
+});

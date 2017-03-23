@@ -26,166 +26,148 @@
 
     $.fn.calendar = function (param) {
 
-        var tpl = '<div class="xm-calendar_hd"> <div class="xm-calendar_prev">上一月</div> <span class="t-year"></span> 年 <span class="t-month"></span> 月 <div class="xm-calendar_next">下一月</div> </div> <table> <thead> <tr> <th>日</th> <th>一</th> <th>二</th> <th>三</th> <th>四</th> <th>五</th> <th>六</th> </tr> </thead> <tbody></tbody> </table>';
-
+        var tpl = '<div class="xm-calendar_hd"> <div class="xm-calendar_prev">上一月</div> <span class="xm-calendar_year"></span> 年 <span class="xm-calendar_month"></span> 月 <div class="xm-calendar_next">下一月</div> </div> <table> <thead> <tr> <th>日</th> <th>一</th> <th>二</th> <th>三</th> <th>四</th> <th>五</th> <th>六</th> </tr> </thead> <tbody class="xm-calendar_bd"></tbody> </table>';
 
         return this.each(function (index) {
-            $(".xm-calender").append($(tpl));
-        })
-    }
+            var $this = $(this);
+            $this.append($(tpl));
 
+            var $prev = $this.find(".xm-calendar_prev"),
+                $next = $this.find(".xm-calendar_next"),
+                $body = $this.find(".xm-calendar_bd"),
+                $year = $this.find(".xm-calendar_year"),
+                $month = $this.find(".xm-calendar_month");
 
-});
+            // 生成结构
+            function createFrame(week_num) {
+                // 生成行
+                var rowStr = "";
+                for (var i = 0; i < week_num; ++i) {
+                    rowStr += "<tr></tr>";
+                }
+                $body.empty().append(rowStr);
 
-
-function calender() {
-    return false;
-    var tpl = '<div class="xm-calendar_hd"> <div class="xm-calendar_prev">上一月</div> <span class="t-year"></span> 年 <span class="t-month"></span> 月 <div class="xm-calendar_next">下一月</div> </div> <table> <thead> <tr> <th>日</th> <th>一</th> <th>二</th> <th>三</th> <th>四</th> <th>五</th> <th>六</th> </tr> </thead> <tbody></tbody> </table>';
-
-    $(".xm-calender").append($(tpl));
-    var obj = getNow();
-    var year = obj.year;
-    var month = obj.month;
-    var day = obj.day;
-    var weekday = obj.weekday;
-
-    var clickMonth = 0;
-    // 初始化
-    changeMonth(year, month);
-    // 后退按钮
-    $(".xm-calender .xm-calendar_prev").on("click", function () {
-        clickMonth--;
-
-        month--;
-
-        if (month < 0) {
-            year--;
-            month = 11;
-        }
-
-        changeMonth(year, month);
-    });
-
-    // 前进按钮
-    $(".xm-calender .xm-calendar_next").on("click", function () {
-        clickMonth++;
-
-        month++;
-        if (month > 11) {
-            year++;
-            month = 0;
-        }
-        changeMonth(year, month);
-    });
-    // 添加安排
-    var pickMoreDay = [];
-    $(".xm-calender").on("click", 'td', function () {
-
-
-    });
-    // 更新日历
-    function changeMonth(year, month) {
-        setHead(year, month);
-        createMonth(year, month);
-        activeDay();
-    }
-
-    // 创建对应月份日历
-    function createMonth(year, month) {
-        // 每月对应天数
-        var month_day = isLeapYeay(year);
-        // 获取当前月份一号是星期几
-        var first = new Date(Date.UTC(year, month, 1));
-        var first_weekday = first.getDay();
-        // 获取当前月份最后一天是星期几
-        var last = new Date(Date.UTC(year, month, month_day[month]));
-        var last_weekday = last.getDay();
-        // 获取当前月份有多少周，即获取当前月份最后一天是第几周即可
-        var week_num = Math.floor((month_day[month] - last_weekday + 12) / 7);
-        var str = "";
-        for (var i = 0; i < week_num; ++i) {
-            str += "<tr></tr>";
-        }
-        $(".xm-calender tbody").empty().append(str);
-        $(".xm-calender tbody tr").each(function () {
-            var str = "";
-            for (var i = 0; i < 7; ++i) {
-                str += "<td></td>";
+                // 生成单元格
+                $body.find("tr").each(function () {
+                    var cellStr = "";
+                    for (var i = 0; i < 7; ++i) {
+                        cellStr += "<td></td>";
+                    }
+                    $(this).append(cellStr);
+                });
             }
-            $(this).append(str);
-        })
-        // 生成当月日历
-        var last_month_day = month_day[month - 1];
-        if (month == 0) {
-            var last_month_day = month_day[11];
-        }
-        var size = $(".xm-calender tbody td").size();
+            // 填入日历数字
+            function createDay(start, end) {
+                // 这里暂时没有样式区分上个月和下个月
+                var i;
+                if (start > end){
+                    // 上个月
+                    for (i = start, j = 0; i > end; --i, j++) {
+                        $body.find("td:eq(" + j + ")").text(start--)
+                    }
+                }else {
+                    for (i = start, j = 1;i < end; ++i, ++j) {
+                        $body.find("td:eq(" + i + ")").text(j);
+                    }
+                }
+            }
+            // 设置头部信息
+            function setInfo(year, month) {
+                $year.text(year);
+                $month.text(month + 1);
+            }
 
-        // 生成上个月的剩余天数
-        for (var i = first_weekday - 1; i >= 0; --i) {
-            $(".xm-calender tbody td:eq(" + i + ")").attr("data-role", "last").text(last_month_day--).css({
-                "color": "#f8f8f8",
-                "background": "transparent"
+            var calendar = (function () {
+                var today = new Date;
+
+                return  {
+                    year: today.getFullYear(),
+                    month: today.getMonth(),
+                    day: today.getDate(),
+                    weekday: today.getDay(),
+                    prev: function(){
+                        if (--this.month < 0) {
+                            this.year--;
+                            this.month = 11;
+                        }
+                        this.init();
+                    },
+                    next: function () {
+                        if (++this.month > 11) {
+                            this.year++;
+                            this.month = 0;
+                        }
+                        this.init();
+                    },
+                    get monthDay(){
+                        // 每月对应天数
+                        var year = this.year;
+                        var monthDay = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+                        if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
+                            monthDay[1] = 29;
+                        }
+                        return monthDay;
+                    },
+                    get bound() {
+                        var year = this.year,
+                            month = this.month,
+                            monthDay = this.monthDay;
+
+                        // 获取当前月份一号是星期几
+                        var first = new Date(Date.UTC(year, month, 1));
+                        var first_weekday = first.getDay();
+
+                        // 获取当前月份最后一天是星期几
+                        var last = new Date(Date.UTC(year, month, monthDay[month]));
+                        var last_weekday = last.getDay();
+                        // 获取当前月份有多少周，即获取当前月份最后一天是第几周即可
+                        var week_num = Math.floor((monthDay[month] - last_weekday + 12) / 7);
+
+                        return {
+                            first_weekday: first_weekday,
+                            last_weekday: last_weekday,
+                            week_num: week_num
+                        }
+                    },
+                    init: function () {
+                        var year = this.year,
+                            month = this.month,
+                            monthDay = this.monthDay;
+
+                        var boundary = this.bound;
+                        var first_weekday = boundary.first_weekday,
+                            last_weekday = boundary.last_weekday,
+                            week_num = boundary.week_num;
+
+                        createFrame(week_num);
+                        // 生成当月日历
+                        var last_monthDay = monthDay[month - 1];
+                        if (month == 0) {
+                            last_monthDay = monthDay[11];
+                        }
+                        // 生成上个月的剩余天数
+                        createDay(last_monthDay, last_monthDay - first_weekday);
+                        // 生成当月日历
+                        createDay(first_weekday, first_weekday + monthDay[month]);
+                        // 生成下个月的天数
+                        createDay(first_weekday + monthDay[month], week_num*7);
+
+                        // 设置头部信息
+                        setInfo(year, month);
+                    }
+                };
+            })();
+
+            // 初始化
+            calendar.init();
+
+            // 事件监听
+            $prev.on("click", function () {
+                calendar.prev();
             });
-        }
-        // 生成当月日历
-        for (var i = first_weekday, j = 1; i < first_weekday + month_day[month]; ++i, ++j) {
-            $(".xm-calender tbody td:eq(" + i + ")").text(j);
-        }
-        // 生成下个月的天数
-        for (var i = first_weekday + month_day[month], j = 1; i < size; ++i, ++j) {
-            $(".xm-calender tbody td:eq(" + i + ")").attr("data-role", "next").text(j).css({
-                "color": "#f8f8f8",
-                "background": "transparent"
-            });
-        }
-    }
-
-    function getTwo(n) {
-        n = parseInt(n);
-        if (n < 10) {
-            return "0" + n;
-        } else {
-            return "" + n;
-        }
-    }
-
-    // 根据年份返回对应月份天数
-    function isLeapYeay(year) {
-        var month_day = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-        if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
-            month_day[1] = 29;
-        }
-        return month_day;
-    }
-
-    // 获取当前时间
-    function getNow() {
-        var obj = {};
-        var now = new Date();
-        obj.year = now.getFullYear();
-        obj.month = now.getMonth();
-        obj.day = now.getDate();
-        obj.weekday = now.getDay();
-        return obj;
-    }
-
-    // 高亮显示起止日期
-    function activeDay() {
-        var year = $(".xm-calender .t-year").text();
-        var month = getTwo($(".xm-calender .t-month").text());
-        $(".xm-calender tbody td").each(function () {
-            var day = $(this).text();
-            var strKey = '' + year + '-' + month + '-' + getTwo(day);
-
-
+            $next.on("click", function () {
+                calendar.next();
+            })
         })
-
     }
-
-    // 设置顶部年月信息
-    function setHead(year, month) {
-        $(".xm-calender .t-year").text(year);
-        $(".xm-calender .t-month").text(month + 1);
-    }
-}
+});

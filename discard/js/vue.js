@@ -5437,7 +5437,7 @@ var Transition = {
     }
 
     if (oldChild && oldChild.data && oldChild.key !== key) {
-      // replace old child transition data with fresh one
+      // replace discard child transition data with fresh one
       // important for dynamic transitions!
       var oldData = oldChild.data.transition = extend({}, data);
 

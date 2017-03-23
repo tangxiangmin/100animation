@@ -15,13 +15,13 @@
     overflow: hidden;
     border: 1px solid #dedede;
     border-bottom: none; }
-  .xm-calendar .xm-calendar_prev {
+  .xm-calendar .xm-calendar_prev, .xm-calendar .xm-calendar_next {
     height: 100px;
     width: 100px;
     cursor: pointer; }
   .xm-calendar_prev {
     float: left; }
-  .xm-calendar_prev {
+  .xm-calendar_next {
     float: right; }
 
 .xm-calendar table {

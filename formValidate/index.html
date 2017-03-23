@@ -5,12 +5,12 @@
     <title>Title</title>
 </head>
 <body>
-    <form action="">
+    <form action="" id="test">
         <div class="form_group">
-            <input type="text">
+            <input data-validate="minLength:5" type="text">
         </div>
         <div class="form_group">
-            <input type="text">
+            <input data-validate="minLength:10 type:number" type="text">
         </div>
         <div class="form_group">
             <input type="text">
@@ -18,7 +18,9 @@
     </form>
     <script src="formValidate.js"></script>
     <script>
-        
+        $("#test").formValidate({
+            
+        });
     </script>
 </body>
 </html>

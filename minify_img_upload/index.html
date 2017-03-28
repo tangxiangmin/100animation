@@ -10,7 +10,7 @@
     </style>
 </head>
 <body>
-    <input type="file" id="imgFile">
+    <input type="file" id="imgFile" multiple>
     <canvas id="myCanvas"></canvas>
     <div>
         压缩前：
@@ -23,10 +23,10 @@
     
     <script src="../assets/jquery-1.12.4.min.js"></script>
     <script src="minify_img_upload.js"></script>
+    
     <script>
         $(function () {
             $("#imgFile").minifyImgUploade();
-           
         });
         
         

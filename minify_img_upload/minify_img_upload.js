@@ -45,23 +45,6 @@
             return canvas.toDataURL('image/jpeg', quality);
         }
 
-        function upload(url, imgData, cb) {
-            var fd = new FormData();
-            fd.append('imgData', imgData);
-
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: fd,
-                cache: false,
-                contentType: false, //不可缺
-                processData: false, //不可缺
-                success: function(res) {
-                    cb(res);
-                }
-            });
-        }
-
         return this.each(function () {
             $(this).on("change", function () {
                 var imgURL = URL.createObjectURL(this.files[0]);
@@ -70,10 +53,12 @@
                 source.src = imgURL;
                 source.onload = function () {
                     var imgData = minifyImg(this, quality);
-                    // modified.src = imgData;
-                    upload('server.php', imgData, function (res) {
+
+                    // todo
+                    $.post("server.php", {imgData: imgData},function (res) {
                         console.log(1);
-                    })
+                    },'json');
+
                 }
             })
                 

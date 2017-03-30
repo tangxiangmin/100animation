@@ -7,15 +7,19 @@
 <body>
     <form action="" id="test">
         <div class="form_group">
+            <input data-validate="required" type="text">
+        </div>
+        <div class="form_group">
             <input data-validate="minLength:5" type="text">
         </div>
         <div class="form_group">
-            <input data-validate="minLength:10 type:number" type="text">
+            <input data-validate="minLength:10 is:num" type="text">
         </div>
         <div class="form_group">
             <input type="text">
         </div>
     </form>
+    <script src="../assets/jquery-1.12.4.min.js"></script>
     <script src="formValidate.js"></script>
     <script>
         $("#test").formValidate({

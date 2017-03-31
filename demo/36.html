@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!--说明-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<style rel="stylesheet">
+			.rand { font-size: 40px; color: red;}
+		</style>
+	</head>
+	<body>
+		<h1>拆分三位数的数字</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<p>并未使用“%”取余数的方法，利用JS松散变量的特性将数字转换成字符串再直接拆分成数组，只需要两行代码</p>
+			
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+			
+				var str = '<p class="rand"><span></span>：<span></span>-<span></span>-<span></span></p>';
+				$(".wrap").append(str);
+				var num = Math.floor(Math.random()*900+100);
+				
+				var arr = (num+"").split("");
+				
+				$(".rand span").each(function(){
+					
+					var index = $(this).index();
+					
+					index?$(this).text(arr[index-1]):$(this).text(num);
+				})
+			
+			})
+		</script>
+	</body>
+</html>

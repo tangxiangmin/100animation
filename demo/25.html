@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-07-20
+	描述：复选框选择
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<style rel="stylesheet">
+			li { height: 24px; line-height: 24px;}
+		</style>
+	</head>
+	<body>
+		<h1>复选框选择</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<form>
+				<ul>
+					<li><input type="checkbox" /> 玩游戏</li>
+					<li><input type="checkbox" /> 唱歌</li>
+					<li><input type="checkbox" /> 看电影</li>
+					<li><input type="checkbox" /> 吃饭</li>
+					<li><input type="checkbox" /> 睡觉</li>
+					<li><input type="checkbox" /> 写代码</li>
+				</ul>
+				<div>
+					<input type="checkbox" id="all"/> 全选 
+					<input type="button" id="reverse" value="反选"/>  
+					
+				</div>
+			</form>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				$("#all").on("change",function(){
+					//checked是原生DOM的属性
+					//console.log($(this)[0].checked)
+					if ( $(this)[0].checked) {
+						$("ul input").each(function(){
+							$(this)[0].checked = true;
+						})
+					}else {
+						$("ul input").each(function(){
+							$(this)[0].checked = false;
+						})
+					}
+				})
+				$("#reverse").on("click",function(){
+					console.log(1)
+					$("ul input").each(function(){
+						$(this)[0].checked = !$(this)[0].checked;
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

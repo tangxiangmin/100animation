@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-08-08
+	描述：可以用于同时需要点击与鼠标移动特效的需求中
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<style rel="stylesheet">
+			ul{ margin: 0 ; padding: 0; list-style: none; }
+			ul li{ width: 100px; height: 100px; float: left;  background: yellow;border: 1px solid red ; margin:5px }
+		</style>
+	</head>
+	<body>
+		<h1>鼠标移动与点击</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<ul class="wrap">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				$("li").on("mouseover",eIn).on("click",function(){
+					$(this).css({"background":"blue"}).off({"mouseover":eIn,"mouseout":eOut})
+						   .siblings().css({"background":"yellow"}).on({"mouseover":eIn,"mouseout":eOut});
+				}).on("mouseout",eOut);
+	
+				function eIn(){
+					$(this).css({"background":"red"});
+				}
+				function eOut(){
+					$(this).css({"background":"yellow"});
+				}
+			})
+		</script>
+	</body>
+</html>

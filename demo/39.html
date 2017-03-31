@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-08-04
+	描述：这是最近的一个项目需求，通过后台传过来的某段时间数据生成对应的下拉菜单并禁止已被选择的选项
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<style rel="stylesheet">
+			
+		</style>
+	</head>
+	<body>
+		<h1>随意点击拖动</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<form>
+				<select id="year"></select>
+				<select id="month"></select>
+				<select id="day"></select>
+				<select id="timeInterval"></select>
+			</form>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				// 生成下拉菜单
+				var arr = ["2015-08-06 8:40~12:10/13:45~16:50 33","2016-08-06 8:10~12:10/13:45~16:50 30","2016-08-10 8:15~12:10/13:45~16:50 30","2016-09-10 8:10~12:10/13:45~16:50 30","2016-06-20 8:15~12:10/13:45~16:50 30"];
+				var backStrArr = [];
+				var bigArr = [];
+	
+				// 获取处理之后的对象
+				for ( var i = 0; i < arr.length; ++i){
+					bigArr.push(sigleDay(arr[i]));
+				}
+	
+				// 去重
+				function menuSort(arr,obj){
+					var s = arr.sort();
+					var newArr = [s[0]];
+					for (var i = 0; i < s.length; ++i){
+						if(s[i]!=newArr[newArr.length-1]){
+							newArr.push(s[i]);
+						}
+					}
+					for (var i = 0; i < newArr.length; ++i){
+						obj.append("<option>"+newArr[i]+"</option>");
+					}
+				}
+				
+				// 初始化
+				(function(){
+					// 年
+					var arrYear = [];
+					for (var i = 0; i < bigArr.length; ++i){
+						arrYear.push(bigArr[i].year);
+					}
+					menuSort(arrYear,$("#year"));
+					// 月
+					var arrMonth = [];
+					for (var i = 0; i < bigArr.length; ++i){
+						if ($("#year").val() == bigArr[i].year){
+							arrMonth.push(bigArr[i].month);
+						}
+					}
+					menuSort(arrMonth,$("#month"));
+				
+					for (var i = 0; i < bigArr.length;++i){
+						if ( $("#year").val() == bigArr[i].year && $("#month").val() == bigArr[i].month){
+							$("#day").append("<option>"+bigArr[i].day+"</option>");
+						}
+					}
+					
+					for ( var i = 0; i < bigArr.length; ++i){
+						if ($("#year").val() == bigArr[i].year && $("#month").val() == bigArr[i].month && $("#day").val() == bigArr[i].day){
+							$("#timeInterval").append(bigArr[i].time);
+						}
+					}
+	
+				})();
+	
+				// 月
+				$("#year").on("change",function(){
+					$("#month").empty();
+					var arrMonth = [];
+					for (var i = 0; i < bigArr.length; ++i){
+						if ($(this).val() == bigArr[i].year){
+							arrMonth.push(bigArr[i].month);
+						}
+					}
+	
+					menuSort(arrMonth,$("#month"));
+					$("#month").trigger("change");
+					// checkTime();
+				});
+				
+				// 日
+				$("#month").on("change",function(){
+	
+					$("#day").empty();
+					// 天数不用去重
+					for (var i = 0; i < bigArr.length;++i){
+						if ( $("#year").val() == bigArr[i].year && $(this).val() == bigArr[i].month){
+							$("#day").append("<option>"+bigArr[i].day+"</option>");
+						}
+					}
+					$("#day").trigger("change");
+					// checkTime();
+				});
+				
+				// 时间段
+				$("#day").on("change",function(){
+					$("#timeInterval").empty();
+					for ( var i = 0; i < bigArr.length; ++i){
+						if ($("#year").val() == bigArr[i].year && $("#month").val() == bigArr[i].month && $(this).val() == bigArr[i].day){
+							$("#timeInterval").append(bigArr[i].time);
+						}
+					}
+					checkTime();
+				});
+			
+				// 返回包含具体时间数据的对象
+				function sigleDay(str){
+					var obj = {};
+					var arr = str.split(" ");
+					// arr[0] Y-M-D
+					var arrYMD = arr[0].split("-");
+	
+					obj.year = arrYMD[0];
+					obj.month = arrYMD[1];
+					obj.day = arrYMD[2];
+	
+					// arr[1] 时间段
+					// arr[2] 时间间隔
+					var arrT = arr[1].split("/");
+					
+					var backStr = "";
+					// 上午
+					var start01 = getTime(arrT[0],"~")[0];
+					var totalTime01 =  twoTime(start01,getTime(arrT[0],"~")[1],":");
+					backStr += createMenu(start01,totalTime01);
+					// 下午
+					var start02 = getTime(arrT[1],"~")[0];
+					var totalTime02 = twoTime(start02,getTime(arrT[1],"~")[1],":");
+					backStr += createMenu(start02,totalTime02);
+					
+					obj.time = backStr;
+	
+					return obj;
+	
+					//  生成时间段字符串
+					function createMenu(start, totalTime){
+						var str = "";
+						for (var i = 0; i < Math.floor(totalTime/arr[2]); ++i){
+							str += "<option>"+createTime(start,i*arr[2],":")+"~"+createTime(start,(i+1)*arr[2],":")+"</option>";
+						}
+						return str;
+					}
+					// 生成时间
+					function createTime(start,t,s){
+						var h = parseInt(getTime(start,s)[0]);
+						var num = parseInt(getTime(start,s)[1]) + t;
+	
+						if ( num >= 60){
+							h += Math.floor(num/60);
+					 		num -=60*Math.floor(num/60);
+						}
+						if ( h < 10){
+							h = "0"+h;
+						}
+						if (num < 10){
+							num = "0"+num;
+						}
+						return ""+h+s+num;
+					}
+					// 拆分时间
+					function getTime(str,s){
+						return str.split(s);
+					}
+					// t1 小于 t2，获取时间间隔总分数
+					function twoTime(t1,t2,s){
+						
+						var h1 = parseInt(t1.split(s)[0]);
+						var m1 = parseInt(t1.split(s)[1]);
+	
+						var h2 = parseInt(t2.split(s)[0]);
+						var m2 = parseInt(t2.split(s)[1]);
+						var t = 0;
+						m2>=m1? t=(h2-h1)*60 + (m2-m1) : t=(h2-1-h1)*60 + (m2+60-m1);
+						return t;
+					}
+				}
+			
+				/*-----------------------判断已选取时间段---------------------*/
+				
+				var total = ["2016-08-06 08:40","2015-08-06 09:13","2016-08-06 10:40","2016-08-06 14:15","2016-08-10 08:15"];
+				// 初始化
+				checkTime();
+	
+				// 处理已被选择的时间段
+				function checkTime(){
+					var ymd = $("#year").val()+"-"+$("#month").val()+"-"+$("#day").val();
+					var time = [];
+					for (var i = 0; i < total.length; ++i){
+						if (total[i].indexOf(ymd) != -1){
+							time.push(total[i].split(" ")[1]);
+						}
+					}
+					time = time.sort();
+	
+					var i = 0;
+					$("#timeInterval option").each(function(){
+						var val = $(this).val().split("~")[0];
+						if (val == time[i]){
+							$(this).attr("disabled","disabled");
+							i++;
+						}
+						if ( i == time.length){
+							return;
+						}
+					})
+				}
+			})
+		</script>
+	</body>
+</html>

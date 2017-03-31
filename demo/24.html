@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!--说明-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<style rel="stylesheet">
+			body,html {height: 100%;}
+			.screen { width: 100%; height: 100%; overflow: hidden; }
+			.screen01 { background: green;}
+			.screen02 { background: red;}
+			.screen03 { background: blue;}
+			.navbar { position: fixed; right: 20px; bottom: 200px;}
+			.navbar li { width: 20px; height: 20px; margin: 10px 0;border-radius: 10px; background: #fff;}
+			.navbar li.active { background: yellow;}
+		</style>
+	</head>
+	<body>
+		<div class="screen screen01">
+			<h1>随意点击拖动</h1>
+			<p>
+				<a href="../index.html">返回主菜单</a>
+			</p>
+			<div class="wrap">
+				<p>向下翻滚可查看效果</p>
+				<p>第一个BUG：刷新之后滚动条不会发生变化，而右侧计数栏重置为第一个，一个解决办法是根据滚动条高度除以单个屏幕高度来确定是当前块的index，正在寻找更简单的方法</p>
+				<p>第二个BUG，连续滑动滚轮会造成屏幕无法对齐，原因为计时器的问题，跟整个问题处理逻辑相关，待解决。</p>
+			</div>
+
+		</div>
+		<div class="screen screen02"></div>
+		<div class="screen screen03"></div>
+		<ul class="navbar">
+			<li class="active"></li>
+			<li></li>
+			<li></li>
+		</ul>
+
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				$(document).scrollTop(0);
+				var num = 0;
+				var h = $(".screen").height();
+				var size = $(".screen").size();
+				$(document).on("mousewheel DOMMouseScroll", function (e) {
+	                var delta = (e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1 : -1)) ||  // chrome & ie
+	                            (e.originalEvent.detail && (e.originalEvent.detail > 0 ? -1 : 1));              // firefox
+	                if (delta > 0) {
+	                    // 向上滚
+	                    //console.log("wheelup");
+	                    t_scrollup(10);
+	                   	num--;
+	                   	if (num < 0){
+	                   		num = 0;
+	                   	}
+	                } else if (delta < 0) {
+	                    // 向下滚
+	                    //console.log("wheeldown");
+	                    t_scrolldown(10);
+	                    num++;
+	                    if (num >= size ){
+	                    	num = size-1;
+	                    }
+	                }
+	                $(".navbar li").eq(num).addClass("active").siblings().removeClass("active");
+	                
+	                function t_scrolldown(speed) {
+	                	var t = $(document).scrollTop(); 
+	                	var target = t + h;
+						var timer = setInterval(function(){
+							t += speed;
+							$(document).scrollTop(t);
+							if (t >= target){
+								clearInterval(timer);
+							}
+						},2)
+	                }
+	                function t_scrollup(speed){
+	                	var t = $(document).scrollTop(); 
+	                	var target = t - h;
+	                	if ( target <= 0){
+	                		target = 0 ;
+	                	}
+	                	
+						var timer = setInterval(function(){
+							t -= speed;
+							$(document).scrollTop(t);
+							if (t <= target){
+								clearInterval(timer);
+							}
+						},2)
+	               }
+	            });
+			})
+		</script>
+	</body>
+</html>

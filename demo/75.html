@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-10-13
+	描述：突然想起以前练习打字时候的警察抓小偷游戏
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<style rel="stylesheet">
+			.wrap p {
+				text-align: left;
+			}
+			input {
+				display: block;
+				width: 100%;
+				line-height: 30px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<h1>模拟打字游戏</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<p class="word"></p>
+			<input type="text"/>	
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				var len = 50;
+				var chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****该变量来自于网络,默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+				
+				var str = "";
+				for( var i = 0; i < len; ++i){
+					str += "<span>"+chars.charAt(Math.floor(Math.random()*chars.length))+"</span>";
+				}
+
+				$(".word").empty().html(str);
+				var word = $(".word").text();
+				
+				var time1 = new Date();
+				$("input").on("input",function(){
+					var v = $(this).val();
+					if ( word == v){
+						var time2 = new Date();
+						alert("恭喜你，闯关成功！总共用时"+(time2-time1)/1000+"秒！");
+					}
+					if (word.indexOf(v) == 0){
+						$(".word span:lt("+v.length+")").css({"color":"red"});
+					}else {
+						$(this).val(v.substr(0,v.length-1));
+					}
+				})
+			})
+		</script>
+	</body>
+</html>

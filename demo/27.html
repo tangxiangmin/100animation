@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!--说明-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<style rel="stylesheet">
+			input {
+				display: block;
+				height: 30px;
+				line-height: 30px;
+				font-size: 16px;
+				margin-bottom: 10px;
+			}
+			.wrap p {text-align: left;}
+		</style>
+	</head>
+	<body>
+		<h1>问候</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<input type="text" id="name" placeholder="请输入名字"/>
+			<p>你好:<span class="txt"></span></p>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				$("#name").on("input",function(){
+					$(".txt").text($(this).val());
+				})
+			})
+		</script>
+	</body>
+</html>

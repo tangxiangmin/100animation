@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-08-06
+	描述：由于最近某个项目下载的日历插件出现兼容问题，且代码十分臃肿难以修改，于是自己重新写了这个日历插件，时间仓促，可能存在BUG
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<link rel="stylesheet" href="../assets/fonts/iconfont.css" />
+		<style rel="stylesheet">
+			.fl { float: left; font-size: 20px;}
+			.fr { float: right; }
+	
+			.calender { width: 450px; height: 400px; margin: 0 auto;padding: 0 20px;color: #d02449;}
+			.t-head { display: block;height: 60px; padding: 0 10px;line-height: 60px; text-align: center;overflow: hidden;margin-bottom: 5px; text-shadow: 1px 1px 0 rgba(199, 36, 36, 0.5), 1px 2px 0 #fff}
+			.calender button { height: 30px; width: 30px; border: none;margin-top: 15px; margin-right: 5px; }
+			
+			.calender table { width: 100%; border-collapse: collapse; background:rgba(255,255,255,0.7); border-radius: 20px;overflow: hidden; text-shadow: 0 1px 1px rgba(0,0,0,0.4)}
+			
+			.calender table td,.calender table th { text-align: center; border: 1px solid #dedede; height: 42px; font-size: 16px;}
+			.active { background: #0099CC; color: #fff; }
+			</style>
+	</head>
+	<body>
+		<h1>日历</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="calender">
+			<div class="t-head">
+				<span class="fl">日历</span>
+				 <span class="t-year"></span> 年 <span class="t-month"></span> 月
+				<div class="fr">
+					<button id="back"><i class="iconfont">&#xe602;</i></button>
+					<button id="forward"><i class="iconfont">&#xe601;</i></button>
+					<button id="current"><i class="iconfont">&#xe600;</i></button>
+				</div>
+			</div>
+			<table>
+				<thead>
+					<tr>
+						<th>日</th><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+				</tbody>
+			</table>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				(function(){
+					var obj = getNow();
+					
+					var year = obj.year;
+					var month = obj.month;
+					var day = obj.day;
+					var weekday = obj.weekday;
+
+					// 初始化
+					changeMonth(year,month);
+
+					// 后退按钮
+					$("#back").on("click",function(){
+						month--;
+						if ( month<0){
+							year--;
+							month=11;
+						}
+						changeMonth(year,month);
+					});
+					// 前进按钮
+					$("#forward").on("click",function(){
+						month++;
+						if ( month>11){
+							year++;
+							month=0;
+						}
+						changeMonth(year,month);
+					});
+					// 返回当前
+					$("#current").on("click",function(){
+						var obj = getNow();
+						changeMonth(obj.year,obj.month);
+
+					})
+					// 更新日历
+					function changeMonth(year,month){
+						setHead(year,month);
+						createMonth(year,month);
+						activeDay();
+					}
+
+					// 创建对应月份日历
+					function createMonth(year,month){
+						// 每月对应天数
+						var month_day = isLeapYeay(year);
+						// 获取当前月份一号是星期几
+						var first = new Date(Date.UTC(year,month,1));
+						var first_weekday = first.getDay();
+					
+						// 获取当前月份最后一天是星期几
+						var last = new Date(Date.UTC(year,month,month_day[month]));
+						var last_weekday = last.getDay();
+						// 获取当前月份有多少周，即获取当前月份最后一天是第几周即可
+						var week_num = Math.floor((month_day[month] - last_weekday + 12)/7);
+						var str = "";
+						for (var i = 0; i < week_num; ++i){
+							str += "<tr></tr>";
+						}
+						$("tbody").empty().append(str);
+						$("tbody tr").each(function(){
+							var str = "";
+							for (var i = 0; i < 7; ++i){
+								str += "<td></td>";
+							}
+							$(this).append(str);
+						})
+						// 生成当月日历
+						
+						var last_month_day = month_day[month-1];
+						if (month == 0){
+							var last_month_day = month_day[11];
+						}
+						var size = $("tbody td").size();
+						// 由于存在BUG，并未使用gt,lt选择器与each函数
+						// 生成上个月的剩余天数
+						for (var i = first_weekday-1; i >= 0; --i){
+							$("tbody td:eq("+i+")").text(last_month_day--).css({"color":"#888","background":"transparent"});
+						}
+						// 生成当月日历
+						for (var i = first_weekday,j=1; i < first_weekday+ month_day[month]; ++i,++j){
+							$("tbody td:eq("+i+")").text(j);
+						}
+						// 生成下个月的天数
+						for (var i = first_weekday+month_day[month],j=1; i<size; ++i,++j){
+							$("tbody td:eq("+i+")").text(j).css({"color":"#888","background":"transparent"});
+						}
+
+					}
+
+					// 根据年份返回对应月份天数
+					function isLeapYeay(year){
+						var month_day = [31,28,31,30,31,30,31,31,30,31,30,31];
+						if ( (year%4==0 && year%100!=0) || (year%400==0)){
+							month_day[1] = 29;
+						}
+						return month_day;
+					}
+					// 获取当前时间 
+					function getNow(){
+						var obj = {};
+						var now = new Date();
+						obj.year = now.getFullYear();
+						obj.month = now.getMonth();
+						obj.day = now.getDate();
+						obj.weekday = now.getDay();
+						return obj;
+					}
+					// 高亮显示当前日期
+					function activeDay(){
+						var obj = getNow();
+						if ($(".t-year").text() == obj.year && $(".t-month").text()-1 == obj.month) {
+							$("tbody td").each(function(){
+								if ($(this).text() == obj.day){
+									$(this).addClass("active").siblings().removeClass("active");
+								}
+							})
+						}
+					}
+					// 设置顶部年月信息
+					function setHead(year,month){
+						$(".t-year").text(year);
+						$(".t-month").text(month+1);
+					}
+				})();
+			})
+		</script>
+	</body>
+</html>

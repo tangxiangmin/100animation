@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-08-28
+	描述：由于之间的逻辑处理存在问题，因此重新书写整个逻辑
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<style rel="stylesheet">
+			.wrap { position: relative;}
+			
+			.red { background: #CC0033;}
+			.blue { background: #00CCFF;}
+			.black { background: #000033;}
+			.green { background: #00CC66;}
+			
+			.box { position: absolute; left: 0; top: 0; height: 300px; width: 300px;;}
+			.node { 
+				width: 30px; height: 30px; position: absolute;
+				box-sizing: border-box;
+				padding: 2px;
+			}
+			.node .inner {
+				width: 26px;
+				height: 26px;
+				margin: 2px;
+				/*调试样式*/
+				color: yellow;
+				text-align: center;
+				line-height: 26px;
+			}
+			.score {
+				position: absolute;
+				right: 0;
+				top: 0;
+				
+			}
+		</style>
+	</head>
+	<body>
+		<h1>简易版宝石迷阵</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<div class="score">0</div>
+			<div class="box">
+				
+			</div>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				var row = 10;	
+				var h = 30;
+				var w = 30;
+				var score = 0;
+				var color = ["red","blue","black","green"];
+	
+				var str = "";
+				for (var i = 0; i < row; ++i){
+					str += '<div class="node"></div>'; 
+				}
+				$(".box").append($(str));
+	
+				var colorMap = [];
+				$(".node").each(function(index){
+					var colorIndex = Math.floor(Math.random()*4);
+					$(this).addClass(color[colorIndex]).css({"top":index*h});
+					colorMap.push({
+						"color":color[colorIndex],
+						"node":$(this)[0],
+						"flag":1,
+					});
+				})
+				$(document).on("click",function(){
+					update();
+				});
+				
+				function update(){
+					var res = pickSameColor(colorMap);
+					if (!res.length){
+						return true;
+					}
+					score += res.length;
+					$(".score").text(score);
+					// 更新对应的节点
+					for (var i = 0, j = 0; i < row; ++i){
+						if (res[j] == colorMap[i].node){
+							j++;
+							colorMap[i].flag = 0;
+						}
+					}
+					// 将被相同的元素冒泡到最上面
+					for (var j = 0; j < row-1; ++j){
+						for (var i = 0; i < row-1; ++i){
+							if (colorMap[i].flag == 1 && colorMap[i+1].flag == 0){
+	
+								$(colorMap[i].node).animate({"top":"+="+h},100);
+								$(colorMap[i+1].node).hide();
+	
+								var temp = colorMap[i];
+								colorMap[i] = colorMap[i+1];
+								colorMap[i+1] = temp;
+							}
+						}
+					}
+					// 删除节点，更新地图数组
+					for (var i = 0; i < res.length; ++i) {
+						$(res[i]).remove();
+						colorMap.shift(colorMap[i]);
+					}
+					// 新增节点及下落动画
+					for (var i = 0; i < res.length; ++i) {
+						var colorIndex = Math.floor(Math.random()*4);
+						var newStr = '<div class="node '+color[colorIndex]+'" style="top:'+(-i*h)+'px;"></div>';
+						colorMap.unshift({
+							"color":color[colorIndex],
+							"node":$(newStr)[0],
+							"flag":1,
+						});
+						$(".box").append($(newStr));
+						$(".node:last-of-type").animate({"top":"+="+(res.length-1)*h},105*(res.length));
+					}
+					// 打印本次消除之后的从上到下的颜色
+					console.log("color:*********************")
+					for (var i = 0; i < colorMap.length; ++i){
+						console.log(colorMap[i].color);
+					}
+	
+					// 返回可消除节点的数组
+					function pickSameColor(temp){
+						var same = [];
+						var box = [temp[0]];
+						for (var i = 0; i < temp.length-1; ++i){
+							if (temp[i].color == temp[i+1].color){
+								box.push(temp[i+1]);
+							}else {
+								same.push(box);
+								box = [temp[i+1]];
+							}
+						}
+						same.push(box);
+						
+						//将三个或以上相同元素的索引值存入数组并返回，索引值在同一行或列，不会重复，因此只需要一个一维数组
+						var arr = [];
+						for (var i = 0; i < same.length; ++i){
+							if (same[i].length >=3){
+								for (var j = 0; j < same[i].length; ++j){
+									arr.push(same[i][j].node);
+								}
+							}
+						}
+						return arr;
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

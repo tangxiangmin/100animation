@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--
+	作者：tangxiangmin@126.com
+	时间：2016-06-28
+	描述：抖动的方块
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<style rel="stylesheet">
+			.wrap { width: 600px; height: 170px; margin: 200px auto;position: relative; border: 1px solid #000;}
+			.box { width: 150px; height: 150px; position: absolute; }
+			.box1 { background: red;}
+			.box2 { background: green;}
+			.box3 { background: pink;}
+			.box4 { background: gray;}
+			.box5 { background: blue;}
+		</style>
+	</head>
+	<body>
+		<h1>抖动的方块</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<div class="box box1">锄禾日当午</div>
+			<div class="box box2">汗滴禾下土</div>
+			<div class="box box3">谁知盘中餐</div>
+			<div class="box box4">粒粒皆辛苦</div>
+			<div class="box box5">锄禾</div>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				//定位
+				pos();
+				//动画
+				$(".box").on("mouseover",function(){
+					pos();
+					$(this).siblings().css({"z-index":"0"})
+					$(this).css({"z-index":"100"}).stop(true).animate({"left":"+=30px"}).animate({"left":"-=60px"}).animate({"left":"+=30px"})
+				})
+				
+				function pos(){
+					$(".box").each(function(){
+						var $index = $(this).index();
+						$(this).css({"left":$index*80+"px"})
+						if ($index%2) {
+							$(this).css({"top":"20px"})
+						}
+					})
+				}
+			})
+		</script>
+	</body>
+</html>

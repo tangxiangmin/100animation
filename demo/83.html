@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <style rel="stylesheet">
+    .sign-wrap {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.3);
+    }
+    
+    .sign-score {
+        padding: 35px 30px;
+        width: 100%;
+    }
+    
+    .sign-score .sign-hd {
+        line-height: 32px;
+        text-align: center;
+        position: relative;
+    }
+    
+    .sign-score .sign-bd {
+        background: #fff;
+        padding: 20px;
+    }
+    
+    .sign-score .sign-ft {
+        padding: 10px 20px;
+        background: #fff;
+    }
+    
+    .sign-score .sign-ft .fl {
+        padding: 5px;
+    }
+    
+    .sign-score .sign-rule {
+        margin-top: 10px;
+        border: 10px solid #fff;
+        background: #666666;
+        /* visibility: hidden; */
+        color: #7e7d7d;
+    }
+    
+    .sign-score .sign-rule p {
+        margin: 0;
+        line-height: 22px;
+        font-size: 12px;
+    }
+    
+    .sign-score .sign-rule.active {
+        /* visibility: visible; */
+    }
+    
+    .sign-score .sign-logo {
+        position: absolute;
+        width: 56px;
+        height: 61px;
+        left: -20px;
+        top: -25px;
+        background: url("../assets/img/sign_logo.png") no-repeat center;
+        background-size: cover;
+    }
+    
+    .sign-score .sign-cancle {
+        position: absolute;
+        right: -10px;
+        top: -10px;
+        width: 20px;
+        height: 20px;
+        background: url("../assets/img/cancle.png") no-repeat center;
+        background-size: cover;
+    }
+    
+    .sign-score .sign-week {
+        height: 24px;
+        font-size: 0;
+    }
+    
+    .sign-score .sign-week:nth-of-type(even) .sign-day-box {
+        float: right;
+    }
+    
+    .sign-score .sign-week:nth-of-type(even) .sign-day-box:first-of-type .sign-day {
+        position: relative;
+        right: -1px;
+    }
+    
+    .sign-score .sign-week:nth-of-type(even) .sign-day-box:last-of-type .sign-day {
+        position: relative;
+        left: -1px;
+    }
+    
+    .sign-score .sign-week:nth-of-type(even) .sign-day-box:not(:last-of-type) {
+        padding-left: -webkit-calc((100% - 7*24px)/6);
+        padding-left: calc((100% - 7*24px)/6);
+    }
+    
+    .sign-score .sign-week:nth-of-type(odd) .sign-day-box {
+        float: left;
+    }
+    
+    .sign-score .sign-week:nth-of-type(odd) .sign-day-box:first-of-type .sign-day {
+        position: relative;
+        left: -1px;
+    }
+    
+    .sign-score .sign-week:nth-of-type(odd) .sign-day-box:last-of-type .sign-day {
+        position: relative;
+        right: -1px;
+    }
+    
+    .sign-score .sign-week:nth-of-type(odd) .sign-day-box:not(:last-of-type) {
+        padding-right: -webkit-calc((100% - 7*24px)/6);
+        padding-right: calc((100% - 7*24px)/6);
+    }
+    
+    .sign-score .sign-day-box {
+        height: 24px;
+        background: url("../assets/img/road_row.png") repeat-x center;
+    }
+    
+    .sign-score .sign-day {
+        width: 24px;
+        height: 24px;
+        background: #bab9ba;
+        -webkit-border-radius: 12px;
+        -moz-border-radius: 12px;
+        -ms-border-radius: 12px;
+        -o-border-radius: 12px;
+        border-radius: 12px;
+    }
+    
+    .sign-score .sign-day.active {
+        background: #adcf36;
+    }
+    
+    .sign-score .sign-day-special img {
+        position: relative;
+        left: -3px;
+        top: -5px;
+        width: 30px;
+    }
+    
+    .sign-score .sign-day-inner {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        margin: 7px;
+        background: #fff;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        -ms-border-radius: 5px;
+        -o-border-radius: 5px;
+        border-radius: 5px;
+    }
+    
+    .sign-score .sign-division {
+        display: block;
+        height: 32px;
+        margin: -2px 4px;
+        background: url(../assets/img/road_col.png) repeat-y;
+    }
+    
+    .sign-score .sign-division:nth-of-type(odd) {
+        background-position: right;
+    }
+    
+    .sign-score .sign-division:nth-of-type(even) {
+        background-position: left;
+    }
+
+    /* ---颗粒类---- */
+    
+    .bg-base {
+        background: #adcf36;
+        color: #fff;
+    }
+
+    .oh {
+    	overflow: hidden
+    }
+    </style>
+</head>
+
+<body>
+    <h1>签到表</h1>
+    <p>
+        <a href="../index.html">返回主菜单</a>
+    </p>
+    <div class="wrap">
+        <div class="sign-score t-poc-c2 ">
+            <div class="sign-hd bg-base">
+                <span class="sign-logo"></span>
+                <span class="sign-cancle"></span> 签到有礼
+            </div>
+            <!--主体-->
+            <div class="sign-bd">
+                <!--<div class="sign-week">
+						<div class="sign-day-box">
+							<div class="sign-day active">
+								<span class="sign-day-inner"></span>
+							</div>
+						</div>
+						<div class="sign-day-box">
+							<div class="sign-day active">
+								<span class="sign-day-inner"></span>
+							</div>
+						</div>
+						<div class="sign-day-box">
+							<div class="sign-day sign-day-special">
+								<img src="../img/sign_off.png"/>
+							</div>
+						</div>
+					</div>
+					<span class="sign-division"></span>-->
+            </div>
+            <!--底部-->
+            <div class="sign-ft oh">
+                <span class="fl text-base" id="signRule">
+						<i class="fa fa-info-circle"></i>
+					</span>
+                <span class="fr">
+						<a href="#" class="btn bg-base btn-md ">
+							签到
+						</a>
+					</span>
+            </div>
+            <!--规则-->
+            <div class="sign-rule">
+                <p class="text-base">签到规则</p>
+                <p class="text-indent">会员用户每日可签到 <span class="text-base">1</span> 次，每连续签到 <span class="text-base">10</span> 天即可获赠补签卡一张，签到满 <span class="text-base">30</span> 天的会员， 将获得神秘大奖，如遗漏签到或没有及时补签，签到记录将清零，重新开始。
+                </p>
+            </div>
+        </div>
+    </div>
+    <!--华丽丽的分割线-->
+    <script src="../js/jquery-1.12.4.min.js"></script>
+    <script>
+    $(function() {
+        var now = new Date();
+        var timeObj = {
+            year: now.getFullYear(),
+            month: now.getMonth(),
+            getMonthDay: function() {
+                var monthDay = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+                if ((this.year % 4 == 0 && this.year % 100 != 0) || (this.year % 400 == 0)) {
+                    monthDay[1] = 29;
+                }
+                return monthDay;
+            }
+        }
+
+        !(function() {
+            var totalDay = timeObj.getMonthDay()[timeObj.month];
+
+            var weekStr = '<div class="sign-week">';
+            var dayStr = '<div class="sign-day-box"><div class="sign-day"><span class="sign-day-inner"></span></div></div>';
+            var divisionStr = '<span class="sign-division"></span>';
+
+            // 处理满周
+            var weeks = Math.floor(totalDay / 7);
+            var domStr = "";
+            for (var i = 0; i < weeks; ++i) {
+                domStr += weekStr;
+                for (var j = 0; j < 7; ++j) {
+                    domStr += dayStr;
+                }
+                domStr += '</div>' + divisionStr;
+            }
+
+            // 处理剩余天数
+            domStr += weekStr;
+            for (var i = 0; i < totalDay % 7; ++i) {
+
+                domStr += dayStr;
+            }
+            // 插入dom
+            $(".sign-bd").append($(domStr));
+            // 插入标识 ，处理激活日期
+            // todo ...
+            $(".sign-day").eq(10).empty().addClass("sign-day-special").append($('<img src="../assets/img/sign_on.png"/>'))
+            $(".sign-day").eq(20).empty().addClass("sign-day-special").append($('<img src="../assets/img/sign_off.png"/>'))
+            $(".sign-day").eq($(".sign-day").length-1).empty().addClass("sign-day-special").append($('<img src="../assets/img/sign_on.png"/>'))
+        })();
+    })
+    </script>
+</body>
+
+</html>

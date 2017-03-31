@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--说明-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<style rel="stylesheet">
+			.time {
+				width: 100px;
+				height: 100px;
+				margin: 100px auto;
+				line-height: 100px;
+				font-size: 30px;
+				color: #fff;
+				border-radius: 20px;
+				background: #00CCFF;
+			}
+			.wrap {
+				background: #dedede;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>下拉刷新页面</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			在灰色区域，鼠标向下拉动可刷新页面
+			<p class="time">0</p>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				var num = 0;
+				var timer = setInterval(function(){
+					$(".time").text(++num);
+				},1000);
+				
+				$(document).on("mousedown",function(e){
+					var startY = e.pageY;
+					$(".wrap").on("mousemove",function(e){
+						if (e.pageY - startY > 0){
+							history.go(0);
+						}
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!--
+	学习如何写一个标准的jquery插件
+-->
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<link rel="stylesheet" href="../assets/css/style.css"/>
+	<style rel="stylesheet">
+
+		#tooltipWrap {
+			position: fixed;
+			display: none;
+
+			max-width: 200px;
+			height: auto;
+			padding: 10px;
+
+			background-color: #f8f8f8;
+			color: #222;
+			box-shadow: 0 0 2px 2px rgba(0,0,0,0.1);
+		}
+	</style>
+</head>
+<body>
+
+<h1>模拟提示框</h1>
+<p>
+	<a href="../index.html">返回主菜单</a>
+</p>
+<div class="wrap">
+
+
+	<a href="#" title="提示内容">123</a>
+
+</div>
+<!--华丽丽的分割线-->
+<script src="../js/jquery-1.12.4.min.js"></script>
+<script>
+
+	!(function ($) {
+	    // 配置参数
+		var defalut = {
+			'modify':10
+		};
+
+		var init = function () {
+            $("body").append($("<div id='tooltipWrap'></div>"));
+        };
+
+		$.fn.extend({
+			tooltip:function (options) {
+				var opt = $.extend({}, defalut, options || {});
+
+				init();
+
+				return this.each(function () {
+                    var content = $(this).attr("title");
+					if ($.trim(content) === ""){
+                        return ;
+                    }
+
+                    // 去除浏览器默认title
+                    $(this).attr("title","");
+
+                    $(this).on("mouseover",function (e) {
+                        var x = e.pageX;
+                        var y = e.pageY;
+                        $("#tooltipWrap").css({
+                            "left":x + opt.modify,
+                            'top':y + opt.modify
+                        }).text(content).show();
+                    }).on("mouseout",function () {
+                        $("#tooltipWrap").hide().text("");
+                    });
+
+                })
+			}
+		});
+    })(jQuery);
+	$("a").tooltip();
+</script>
+</body>
+</html>

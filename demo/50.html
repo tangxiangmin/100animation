@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!--说明-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../assets/css/style.css"/>
+		<style rel="stylesheet">
+			.text { text-align: left; }
+		</style>
+	</head>
+	<body>
+		<h1>随意点击拖动</h1>
+		<p>
+			<a href="../index.html">返回主菜单</a>
+		</p>
+		<div class="wrap">
+			<p class="text"></p>
+		</div>
+		<!--华丽丽的分割线-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script>
+			$(function(){
+				var str = "今天是个好日子，心想的事儿都能成balabalabala......";
+				var num = 0;
+				var len = str.length;
+				var timer = setInterval(function(){
+					$(".text").text(str.substr(0,num));
+					if (num == 10 ){
+						$(".text").css({"color":"red"});
+					}
+					if (num > len){
+						clearInterval(timer);
+						return;
+					}
+					num++;
+
+				},100);
+			})
+		</script>
+	</body>
+</html>

@@ -7,24 +7,44 @@
 <body>
     <form action="" id="test">
         <div class="form_group">
-            <input data-validate="required" type="text">
+            <div class="from_label">必填：</div>
+            <input data-validate="required" data-name="姓名" type="text">
         </div>
         <div class="form_group">
-            <input data-validate="minLength:5" type="text">
+            <div class="from_label">最小长度5：</div>
+            <input data-validate="minLength:5" data-name="密码" type="text">
         </div>
         <div class="form_group">
-            <input data-validate="minLength:10 is:num" type="text">
+            <div class="from_label">固定长度：</div>
+            <input data-validate="length:11" data-name="手机号" type="text">
         </div>
         <div class="form_group">
-            <input type="text">
+            <div class="from_label">值为数字：</div>
+            <input data-validate="is:num" data-name="ID卡" type="text">
         </div>
+        <div class="form_group">
+            <div class="from_label">自定义：</div>
+            <input data-validate="test:123" data-name="ID卡" type="text">
+        </div>
+       
+        <button>提交</button>
     </form>
     <script src="../assets/jquery-1.12.4.min.js"></script>
     <script src="formValidate.js"></script>
     <script>
+        
+        // 添加验证机制
         $("#test").formValidate({
-            
+            test: {
+                rule: function (val, param) {
+                    return false;
+                },
+                err: function () {
+                    console.log("err");
+                }
+            }
         });
+        
     </script>
 </body>
 </html>
